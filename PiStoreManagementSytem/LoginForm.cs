@@ -4,14 +4,14 @@ using System.Runtime.InteropServices;
 
 namespace PiStoreManagementSytem
 {
-    public partial class Form1 : Form
+    public partial class LoginForm : Form
     {
         private const int WM_NCLBUTTONDOWN = 0xA1;
         private const int HTCAPTION = 0x2;
         private bool showPassword = false;
         private readonly Bitmap show = Properties.Resources.eye;
         private readonly Bitmap hidden = Properties.Resources.hidden;
-        private IStrategyValidator emptyField = new EmailValidator();
+        private IStrategyValidator emptyField = new EmptyValidator();
 
         [DllImport("User32.dll")]
         public static extern bool ReleaseCapture();
@@ -19,7 +19,7 @@ namespace PiStoreManagementSytem
         [DllImport("User32.dll")]
         public static extern int SendMessage(IntPtr hWnd, int Msg, int wParam, int lParam);
 
-        public Form1()
+        public LoginForm()
         {
             InitializeComponent();
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
@@ -48,7 +48,7 @@ namespace PiStoreManagementSytem
         {
             string email = emailTxt.Text;
             string password = passwordTxt.Text;
-            /*
+            
             if(emptyField.Validate(email) 
                 || emptyField.Validate(password))
             {
@@ -56,17 +56,19 @@ namespace PiStoreManagementSytem
             }
             else
             {
-                
+                if (Login(email, password))
+                {
+                    MessageBox.Show("OK");
+                    AdminForm adminForm = new AdminForm();
+                    adminForm.Show();
+                    //this.Close();
+                }
+                else
+                {
+                    MessageBox.Show("Invalid Email or Password, try again!");
+                }
             }
-            */
-            if (Login(email, password))
-            {
-                MessageBox.Show("OK");
-            }
-            else
-            {
-                MessageBox.Show("Invalid Email or Password, try again!");
-            }
+            
         }
 
         private bool Login(string email, string password)
