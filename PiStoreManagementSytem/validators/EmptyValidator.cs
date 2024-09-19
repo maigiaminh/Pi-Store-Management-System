@@ -4,7 +4,7 @@
     {
         public bool Validate(string input)
         {
-            return String.IsNullOrEmpty(input);
+            return string.IsNullOrEmpty(input);
         }
     }
 }

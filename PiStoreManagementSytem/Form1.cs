@@ -1,3 +1,5 @@
+using PiStoreManagementSytem.DAO;
+using PiStoreManagementSytem.validators;
 using System.Runtime.InteropServices;
 
 namespace PiStoreManagementSytem
@@ -9,6 +11,7 @@ namespace PiStoreManagementSytem
         private bool showPassword = false;
         private readonly Bitmap show = Properties.Resources.eye;
         private readonly Bitmap hidden = Properties.Resources.hidden;
+        private IStrategyValidator emptyField = new EmailValidator();
 
         [DllImport("User32.dll")]
         public static extern bool ReleaseCapture();
@@ -26,6 +29,7 @@ namespace PiStoreManagementSytem
             showPassBtn.Cursor = Cursors.Hand; 
         }
 
+        //Data Source=.\sqlexpress;Initial Catalog=PiStoreDB;Integrated Security=True;Encrypt=False
         private void ExitApplication(object sender, EventArgs e)
         {
             Application.Exit();
@@ -42,9 +46,33 @@ namespace PiStoreManagementSytem
 
         private void loginBtn_Click(object sender, EventArgs e)
         {
-
+            string email = emailTxt.Text;
+            string password = passwordTxt.Text;
+            /*
+            if(emptyField.Validate(email) 
+                || emptyField.Validate(password))
+            {
+                MessageBox.Show("Please enter your account!");
+            }
+            else
+            {
+                
+            }
+            */
+            if (Login(email, password))
+            {
+                MessageBox.Show("OK");
+            }
+            else
+            {
+                MessageBox.Show("Invalid Email or Password, try again!");
+            }
         }
 
+        private bool Login(string email, string password)
+        {
+            return AccountDAO.Instance.Login(email, password);
+        }
         private void showPassBtn_Click(object sender, EventArgs e)
         {
             showPassword = !showPassword;
