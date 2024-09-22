@@ -1,3 +1,5 @@
+using PiStoreManagementSytem.modal;
+
 namespace PiStoreManagementSytem
 {
     internal static class Program

@@ -57,7 +57,7 @@ namespace PiStoreManagementSytem
                     MessageBox.Show("OK");
                     AdminForm adminForm = new AdminForm();
                     adminForm.Show();
-                    //this.Close();
+                    this.Close();
                 }
                 else
                 {

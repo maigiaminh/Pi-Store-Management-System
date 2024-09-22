@@ -52,8 +52,10 @@
             resetEmBtn = new Button();
             label1 = new Label();
             idTxt = new TextBox();
+            exitBtn = new PictureBox();
             ((System.ComponentModel.ISupportInitialize)pictureBox1).BeginInit();
             ((System.ComponentModel.ISupportInitialize)salaryTxt).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)exitBtn).BeginInit();
             SuspendLayout();
             // 
             // fNameLabel
@@ -278,6 +280,7 @@
             saveEmBtn.Text = "Save Changes";
             saveEmBtn.TextAlign = ContentAlignment.MiddleRight;
             saveEmBtn.UseVisualStyleBackColor = false;
+            saveEmBtn.Click += saveEmBtn_Click;
             // 
             // resetEmBtn
             // 
@@ -319,12 +322,25 @@
             idTxt.TabIndex = 33;
             idTxt.Visible = false;
             // 
+            // exitBtn
+            // 
+            exitBtn.BackgroundImage = (Image)resources.GetObject("exitBtn.BackgroundImage");
+            exitBtn.BackgroundImageLayout = ImageLayout.Zoom;
+            exitBtn.Cursor = Cursors.Hand;
+            exitBtn.Location = new Point(507, 7);
+            exitBtn.Name = "exitBtn";
+            exitBtn.Size = new Size(32, 32);
+            exitBtn.TabIndex = 34;
+            exitBtn.TabStop = false;
+            exitBtn.Click += exitBtn_Click;
+            // 
             // EmployeeForm
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = Color.FromArgb(238, 238, 238);
             ClientSize = new Size(551, 653);
+            Controls.Add(exitBtn);
             Controls.Add(idTxt);
             Controls.Add(label1);
             Controls.Add(resetEmBtn);
@@ -348,11 +364,13 @@
             Controls.Add(fullNameLabel);
             Controls.Add(lNameLabl);
             Controls.Add(fNameLabel);
+            FormBorderStyle = FormBorderStyle.None;
             Name = "EmployeeForm";
             StartPosition = FormStartPosition.CenterScreen;
             Text = "Form1";
             ((System.ComponentModel.ISupportInitialize)pictureBox1).EndInit();
             ((System.ComponentModel.ISupportInitialize)salaryTxt).EndInit();
+            ((System.ComponentModel.ISupportInitialize)exitBtn).EndInit();
             ResumeLayout(false);
             PerformLayout();
         }
@@ -382,5 +400,6 @@
         public TextBox emailTxt;
         public NumericUpDown salaryTxt;
         public TextBox idTxt;
+        private PictureBox exitBtn;
     }
 }

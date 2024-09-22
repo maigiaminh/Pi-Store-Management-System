@@ -1,9 +1,12 @@
-﻿using PiStoreManagementSytem.DTO;
+﻿using PiStoreManagementSytem.DAO;
+using PiStoreManagementSytem.DTO;
+using PiStoreManagementSytem.modal;
 using PiStoreManagementSytem.validators;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
+using System.Diagnostics.Eventing.Reader;
 using System.Drawing;
 using System.Linq;
 using System.Text;
@@ -15,12 +18,19 @@ namespace PiStoreManagementSytem
     public partial class EmployeeForm : Form
     {
         public Employee currentEm;
+        public AdminForm parent;
         IStrategyValidator empty;
+        IStrategyValidator email;
+        IStrategyValidator phone;
 
-        public EmployeeForm()
+        public EmployeeForm(AdminForm parent)
         {
             InitializeComponent();
+            this.parent = parent;
+
             empty = new EmptyValidator();
+            email = new EmailValidator();
+            phone = new PhoneValidator();
         }
 
         private void eraseEmBtn_Click(object sender, EventArgs e)
@@ -81,19 +91,98 @@ namespace PiStoreManagementSytem
 
         private void addEmBtn_Click(object sender, EventArgs e)
         {
-            
+            if (CheckAllFields())
+            {
+                if (AddEmployee
+                    (fullNameTxt.Text,
+                    emailTxt.Text,
+                    "admin",
+                    phoneTxt.Text,
+                    addressTxt.Text,
+                    salaryTxt.Value,
+                    hDatePicker.Value
+                    ))
+                {
+                    DisplaySuccess("Add new employee Successfully! Default password is 'admin'.");
+                    parent.UpdateEmployeeGridView();
+                }
+            }
         }
 
         private bool CheckAllFields()
         {
-            if(empty.Validate(fNameTxt.Text) ||
-                empty.Validate(lNameTxt.Text) ||
-                empty.Validate(addressTxt.Text) ||
-                empty.Validate(phoneTxt.Text) ||
-                empty.Validate(emailTxt.Text)){
-                
+            if (empty.Validate(fNameTxt.Text.ToString()) ||
+                empty.Validate(lNameTxt.Text.ToString()) ||
+                empty.Validate(addressTxt.Text.ToString()) ||
+                empty.Validate(phoneTxt.Text.ToString()) ||
+                empty.Validate(emailTxt.Text.ToString()))
+            {
+                DisplayError("Please enter all the required fields!");
+                return false;
             }
+
+            else if (!email.Validate(emailTxt.Text.ToString()))
+            {
+                DisplayError("Please enter a valid email!");
+                return false;
+            }
+
+            else if (!phone.Validate(phoneTxt.Text.ToString()))
+            {
+                DisplayError("Please enter a valid phone number (10 digits)!");
+                return false;
+            }
+
             return true;
+        }
+
+        private bool AddEmployee(string name, string email, string password, string phone, string address, decimal salary, DateTime hireDate)
+        {
+            if (CheckPhoneExist(phone))
+            {
+                DisplayError("This phone number already existed, try again!");
+                return false;
+            }
+            else if (CheckEmailExist(email))
+            {
+                DisplayError("This email address already existed, try again!");
+                return false;
+            }
+
+            return EmployeeDAO.Instance.AddNewEmployee(name, email, password, phone, address, salary, hireDate);
+        }
+
+        private bool CheckPhoneExist(string phone)
+        {
+            return EmployeeDAO.Instance.CheckPhoneNumberExist(phone);
+        }
+
+        private bool CheckEmailExist(string email)
+        {
+            return EmployeeDAO.Instance.CheckEmailExist(email);
+        }
+        private void DisplayError(string msg)
+        {
+            ErrorModal errorModal = new ErrorModal();
+            errorModal.errorTxt.Text = msg;
+            errorModal.Show();
+        }
+
+        private void DisplaySuccess(string msg)
+        {
+            SuccessModal successModal = new SuccessModal();
+            successModal.successTxt.Text = msg;
+            successModal.Show();
+        }
+
+        private void exitBtn_Click(object sender, EventArgs e)
+        {
+            this.Close();
+        }
+
+        private void saveEmBtn_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }

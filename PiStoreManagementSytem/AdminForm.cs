@@ -1,5 +1,6 @@
 ﻿using PiStoreManagementSytem.DAO;
 using PiStoreManagementSytem.DTO;
+using PiStoreManagementSytem.modal;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -233,7 +234,7 @@ namespace PiStoreManagementSytem
         {
             if (employeeGridView.CurrentRow != null && employeeGridView.CurrentRow.Cells["ID"].Value != null)
             {
-                EmployeeForm employeeForm = new EmployeeForm();
+                EmployeeForm employeeForm = new EmployeeForm(this);
                 employeeForm.saveEmBtn.Visible = true;
                 employeeForm.resetEmBtn.Visible = true;
                 employeeForm.addEmBtn.Visible = false;
@@ -259,31 +260,76 @@ namespace PiStoreManagementSytem
                 string fName = names.Last();
                 string lName = "";
                 int index = employeeName.IndexOf(fName) - 1;
-                for(int i = 0; i < index; i++)
+                for (int i = 0; i < index; i++)
                 {
                     lName += employeeName[i];
                 }
-                
+
                 employeeForm.fNameTxt.Text = fName;
                 employeeForm.lNameTxt.Text = lName;
-                
+
                 Employee employee = new Employee(employeeID, employeeName, employeeEmail, employeePhone, employeeAddress, employeeSalary, hireDate);
 
                 employeeForm.currentEm = employee;
                 employeeForm.ShowDialog();
             }
-            
+
         }
 
         private void addEmBtn_Click(object sender, EventArgs e)
         {
-            EmployeeForm employeeForm = new EmployeeForm();
+            EmployeeForm employeeForm = new EmployeeForm(this);
             employeeForm.saveEmBtn.Visible = false;
             employeeForm.resetEmBtn.Visible = false;
             employeeForm.addEmBtn.Visible = true;
 
             employeeForm.ShowDialog();
+        }
 
+        public void UpdateEmployeeGridView()
+        {
+            employeeGridView.DataSource = LoadEmployeeTable();
+        }
+
+        private void deleteEmBtn_Click(object sender, EventArgs e)
+        {
+            if (employeeGridView.CurrentRow != null && employeeGridView.CurrentRow.Cells["ID"].Value != null)
+            {
+                int employeeID = Convert.ToInt32(employeeGridView.CurrentRow.Cells["ID"].Value);
+                DialogResult dialogResult = MessageBox.Show("Are you sure to delete this employee?", "Delete Employee", MessageBoxButtons.YesNo);
+                if (dialogResult == DialogResult.Yes)
+                {
+                    if (DeleteEmployee(employeeID))
+                    {
+                        UpdateEmployeeGridView();
+                        DisplaySuccess("Successfully Delete Employee!");
+                    }
+                    else
+                    {
+                        DisplaySuccess("An error has orcurred while deleting employee! Please try again!");
+                    }
+                }
+            }
+        }
+
+        private bool DeleteEmployee(int id)
+        {
+            return EmployeeDAO.Instance.DeleteEmployee(id);
+        }
+
+
+        private void DisplayError(string msg)
+        {
+            ErrorModal errorModal = new ErrorModal();
+            errorModal.errorTxt.Text = msg;
+            errorModal.Show();
+        }
+
+        private void DisplaySuccess(string msg)
+        {
+            SuccessModal successModal = new SuccessModal();
+            successModal.successTxt.Text = msg;
+            successModal.Show();
         }
     }
 }

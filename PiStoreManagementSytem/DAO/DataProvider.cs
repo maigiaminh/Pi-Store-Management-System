@@ -21,54 +21,69 @@ namespace PiStoreManagementSytem.DAO
         private DataProvider() { }
 
         private string connectionStr = "Data Source=.\\sqlexpress;Initial Catalog=PiStoreDB;Integrated Security=True;Encrypt=False";
-        public DataTable ExecuteQuery(string query)
+        public DataTable ExecuteQuery(string query, SqlParameter[] parameters = null)
         {
             DataTable data = new DataTable();
 
             using (SqlConnection connection = new SqlConnection(connectionStr))
             {
                 connection.Open();
+                using (SqlCommand cmd = new SqlCommand(query, connection))
+                {
+                    if (parameters != null)
+                    {
+                        cmd.Parameters.AddRange(parameters);
+                    }
 
-                SqlCommand cmd = new SqlCommand(query, connection);
-                SqlDataAdapter adapter = new SqlDataAdapter(cmd);
-
-                adapter.Fill(data);
+                    SqlDataAdapter adapter = new SqlDataAdapter(cmd);
+                    adapter.Fill(data);
+                }
                 connection.Close();
-
             }
             return data;
         }
 
-        public int ExecuteNonQuery(string query)
+        public int ExecuteNonQuery(string query, SqlParameter[] parameters = null)
         {
             int data = 0;
-            
+
             using (SqlConnection connection = new SqlConnection(connectionStr))
             {
                 connection.Open();
 
-                SqlCommand cmd = new SqlCommand(query, connection);
+                using (SqlCommand cmd = new SqlCommand(query, connection))
+                {
+                    if (parameters != null)
+                    {
+                        cmd.Parameters.AddRange(parameters);
+                    }
 
-                data = cmd.ExecuteNonQuery();
+                    data = cmd.ExecuteNonQuery();
+                }
+
                 connection.Close();
-
             }
+
             return data;
         }
 
-        public object ExecuteScalar(string query)
+
+        public object ExecuteScalar(string query, SqlParameter[] parameters = null)
         {
-            object data = 0;
+            object data = null;
 
             using (SqlConnection connection = new SqlConnection(connectionStr))
             {
                 connection.Open();
-
-                SqlCommand cmd = new SqlCommand(query, connection);
-
-                data = cmd.ExecuteScalar();
+                using (SqlCommand cmd = new SqlCommand(query, connection))
+                {
+                    if (parameters != null)
+                    {
+                        cmd.Parameters.AddRange(parameters);
+                    }
+                    data = cmd.ExecuteScalar();
+                }
                 connection.Close();
-
             }
             return data;
         }

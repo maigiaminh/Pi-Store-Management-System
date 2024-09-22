@@ -4,7 +4,7 @@
     {
         public bool Validate(string input)
         {
-            return int.TryParse(input, out _);
+            return (int.TryParse(input, out _) && input.Length == 10);
         }
     }
 }

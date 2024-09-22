@@ -1,4 +1,5 @@
-﻿using PiStoreManagementSytem.DTO;
+﻿using Microsoft.Data.SqlClient;
+using PiStoreManagementSytem.DTO;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -43,12 +44,61 @@ namespace PiStoreManagementSytem.DAO
 
             return DataProvider.Instance.ExecuteQuery(query);
         }
-        
+
         public bool AddNewEmployee(string name, string email, string password, string phone, string address, decimal salary, DateTime hireDate)
         {
-            string query = $"INSERT INTO Employee (Name, Email, Password, Phone, Address, Salary, HireDate) VALUES (N'{name}', '{email}', '{password}', '{phone}', N'{address}', '{salary}', '{hireDate}')";
+            string query = "INSERT INTO Employee (Name, Email, Password, Phone, Address, Salary, HireDate) VALUES (@Name, @Email, @Password, @Phone, @Address, @Salary, @HireDate)";
 
-            return DataProvider.Instance.ExecuteNonQuery(query) > 0;
+            SqlParameter[] parameters = new SqlParameter[]
+            {
+                new SqlParameter("@Name", name),
+                new SqlParameter("@Email", email),
+                new SqlParameter("@Password", password),
+                new SqlParameter("@Phone", phone),
+                new SqlParameter("@Address", address),
+                new SqlParameter("@Salary", salary),
+                new SqlParameter("@HireDate", hireDate)
+            };
+
+            return DataProvider.Instance.ExecuteNonQuery(query, parameters) > 0;
         }
+
+        public bool CheckPhoneNumberExist(string phone)
+        {
+            string query = "SELECT COUNT(*) FROM Employee WHERE Phone = @Phone";
+
+            SqlParameter[] parameters = new SqlParameter[]
+            {
+                new SqlParameter("@Phone", phone)
+            };
+
+            int count = (int)DataProvider.Instance.ExecuteScalar(query, parameters);
+            return count > 0;
+        }
+
+        public bool CheckEmailExist(string email)
+        {
+            string query = "SELECT COUNT(*) FROM Employee WHERE Email = @Email";
+
+            SqlParameter[] parameters = new SqlParameter[]
+            {
+                new SqlParameter("@Email", email)
+            };
+
+            int count = (int)DataProvider.Instance.ExecuteScalar(query, parameters);
+            return count > 0;
+        }
+
+        public bool DeleteEmployee(int id)
+        {
+            string query = "DELETE FROM Employee WHERE ID = @ID";
+            SqlParameter[] parameters = new SqlParameter[]
+            {
+                new SqlParameter("@ID", id)
+            };
+
+            return DataProvider.Instance.ExecuteNonQuery(query, parameters) > 0;
+        }
+
     }
 }

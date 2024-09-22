@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.Data.SqlClient;
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
@@ -18,12 +19,18 @@ namespace PiStoreManagementSytem.DAO
         }
 
         private AccountDAO() { }
-        
+
         public bool Login(string email, string password)
         {
-            string query = "SELECT * FROM dbo.Employee WHERE Email = '" + email + "' AND Password = '" + password + "'";
+            string query = "SELECT * FROM dbo.Employee WHERE Email = @Email AND Password = @Password";
 
-            DataTable result = DataProvider.Instance.ExecuteQuery(query);
+            SqlParameter[] parameters = new SqlParameter[]
+            {
+                new SqlParameter("@Email", email),
+                new SqlParameter("@Password", password)
+            };
+
+            DataTable result = DataProvider.Instance.ExecuteQuery(query, parameters);
             return result.Rows.Count > 0;
         }
     }
