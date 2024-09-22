@@ -31,6 +31,7 @@
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(LoginForm));
             panel2 = new Panel();
             panel1 = new Panel();
+            creditLabel = new Label();
             showPassBtn = new PictureBox();
             passwordTxt = new TextBox();
             emailTxt = new TextBox();
@@ -43,7 +44,6 @@
             userImg = new PictureBox();
             loginLb = new Label();
             logoImg = new PictureBox();
-            creditLabel = new Label();
             panel2.SuspendLayout();
             panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)showPassBtn).BeginInit();
@@ -57,10 +57,9 @@
             // 
             panel2.BackColor = Color.White;
             panel2.Controls.Add(panel1);
-            panel2.Dock = DockStyle.Fill;
             panel2.Location = new Point(0, 0);
             panel2.Name = "panel2";
-            panel2.Size = new Size(482, 753);
+            panel2.Size = new Size(482, 754);
             panel2.TabIndex = 1;
             // 
             // panel1
@@ -81,14 +80,26 @@
             panel1.Dock = DockStyle.Fill;
             panel1.Location = new Point(0, 0);
             panel1.Name = "panel1";
-            panel1.Size = new Size(482, 753);
+            panel1.Size = new Size(482, 754);
             panel1.TabIndex = 2;
             panel1.MouseDown += DragApplication;
+            // 
+            // creditLabel
+            // 
+            creditLabel.AutoSize = true;
+            creditLabel.Font = new Font("Rockwell", 7.8F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            creditLabel.ForeColor = SystemColors.ControlDarkDark;
+            creditLabel.Location = new Point(92, 715);
+            creditLabel.Name = "creditLabel";
+            creditLabel.Size = new Size(298, 16);
+            creditLabel.TabIndex = 13;
+            creditLabel.Text = "Pi Store Management System v1.0 by Mai Gia Minh";
             // 
             // showPassBtn
             // 
             showPassBtn.BackgroundImage = Properties.Resources.hidden;
             showPassBtn.BackgroundImageLayout = ImageLayout.Zoom;
+            showPassBtn.Cursor = Cursors.Hand;
             showPassBtn.Location = new Point(408, 489);
             showPassBtn.Name = "showPassBtn";
             showPassBtn.Size = new Size(24, 24);
@@ -121,6 +132,7 @@
             // 
             exitBtn.BackgroundImage = (Image)resources.GetObject("exitBtn.BackgroundImage");
             exitBtn.BackgroundImageLayout = ImageLayout.Zoom;
+            exitBtn.Cursor = Cursors.Hand;
             exitBtn.Location = new Point(438, 12);
             exitBtn.Name = "exitBtn";
             exitBtn.Size = new Size(32, 32);
@@ -131,6 +143,7 @@
             // resetPassBtn
             // 
             resetPassBtn.AutoSize = true;
+            resetPassBtn.Cursor = Cursors.Hand;
             resetPassBtn.Font = new Font("Rockwell", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
             resetPassBtn.ForeColor = Color.FromArgb(69, 123, 157);
             resetPassBtn.Location = new Point(213, 561);
@@ -142,6 +155,7 @@
             // loginBtn
             // 
             loginBtn.BackColor = Color.FromArgb(69, 123, 157);
+            loginBtn.Cursor = Cursors.Hand;
             loginBtn.Font = new Font("Rockwell", 12F, FontStyle.Bold, GraphicsUnit.Point, 0);
             loginBtn.ForeColor = Color.White;
             loginBtn.Location = new Point(49, 598);
@@ -194,7 +208,7 @@
             loginLb.AutoSize = true;
             loginLb.Font = new Font("Rockwell", 16.2F, FontStyle.Bold, GraphicsUnit.Point, 0);
             loginLb.ForeColor = Color.FromArgb(69, 123, 157);
-            loginLb.Location = new Point(184, 275);
+            loginLb.Location = new Point(184, 276);
             loginLb.Name = "loginLb";
             loginLb.Size = new Size(114, 33);
             loginLb.TabIndex = 3;
@@ -206,24 +220,13 @@
             logoImg.Anchor = AnchorStyles.Left | AnchorStyles.Right;
             logoImg.BackgroundImage = (Image)resources.GetObject("logoImg.BackgroundImage");
             logoImg.BackgroundImageLayout = ImageLayout.Zoom;
-            logoImg.Location = new Point(116, 50);
+            logoImg.Location = new Point(116, 51);
             logoImg.Name = "logoImg";
             logoImg.Size = new Size(250, 250);
             logoImg.TabIndex = 2;
             logoImg.TabStop = false;
             // 
-            // creditLabel
-            // 
-            creditLabel.AutoSize = true;
-            creditLabel.Font = new Font("Rockwell", 7.8F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            creditLabel.ForeColor = SystemColors.ControlDarkDark;
-            creditLabel.Location = new Point(92, 715);
-            creditLabel.Name = "creditLabel";
-            creditLabel.Size = new Size(298, 16);
-            creditLabel.TabIndex = 13;
-            creditLabel.Text = "Pi Store Management System v1.0 by Mai Gia Minh";
-            // 
-            // Form1
+            // LoginForm
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
@@ -231,7 +234,8 @@
             ClientSize = new Size(482, 753);
             Controls.Add(panel2);
             FormBorderStyle = FormBorderStyle.None;
-            Name = "Form1";
+            Name = "LoginForm";
+            StartPosition = FormStartPosition.CenterScreen;
             Text = "Form1";
             panel2.ResumeLayout(false);
             panel1.ResumeLayout(false);

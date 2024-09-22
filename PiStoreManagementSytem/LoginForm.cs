@@ -22,11 +22,7 @@ namespace PiStoreManagementSytem
         public LoginForm()
         {
             InitializeComponent();
-            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
-            exitBtn.Cursor = Cursors.Hand;
-            loginBtn.Cursor = Cursors.Hand;
-            resetPassBtn.Cursor = Cursors.Hand;
-            showPassBtn.Cursor = Cursors.Hand; 
+            this.FormBorderStyle = FormBorderStyle.None;
         }
 
         //Data Source=.\sqlexpress;Initial Catalog=PiStoreDB;Integrated Security=True;Encrypt=False

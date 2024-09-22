@@ -32,6 +32,7 @@
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(AdminForm));
             navPanel = new Panel();
             billBtn = new Panel();
+            panel1 = new Panel();
             billLabel = new Label();
             billImg = new PictureBox();
             orderBtn = new Panel();
@@ -56,8 +57,16 @@
             menuBtn = new PictureBox();
             timerPanel = new System.Windows.Forms.Timer(components);
             employeePanel = new Panel();
+            printEmLabel = new Label();
+            printEmBtn = new PictureBox();
+            deleteEmLabel = new Label();
+            deleteEmBtn = new PictureBox();
+            editEmLabel = new Label();
+            editEmBtn = new PictureBox();
+            addELabel = new Label();
+            addEmBtn = new PictureBox();
+            employeeGridView = new DataGridView();
             employeeTitle = new Label();
-            dataGridView1 = new DataGridView();
             navPanel.SuspendLayout();
             billBtn.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)billImg).BeginInit();
@@ -75,7 +84,11 @@
             headerPanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)menuBtn).BeginInit();
             employeePanel.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)dataGridView1).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)printEmBtn).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)deleteEmBtn).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)editEmBtn).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)addEmBtn).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)employeeGridView).BeginInit();
             SuspendLayout();
             // 
             // navPanel
@@ -97,8 +110,10 @@
             // 
             // billBtn
             // 
+            billBtn.Controls.Add(panel1);
             billBtn.Controls.Add(billLabel);
             billBtn.Controls.Add(billImg);
+            billBtn.Cursor = Cursors.Hand;
             billBtn.Location = new Point(0, 362);
             billBtn.Name = "billBtn";
             billBtn.Size = new Size(200, 52);
@@ -107,9 +122,17 @@
             billBtn.MouseLeave += BillLeave;
             billBtn.MouseHover += BillHover;
             // 
+            // panel1
+            // 
+            panel1.Location = new Point(200, 48);
+            panel1.Name = "panel1";
+            panel1.Size = new Size(250, 125);
+            panel1.TabIndex = 2;
+            // 
             // billLabel
             // 
             billLabel.AutoSize = true;
+            billLabel.Cursor = Cursors.Hand;
             billLabel.Font = new Font("Rockwell Condensed", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
             billLabel.ForeColor = Color.Black;
             billLabel.Location = new Point(79, 25);
@@ -123,6 +146,7 @@
             // 
             billImg.BackgroundImage = Properties.Resources.bills;
             billImg.BackgroundImageLayout = ImageLayout.Zoom;
+            billImg.Cursor = Cursors.Hand;
             billImg.Location = new Point(22, 17);
             billImg.Name = "billImg";
             billImg.Size = new Size(42, 32);
@@ -134,6 +158,7 @@
             // 
             orderBtn.Controls.Add(orderLabel);
             orderBtn.Controls.Add(orderImg);
+            orderBtn.Cursor = Cursors.Hand;
             orderBtn.Location = new Point(0, 307);
             orderBtn.Name = "orderBtn";
             orderBtn.Size = new Size(200, 52);
@@ -169,6 +194,7 @@
             // 
             productBtn.Controls.Add(productLabel);
             productBtn.Controls.Add(productImg);
+            productBtn.Cursor = Cursors.Hand;
             productBtn.Location = new Point(0, 252);
             productBtn.Name = "productBtn";
             productBtn.Size = new Size(200, 52);
@@ -180,6 +206,7 @@
             // productLabel
             // 
             productLabel.AutoSize = true;
+            productLabel.Cursor = Cursors.Hand;
             productLabel.Font = new Font("Rockwell Condensed", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
             productLabel.ForeColor = Color.Black;
             productLabel.Location = new Point(79, 25);
@@ -193,6 +220,7 @@
             // 
             productImg.BackgroundImage = Properties.Resources.products;
             productImg.BackgroundImageLayout = ImageLayout.Zoom;
+            productImg.Cursor = Cursors.Hand;
             productImg.Location = new Point(22, 17);
             productImg.Name = "productImg";
             productImg.Size = new Size(42, 32);
@@ -204,6 +232,7 @@
             // 
             clientBtn.Controls.Add(clientLabel);
             clientBtn.Controls.Add(clientImg);
+            clientBtn.Cursor = Cursors.Hand;
             clientBtn.Location = new Point(0, 197);
             clientBtn.Name = "clientBtn";
             clientBtn.Size = new Size(200, 52);
@@ -239,6 +268,7 @@
             // 
             employeeBtn.Controls.Add(employeeLabel);
             employeeBtn.Controls.Add(employeeImg);
+            employeeBtn.Cursor = Cursors.Hand;
             employeeBtn.Location = new Point(0, 142);
             employeeBtn.Name = "employeeBtn";
             employeeBtn.Size = new Size(200, 52);
@@ -250,6 +280,7 @@
             // employeeLabel
             // 
             employeeLabel.AutoSize = true;
+            employeeLabel.Cursor = Cursors.Hand;
             employeeLabel.Font = new Font("Rockwell Condensed", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
             employeeLabel.ForeColor = Color.Black;
             employeeLabel.Location = new Point(79, 25);
@@ -263,6 +294,7 @@
             // 
             employeeImg.BackgroundImage = Properties.Resources.employee;
             employeeImg.BackgroundImageLayout = ImageLayout.Zoom;
+            employeeImg.Cursor = Cursors.Hand;
             employeeImg.Location = new Point(22, 17);
             employeeImg.Name = "employeeImg";
             employeeImg.Size = new Size(42, 32);
@@ -276,6 +308,7 @@
             homeBtn.Controls.Add(flowLayoutPanel1);
             homeBtn.Controls.Add(homeLabel);
             homeBtn.Controls.Add(homeImg);
+            homeBtn.Cursor = Cursors.Hand;
             homeBtn.Location = new Point(0, 88);
             homeBtn.Name = "homeBtn";
             homeBtn.Size = new Size(200, 52);
@@ -353,6 +386,7 @@
             // 
             menuBtn.BackgroundImage = (Image)resources.GetObject("menuBtn.BackgroundImage");
             menuBtn.BackgroundImageLayout = ImageLayout.Zoom;
+            menuBtn.Cursor = Cursors.Hand;
             menuBtn.Location = new Point(6, 12);
             menuBtn.Name = "menuBtn";
             menuBtn.Size = new Size(43, 36);
@@ -367,7 +401,15 @@
             // 
             // employeePanel
             // 
-            employeePanel.Controls.Add(dataGridView1);
+            employeePanel.Controls.Add(printEmLabel);
+            employeePanel.Controls.Add(printEmBtn);
+            employeePanel.Controls.Add(deleteEmLabel);
+            employeePanel.Controls.Add(deleteEmBtn);
+            employeePanel.Controls.Add(editEmLabel);
+            employeePanel.Controls.Add(editEmBtn);
+            employeePanel.Controls.Add(addELabel);
+            employeePanel.Controls.Add(addEmBtn);
+            employeePanel.Controls.Add(employeeGridView);
             employeePanel.Controls.Add(employeeTitle);
             employeePanel.Dock = DockStyle.Fill;
             employeePanel.Location = new Point(200, 60);
@@ -375,25 +417,122 @@
             employeePanel.Size = new Size(782, 593);
             employeePanel.TabIndex = 2;
             // 
+            // printEmLabel
+            // 
+            printEmLabel.AutoSize = true;
+            printEmLabel.Font = new Font("Rockwell", 10.2F, FontStyle.Bold);
+            printEmLabel.ForeColor = Color.FromArgb(255, 163, 0);
+            printEmLabel.Location = new Point(631, 184);
+            printEmLabel.Name = "printEmLabel";
+            printEmLabel.Size = new Size(64, 20);
+            printEmLabel.TabIndex = 9;
+            printEmLabel.Text = "PRINT";
+            // 
+            // printEmBtn
+            // 
+            printEmBtn.BackgroundImage = (Image)resources.GetObject("printEmBtn.BackgroundImage");
+            printEmBtn.BackgroundImageLayout = ImageLayout.Zoom;
+            printEmBtn.Cursor = Cursors.Hand;
+            printEmBtn.Location = new Point(628, 107);
+            printEmBtn.Name = "printEmBtn";
+            printEmBtn.Size = new Size(72, 62);
+            printEmBtn.TabIndex = 8;
+            printEmBtn.TabStop = false;
+            // 
+            // deleteEmLabel
+            // 
+            deleteEmLabel.AutoSize = true;
+            deleteEmLabel.Font = new Font("Rockwell", 10.2F, FontStyle.Bold);
+            deleteEmLabel.ForeColor = Color.Silver;
+            deleteEmLabel.Location = new Point(442, 184);
+            deleteEmLabel.Name = "deleteEmLabel";
+            deleteEmLabel.Size = new Size(79, 20);
+            deleteEmLabel.TabIndex = 7;
+            deleteEmLabel.Text = "DELETE";
+            // 
+            // deleteEmBtn
+            // 
+            deleteEmBtn.BackgroundImage = Properties.Resources.remove_unactive;
+            deleteEmBtn.BackgroundImageLayout = ImageLayout.Zoom;
+            deleteEmBtn.Cursor = Cursors.Hand;
+            deleteEmBtn.Location = new Point(448, 107);
+            deleteEmBtn.Name = "deleteEmBtn";
+            deleteEmBtn.Size = new Size(69, 62);
+            deleteEmBtn.TabIndex = 6;
+            deleteEmBtn.TabStop = false;
+            // 
+            // editEmLabel
+            // 
+            editEmLabel.AutoSize = true;
+            editEmLabel.Font = new Font("Rockwell", 10.2F, FontStyle.Bold);
+            editEmLabel.ForeColor = Color.Silver;
+            editEmLabel.Location = new Point(276, 184);
+            editEmLabel.Name = "editEmLabel";
+            editEmLabel.Size = new Size(53, 20);
+            editEmLabel.TabIndex = 5;
+            editEmLabel.Text = "EDIT";
+            // 
+            // editEmBtn
+            // 
+            editEmBtn.BackgroundImage = Properties.Resources.pen_unactive;
+            editEmBtn.BackgroundImageLayout = ImageLayout.Zoom;
+            editEmBtn.Cursor = Cursors.Hand;
+            editEmBtn.Location = new Point(269, 107);
+            editEmBtn.Name = "editEmBtn";
+            editEmBtn.Size = new Size(68, 62);
+            editEmBtn.TabIndex = 4;
+            editEmBtn.TabStop = false;
+            editEmBtn.Click += editEmBtn_Click;
+            // 
+            // addELabel
+            // 
+            addELabel.AutoSize = true;
+            addELabel.Font = new Font("Rockwell", 10.2F, FontStyle.Bold);
+            addELabel.ForeColor = Color.FromArgb(75, 174, 79);
+            addELabel.Location = new Point(97, 184);
+            addELabel.Name = "addELabel";
+            addELabel.Size = new Size(49, 20);
+            addELabel.TabIndex = 3;
+            addELabel.Text = "ADD";
+            // 
+            // addEmBtn
+            // 
+            addEmBtn.BackgroundImage = (Image)resources.GetObject("addEmBtn.BackgroundImage");
+            addEmBtn.BackgroundImageLayout = ImageLayout.Zoom;
+            addEmBtn.Cursor = Cursors.Hand;
+            addEmBtn.Location = new Point(86, 107);
+            addEmBtn.Name = "addEmBtn";
+            addEmBtn.Size = new Size(70, 62);
+            addEmBtn.TabIndex = 2;
+            addEmBtn.TabStop = false;
+            addEmBtn.Click += addEmBtn_Click;
+            // 
+            // employeeGridView
+            // 
+            employeeGridView.AllowUserToAddRows = false;
+            employeeGridView.AllowUserToDeleteRows = false;
+            employeeGridView.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+            employeeGridView.BackgroundColor = Color.White;
+            employeeGridView.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            employeeGridView.Dock = DockStyle.Bottom;
+            employeeGridView.Location = new Point(0, 247);
+            employeeGridView.Name = "employeeGridView";
+            employeeGridView.ReadOnly = true;
+            employeeGridView.RowHeadersWidth = 51;
+            employeeGridView.Size = new Size(782, 346);
+            employeeGridView.TabIndex = 1;
+            employeeGridView.CellClick += EmployeeCellClick;
+            // 
             // employeeTitle
             // 
             employeeTitle.AutoSize = true;
             employeeTitle.Font = new Font("Rockwell", 18F, FontStyle.Bold, GraphicsUnit.Point, 0);
             employeeTitle.ForeColor = Color.FromArgb(69, 123, 157);
-            employeeTitle.Location = new Point(226, 28);
+            employeeTitle.Location = new Point(230, 17);
             employeeTitle.Name = "employeeTitle";
             employeeTitle.Size = new Size(371, 38);
             employeeTitle.TabIndex = 0;
             employeeTitle.Text = "Employee Management";
-            // 
-            // dataGridView1
-            // 
-            dataGridView1.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dataGridView1.Location = new Point(0, 405);
-            dataGridView1.Name = "dataGridView1";
-            dataGridView1.RowHeadersWidth = 51;
-            dataGridView1.Size = new Size(782, 188);
-            dataGridView1.TabIndex = 1;
             // 
             // AdminForm
             // 
@@ -405,6 +544,7 @@
             Controls.Add(headerPanel);
             Controls.Add(navPanel);
             Name = "AdminForm";
+            StartPosition = FormStartPosition.CenterScreen;
             Text = "AdminForm";
             navPanel.ResumeLayout(false);
             navPanel.PerformLayout();
@@ -431,7 +571,11 @@
             ((System.ComponentModel.ISupportInitialize)menuBtn).EndInit();
             employeePanel.ResumeLayout(false);
             employeePanel.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)dataGridView1).EndInit();
+            ((System.ComponentModel.ISupportInitialize)printEmBtn).EndInit();
+            ((System.ComponentModel.ISupportInitialize)deleteEmBtn).EndInit();
+            ((System.ComponentModel.ISupportInitialize)editEmBtn).EndInit();
+            ((System.ComponentModel.ISupportInitialize)addEmBtn).EndInit();
+            ((System.ComponentModel.ISupportInitialize)employeeGridView).EndInit();
             ResumeLayout(false);
         }
 
@@ -464,6 +608,15 @@
         private Label employeeLabel;
         private Panel employeePanel;
         private Label employeeTitle;
-        private DataGridView dataGridView1;
+        private DataGridView employeeGridView;
+        private Panel panel1;
+        private Label printEmLabel;
+        private PictureBox printEmBtn;
+        private Label deleteEmLabel;
+        private PictureBox deleteEmBtn;
+        private Label editEmLabel;
+        private PictureBox editEmBtn;
+        private Label addELabel;
+        private PictureBox addEmBtn;
     }
 }
