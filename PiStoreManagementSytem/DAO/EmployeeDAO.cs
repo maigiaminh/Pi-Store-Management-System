@@ -100,5 +100,25 @@ namespace PiStoreManagementSytem.DAO
             return DataProvider.Instance.ExecuteNonQuery(query, parameters) > 0;
         }
 
+        public bool UpdateEmployee(int id, string name, string email, string phone, string address, decimal salary, DateTime hireDate)
+        {
+            string query = "UPDATE Employee " +
+                           "SET Name = @Name, Email = @Email, Phone = @Phone, Address = @Address, Salary = @Salary, HireDate = @HireDate " +
+                           "WHERE ID = @ID";
+
+            SqlParameter[] parameters = new SqlParameter[]
+            {
+                new SqlParameter("@ID", id),
+                new SqlParameter("@Name", name),
+                new SqlParameter("@Email", email),
+                new SqlParameter("@Phone", phone),
+                new SqlParameter("@Address", address),
+                new SqlParameter("@Salary", salary),
+                new SqlParameter("@HireDate", hireDate)
+            };
+
+            return DataProvider.Instance.ExecuteNonQuery(query, parameters) > 0;
+        }
+
     }
 }

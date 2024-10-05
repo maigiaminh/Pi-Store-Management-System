@@ -1,15 +1,10 @@
-﻿using PiStoreManagementSytem.DAO;
+﻿using PdfSharp;
+using PdfSharp.Drawing;
+using PdfSharp.Pdf;
+using PiStoreManagementSytem.DAO;
 using PiStoreManagementSytem.DTO;
 using PiStoreManagementSytem.modal;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel;
 using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
 
 namespace PiStoreManagementSytem
 {
@@ -23,6 +18,7 @@ namespace PiStoreManagementSytem
             InitializeComponent();
             menuBtn.Click += new EventHandler(MenuBtn_Click);
             timerPanel.Tick += new EventHandler(TimerPanel_Tick);
+            this.FormClosing += new FormClosingEventHandler(AdminForm_FormClosing);
             Init();
         }
 
@@ -235,6 +231,7 @@ namespace PiStoreManagementSytem
             if (employeeGridView.CurrentRow != null && employeeGridView.CurrentRow.Cells["ID"].Value != null)
             {
                 EmployeeForm employeeForm = new EmployeeForm(this);
+                employeeForm.imgEmployee.BackgroundImage = Constants.Constants.edit_employee;
                 employeeForm.saveEmBtn.Visible = true;
                 employeeForm.resetEmBtn.Visible = true;
                 employeeForm.addEmBtn.Visible = false;
@@ -279,6 +276,7 @@ namespace PiStoreManagementSytem
         private void addEmBtn_Click(object sender, EventArgs e)
         {
             EmployeeForm employeeForm = new EmployeeForm(this);
+            employeeForm.imgEmployee.BackgroundImage = Constants.Constants.add_employee;
             employeeForm.saveEmBtn.Visible = false;
             employeeForm.resetEmBtn.Visible = false;
             employeeForm.addEmBtn.Visible = true;
@@ -330,6 +328,168 @@ namespace PiStoreManagementSytem
             SuccessModal successModal = new SuccessModal();
             successModal.successTxt.Text = msg;
             successModal.Show();
+        }
+
+        private void AdminForm_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            Application.Exit();
+        }
+
+        private void printEmBtn_Click(object sender, EventArgs e)
+        {
+            PdfDocument document = new PdfDocument();
+            document.Info.Title = "Company Employee List";
+
+            PdfPage page = document.AddPage();
+
+            page.Size = PageSize.A4;
+            page.Orientation = PageOrientation.Landscape;
+
+            XGraphics gfx = XGraphics.FromPdfPage(page);
+            XFont titleFont = new XFont("Verdana", 24, XFontStyleEx.Bold);
+            XFont companyFont = new XFont("Verdana", 14, XFontStyleEx.Bold);
+            XFont headerFont = new XFont("Verdana", 12, XFontStyleEx.Bold);
+            XFont cellFont = new XFont("Verdana", 10, XFontStyleEx.Regular);
+
+            Bitmap logoBitmap = Properties.Resources.logo;
+
+            using (MemoryStream stream = new MemoryStream())
+            {
+                logoBitmap.Save(stream, System.Drawing.Imaging.ImageFormat.Png);
+                XImage logo = XImage.FromStream(stream);
+
+                gfx.DrawImage(logo, 20, 0, 200, 200); 
+                gfx.DrawString("Employee List", titleFont, XBrushes.Black,
+                    new XRect(page.Height, 85, page.Width - 160, 50), XStringFormats.TopLeft);
+
+                gfx.DrawString("Company: Pi Store Sneaker", companyFont, XBrushes.Black,
+                    new XRect(50, 190, page.Width - 100, 50), XStringFormats.TopLeft);
+            }
+
+            double tableTop = 220; 
+            double rowHeight = 20; 
+            double pageWidth = page.Width;
+            double colXPos = 50;
+
+            
+            double totalGridViewWidth = 0;
+            foreach (DataGridViewColumn column in employeeGridView.Columns)
+            {
+                if (column.Name != "ID" && column.Name != "Password")
+                {
+                    totalGridViewWidth += column.Width;
+                }
+            }
+
+            double scaleFactor = (pageWidth - 100) / totalGridViewWidth; 
+
+            XPen borderPen = new XPen(XColors.Black, 1); 
+            gfx.DrawRectangle(XBrushes.LightGray, colXPos, tableTop, totalGridViewWidth * scaleFactor, rowHeight);
+
+            foreach (DataGridViewColumn column in employeeGridView.Columns)
+            {
+                if (column.Name != "ID" && column.Name != "Password")  
+                {
+                    double scaledColWidth = column.Width * scaleFactor;
+                    gfx.DrawString(column.HeaderText, headerFont, XBrushes.Black,
+                        new XRect(colXPos, tableTop, scaledColWidth, rowHeight), XStringFormats.Center);
+
+                    gfx.DrawRectangle(borderPen, colXPos, tableTop, scaledColWidth, rowHeight);
+                    colXPos += scaledColWidth;
+                }
+            }
+
+            tableTop += rowHeight;
+            foreach (DataGridViewRow row in employeeGridView.Rows)
+            {   
+                if (tableTop + rowHeight > page.Height - 50) 
+                {
+                    tableTop = 220;
+                    page = document.AddPage();
+                    page.Size = PageSize.A4;
+                    page.Orientation = PageOrientation.Landscape; 
+                    gfx = XGraphics.FromPdfPage(page);
+
+                    using (MemoryStream stream = new MemoryStream())
+                    {
+                        logoBitmap.Save(stream, System.Drawing.Imaging.ImageFormat.Png);
+                        XImage logo = XImage.FromStream(stream);
+
+                        gfx.DrawImage(logo, 20, 0, 200, 200);
+                        gfx.DrawString("Employee List", titleFont, XBrushes.Black,
+                            new XRect(page.Height, 85, page.Width - 160, 50), XStringFormats.TopLeft);
+
+                        gfx.DrawString("Company: Pi Store Sneaker", companyFont, XBrushes.Black,
+                            new XRect(50, 190, page.Width - 100, 50), XStringFormats.TopLeft);
+                    }
+
+                    colXPos = 50;
+                    gfx.DrawRectangle(XBrushes.LightGray, colXPos, tableTop, totalGridViewWidth * scaleFactor, rowHeight);
+                    foreach (DataGridViewColumn column in employeeGridView.Columns)
+                    {
+                        if (column.Name != "ID" && column.Name != "Password")
+                        {
+                            double scaledColWidth = column.Width * scaleFactor;
+                            gfx.DrawString(column.HeaderText, headerFont, XBrushes.Black,
+                                new XRect(colXPos, tableTop, scaledColWidth, rowHeight), XStringFormats.Center);
+                            gfx.DrawRectangle(borderPen, colXPos, tableTop, scaledColWidth, rowHeight);
+                            colXPos += scaledColWidth;
+                        }
+                    }
+                    tableTop += rowHeight;
+                }
+
+                colXPos = 50; 
+                foreach (DataGridViewCell cell in row.Cells)
+                {   
+                    if (employeeGridView.Columns[cell.ColumnIndex].Name != "ID" && employeeGridView.Columns[cell.ColumnIndex].Name != "Password")  
+                    {
+                        double scaledColWidth = employeeGridView.Columns[cell.ColumnIndex].Width * scaleFactor; 
+
+                        string cellValue = (cell.ColumnIndex == employeeGridView.Columns["HireDate"].Index)
+                            ? Convert.ToDateTime(cell.Value).ToString("M/d/yyyy")
+                            : cell.Value?.ToString() ?? "";
+
+                        string truncatedText = TruncateText(gfx, cellValue, cellFont, scaledColWidth - 10);
+
+                        gfx.DrawString(truncatedText, cellFont, XBrushes.Black,
+                            new XRect(colXPos, tableTop, scaledColWidth, rowHeight), XStringFormats.Center);
+
+                        gfx.DrawRectangle(borderPen, colXPos, tableTop, scaledColWidth, rowHeight);
+                        colXPos += scaledColWidth;
+                    }
+                }
+                tableTop += rowHeight;
+            }
+
+
+            string folderPath = "PDF Output";
+            if (!Directory.Exists(folderPath))
+            {
+                Directory.CreateDirectory(folderPath);
+            }
+
+            string filePath = Path.Combine(folderPath, "EmployeeList.pdf");
+            document.Save(filePath);
+            document.Close();
+
+            MessageBox.Show("Create Employee List PDF Successfully at: \n\n" + Path.GetFullPath(filePath));
+        }
+
+        public string TruncateText(XGraphics gfx, string text, XFont font, double maxWidth)
+        {
+            if (gfx.MeasureString(text, font).Width <= maxWidth)
+            {
+                return text;
+            }
+
+            string truncatedText = text;
+            while (gfx.MeasureString(truncatedText + "...", font).Width > maxWidth && truncatedText.Length > 0)
+            {
+                truncatedText = truncatedText.Substring(0, truncatedText.Length - 1); 
+            }
+
+            return truncatedText + "...";
         }
     }
 }

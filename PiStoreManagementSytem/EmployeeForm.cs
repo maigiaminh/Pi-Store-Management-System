@@ -152,7 +152,23 @@ namespace PiStoreManagementSytem
             return EmployeeDAO.Instance.AddNewEmployee(name, email, password, phone, address, salary, hireDate);
         }
 
-        private bool CheckPhoneExist(string phone)
+        private bool UpdateEmployee(int id, string name, string email, string phone, string address, decimal salary, DateTime hireDate)
+        {
+            if (CheckPhoneExist(phone) && phone != currentEm.Phone)
+            {
+                DisplayError("This phone number already existed, try again!");
+                return false;
+            }
+            else if (CheckEmailExist(email) && email != currentEm.Email)
+            {
+                DisplayError("This email address already existed, try again!");
+                return false;
+            }
+
+            return EmployeeDAO.Instance.UpdateEmployee(id, name, email, phone, address, salary, hireDate);
+        }
+
+            private bool CheckPhoneExist(string phone)
         {
             return EmployeeDAO.Instance.CheckPhoneNumberExist(phone);
         }
@@ -182,7 +198,22 @@ namespace PiStoreManagementSytem
 
         private void saveEmBtn_Click(object sender, EventArgs e)
         {
-
+            if (CheckAllFields())
+            {
+                if (UpdateEmployee
+                    (Convert.ToInt32(idTxt.Text),
+                    fullNameTxt.Text,
+                    emailTxt.Text,
+                    phoneTxt.Text,
+                    addressTxt.Text,
+                    salaryTxt.Value,
+                    hDatePicker.Value
+                    ))
+                {
+                    DisplaySuccess("Update employee Successfully!");
+                    parent.UpdateEmployeeGridView();
+                }
+            }
         }
     }
 }

@@ -218,7 +218,7 @@
             // logoImg
             // 
             logoImg.Anchor = AnchorStyles.Left | AnchorStyles.Right;
-            logoImg.BackgroundImage = (Image)resources.GetObject("logoImg.BackgroundImage");
+            logoImg.BackgroundImage = Properties.Resources.logo;
             logoImg.BackgroundImageLayout = ImageLayout.Zoom;
             logoImg.Location = new Point(116, 51);
             logoImg.Name = "logoImg";

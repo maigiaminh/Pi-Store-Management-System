@@ -67,6 +67,7 @@
             addEmBtn = new PictureBox();
             employeeTitle = new Label();
             employeeGridView = new DataGridView();
+            timer1 = new System.Windows.Forms.Timer(components);
             navPanel.SuspendLayout();
             billBtn.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)billImg).BeginInit();
@@ -438,6 +439,7 @@
             printEmBtn.Size = new Size(72, 62);
             printEmBtn.TabIndex = 26;
             printEmBtn.TabStop = false;
+            printEmBtn.Click += printEmBtn_Click;
             // 
             // deleteEmLabel
             // 
@@ -460,6 +462,7 @@
             deleteEmBtn.Size = new Size(69, 62);
             deleteEmBtn.TabIndex = 24;
             deleteEmBtn.TabStop = false;
+            deleteEmBtn.Click += deleteEmBtn_Click;
             // 
             // editEmLabel
             // 
@@ -482,6 +485,7 @@
             editEmBtn.Size = new Size(68, 62);
             editEmBtn.TabIndex = 22;
             editEmBtn.TabStop = false;
+            editEmBtn.Click += editEmBtn_Click;
             // 
             // addELabel
             // 
@@ -504,6 +508,7 @@
             addEmBtn.Size = new Size(70, 62);
             addEmBtn.TabIndex = 20;
             addEmBtn.TabStop = false;
+            addEmBtn.Click += addEmBtn_Click;
             // 
             // employeeTitle
             // 
@@ -543,6 +548,7 @@
             Name = "AdminForm";
             StartPosition = FormStartPosition.CenterScreen;
             Text = "AdminForm";
+            FormClosing += AdminForm_FormClosing;
             navPanel.ResumeLayout(false);
             navPanel.PerformLayout();
             billBtn.ResumeLayout(false);
@@ -615,5 +621,6 @@
         private Label addELabel;
         private PictureBox addEmBtn;
         private Label employeeTitle;
+        private System.Windows.Forms.Timer timer1;
     }
 }

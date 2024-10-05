@@ -63,6 +63,16 @@ namespace PiStoreManagementSytem.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap addd {
+            get {
+                object obj = ResourceManager.GetObject("addd", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap bills {
             get {
                 object obj = ResourceManager.GetObject("bills", resourceCulture);
@@ -96,6 +106,16 @@ namespace PiStoreManagementSytem.Properties {
         internal static System.Drawing.Bitmap customer_active {
             get {
                 object obj = ResourceManager.GetObject("customer_active", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap edit {
+            get {
+                object obj = ResourceManager.GetObject("edit", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -156,6 +176,16 @@ namespace PiStoreManagementSytem.Properties {
         internal static System.Drawing.Bitmap home_active {
             get {
                 object obj = ResourceManager.GetObject("home-active", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap logo {
+            get {
+                object obj = ResourceManager.GetObject("logo", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

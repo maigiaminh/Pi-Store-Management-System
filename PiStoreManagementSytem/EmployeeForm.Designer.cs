@@ -42,7 +42,7 @@
             fullNameTxt = new TextBox();
             addressTxt = new TextBox();
             hDatePicker = new DateTimePicker();
-            pictureBox1 = new PictureBox();
+            imgEmployee = new PictureBox();
             phoneTxt = new TextBox();
             emailTxt = new TextBox();
             salaryTxt = new NumericUpDown();
@@ -53,7 +53,7 @@
             label1 = new Label();
             idTxt = new TextBox();
             exitBtn = new PictureBox();
-            ((System.ComponentModel.ISupportInitialize)pictureBox1).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)imgEmployee).BeginInit();
             ((System.ComponentModel.ISupportInitialize)salaryTxt).BeginInit();
             ((System.ComponentModel.ISupportInitialize)exitBtn).BeginInit();
             SuspendLayout();
@@ -181,16 +181,16 @@
             hDatePicker.Size = new Size(378, 27);
             hDatePicker.TabIndex = 20;
             // 
-            // pictureBox1
+            // imgEmployee
             // 
-            pictureBox1.BackgroundImage = (Image)resources.GetObject("pictureBox1.BackgroundImage");
-            pictureBox1.BackgroundImageLayout = ImageLayout.Zoom;
-            pictureBox1.BorderStyle = BorderStyle.FixedSingle;
-            pictureBox1.Location = new Point(395, 106);
-            pictureBox1.Name = "pictureBox1";
-            pictureBox1.Size = new Size(122, 118);
-            pictureBox1.TabIndex = 21;
-            pictureBox1.TabStop = false;
+            imgEmployee.BackgroundImage = (Image)resources.GetObject("imgEmployee.BackgroundImage");
+            imgEmployee.BackgroundImageLayout = ImageLayout.Zoom;
+            imgEmployee.BorderStyle = BorderStyle.FixedSingle;
+            imgEmployee.Location = new Point(395, 106);
+            imgEmployee.Name = "imgEmployee";
+            imgEmployee.Size = new Size(122, 118);
+            imgEmployee.TabIndex = 21;
+            imgEmployee.TabStop = false;
             // 
             // phoneTxt
             // 
@@ -350,7 +350,7 @@
             Controls.Add(salaryTxt);
             Controls.Add(emailTxt);
             Controls.Add(phoneTxt);
-            Controls.Add(pictureBox1);
+            Controls.Add(imgEmployee);
             Controls.Add(hDatePicker);
             Controls.Add(addressTxt);
             Controls.Add(fullNameTxt);
@@ -368,7 +368,7 @@
             Name = "EmployeeForm";
             StartPosition = FormStartPosition.CenterScreen;
             Text = "Form1";
-            ((System.ComponentModel.ISupportInitialize)pictureBox1).EndInit();
+            ((System.ComponentModel.ISupportInitialize)imgEmployee).EndInit();
             ((System.ComponentModel.ISupportInitialize)salaryTxt).EndInit();
             ((System.ComponentModel.ISupportInitialize)exitBtn).EndInit();
             ResumeLayout(false);
@@ -401,5 +401,6 @@
         public NumericUpDown salaryTxt;
         public TextBox idTxt;
         private PictureBox exitBtn;
+        public PictureBox imgEmployee;
     }
 }
