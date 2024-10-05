@@ -25,7 +25,6 @@ namespace PiStoreManagementSytem
             this.FormBorderStyle = FormBorderStyle.None;
         }
 
-        //Data Source=.\sqlexpress;Initial Catalog=PiStoreDB;Integrated Security=True;Encrypt=False
         private void ExitApplication(object sender, EventArgs e)
         {
             Application.Exit();

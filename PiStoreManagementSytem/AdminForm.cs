@@ -5,28 +5,52 @@ using PiStoreManagementSytem.DAO;
 using PiStoreManagementSytem.DTO;
 using PiStoreManagementSytem.modal;
 using System.Data;
+using System.Runtime.InteropServices;
 
 namespace PiStoreManagementSytem
 {
     public partial class AdminForm : Form
     {
+        private const int WM_NCLBUTTONDOWN = 0xA1;
+        private const int HTCAPTION = 0x2;
         bool isPanelExpanded = true;
+        bool isSettingEnable = false;
         int panelMaxWidth = 200;
         int panelMinWidth = 75;
+        [DllImport("User32.dll")]
+        public static extern bool ReleaseCapture();
+
+        [DllImport("User32.dll")]
+        public static extern int SendMessage(IntPtr hWnd, int Msg, int wParam, int lParam);
+
         public AdminForm()
         {
             InitializeComponent();
-            menuBtn.Click += new EventHandler(MenuBtn_Click);
-            timerPanel.Tick += new EventHandler(TimerPanel_Tick);
-            this.FormClosing += new FormClosingEventHandler(AdminForm_FormClosing);
+
             Init();
         }
 
         private void Init()
         {
             UnactiveAllPanel();
+
+            menuBtn.Click += new EventHandler(MenuBtn_Click);
+            timerPanel.Tick += new EventHandler(TimerPanel_Tick);
+            this.FormClosing += new FormClosingEventHandler(AdminForm_FormClosing);
+            this.FormBorderStyle = FormBorderStyle.None;
             homeImg.BackgroundImage = Constants.Constants.home_active;
             homeLabel.ForeColor = Constants.Constants.activeColor;
+
+            settingPanel.Hide();
+        }
+
+        private void DragApplication(object sender, MouseEventArgs e)
+        {
+            if (e.Button == MouseButtons.Left)
+            {
+                ReleaseCapture();
+                SendMessage(Handle, WM_NCLBUTTONDOWN, HTCAPTION, 0);
+            }
         }
 
         private void MenuBtn_Click(object sender, EventArgs e)
@@ -358,7 +382,7 @@ namespace PiStoreManagementSytem
                 logoBitmap.Save(stream, System.Drawing.Imaging.ImageFormat.Png);
                 XImage logo = XImage.FromStream(stream);
 
-                gfx.DrawImage(logo, 20, 0, 200, 200); 
+                gfx.DrawImage(logo, 20, 0, 200, 200);
                 gfx.DrawString("Employee List", titleFont, XBrushes.Black,
                     new XRect(page.Height, 85, page.Width - 160, 50), XStringFormats.TopLeft);
 
@@ -366,12 +390,12 @@ namespace PiStoreManagementSytem
                     new XRect(50, 190, page.Width - 100, 50), XStringFormats.TopLeft);
             }
 
-            double tableTop = 220; 
-            double rowHeight = 20; 
+            double tableTop = 220;
+            double rowHeight = 20;
             double pageWidth = page.Width;
             double colXPos = 50;
 
-            
+
             double totalGridViewWidth = 0;
             foreach (DataGridViewColumn column in employeeGridView.Columns)
             {
@@ -381,14 +405,14 @@ namespace PiStoreManagementSytem
                 }
             }
 
-            double scaleFactor = (pageWidth - 100) / totalGridViewWidth; 
+            double scaleFactor = (pageWidth - 100) / totalGridViewWidth;
 
-            XPen borderPen = new XPen(XColors.Black, 1); 
+            XPen borderPen = new XPen(XColors.Black, 1);
             gfx.DrawRectangle(XBrushes.LightGray, colXPos, tableTop, totalGridViewWidth * scaleFactor, rowHeight);
 
             foreach (DataGridViewColumn column in employeeGridView.Columns)
             {
-                if (column.Name != "ID" && column.Name != "Password")  
+                if (column.Name != "ID" && column.Name != "Password")
                 {
                     double scaledColWidth = column.Width * scaleFactor;
                     gfx.DrawString(column.HeaderText, headerFont, XBrushes.Black,
@@ -401,13 +425,13 @@ namespace PiStoreManagementSytem
 
             tableTop += rowHeight;
             foreach (DataGridViewRow row in employeeGridView.Rows)
-            {   
-                if (tableTop + rowHeight > page.Height - 50) 
+            {
+                if (tableTop + rowHeight > page.Height - 50)
                 {
                     tableTop = 220;
                     page = document.AddPage();
                     page.Size = PageSize.A4;
-                    page.Orientation = PageOrientation.Landscape; 
+                    page.Orientation = PageOrientation.Landscape;
                     gfx = XGraphics.FromPdfPage(page);
 
                     using (MemoryStream stream = new MemoryStream())
@@ -439,12 +463,12 @@ namespace PiStoreManagementSytem
                     tableTop += rowHeight;
                 }
 
-                colXPos = 50; 
+                colXPos = 50;
                 foreach (DataGridViewCell cell in row.Cells)
-                {   
-                    if (employeeGridView.Columns[cell.ColumnIndex].Name != "ID" && employeeGridView.Columns[cell.ColumnIndex].Name != "Password")  
+                {
+                    if (employeeGridView.Columns[cell.ColumnIndex].Name != "ID" && employeeGridView.Columns[cell.ColumnIndex].Name != "Password")
                     {
-                        double scaledColWidth = employeeGridView.Columns[cell.ColumnIndex].Width * scaleFactor; 
+                        double scaledColWidth = employeeGridView.Columns[cell.ColumnIndex].Width * scaleFactor;
 
                         string cellValue = (cell.ColumnIndex == employeeGridView.Columns["HireDate"].Index)
                             ? Convert.ToDateTime(cell.Value).ToString("M/d/yyyy")
@@ -486,10 +510,70 @@ namespace PiStoreManagementSytem
             string truncatedText = text;
             while (gfx.MeasureString(truncatedText + "...", font).Width > maxWidth && truncatedText.Length > 0)
             {
-                truncatedText = truncatedText.Substring(0, truncatedText.Length - 1); 
+                truncatedText = truncatedText.Substring(0, truncatedText.Length - 1);
             }
 
             return truncatedText + "...";
         }
+
+        private void logoutBtn_Click(object sender, EventArgs e)
+        {
+            Application.Exit();
+        }
+
+        private void avtBtn_Click(object sender, EventArgs e)
+        {
+            if (!isSettingEnable)
+            {
+                isSettingEnable = true;
+                settingPanel.Show();
+            }
+            else
+            {
+                isSettingEnable = false;
+                settingPanel.Hide();
+            }
+        }
+
+        private void profileBtn_MouseEnter(object sender, EventArgs e)
+        {
+            profileBtn.BackColor = Color.LightGray;
+        }
+
+        private void profileBtn_MouseLeave(object sender, EventArgs e)
+        {
+            profileBtn.BackColor = Color.White;
+        }
+
+        private void changepassBtn_MouseEnter(object sender, EventArgs e)
+        {
+            changepassBtn.BackColor = Color.LightGray;
+        }
+
+        private void changepassBtn_MouseLeave(object sender, EventArgs e)
+        {
+            changepassBtn.BackColor = Color.White;
+        }
+
+        private void logout2_Btn_MouseEnter(object sender, EventArgs e)
+        {
+            logout2_Btn.BackColor = Color.LightGray;
+        }
+
+        private void logout2_Btn_MouseLeave(object sender, EventArgs e)
+        {
+            logout2_Btn.BackColor = Color.White;
+        }
+
+        private void profileBtn_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void changepassBtn_Click(object sender, EventArgs e)
+        {
+
+        }
+
     }
 }

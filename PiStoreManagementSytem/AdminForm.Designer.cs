@@ -31,6 +31,10 @@
             components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(AdminForm));
             navPanel = new Panel();
+            logoutBtn = new Panel();
+            panel3 = new Panel();
+            label1 = new Label();
+            pictureBox1 = new PictureBox();
             billBtn = new Panel();
             panel1 = new Panel();
             billLabel = new Label();
@@ -55,6 +59,7 @@
             logoImg = new PictureBox();
             headerPanel = new Panel();
             menuBtn = new PictureBox();
+            avtBtn = new PictureBox();
             timerPanel = new System.Windows.Forms.Timer(components);
             employeePanel = new Panel();
             printEmLabel = new Label();
@@ -67,8 +72,20 @@
             addEmBtn = new PictureBox();
             employeeTitle = new Label();
             employeeGridView = new DataGridView();
+            settingPanel = new Panel();
+            logout2_Btn = new Panel();
+            flowLayoutPanel4 = new FlowLayoutPanel();
+            label4 = new Label();
+            changepassBtn = new Panel();
+            flowLayoutPanel3 = new FlowLayoutPanel();
+            label3 = new Label();
+            profileBtn = new Panel();
+            flowLayoutPanel2 = new FlowLayoutPanel();
+            label2 = new Label();
             timer1 = new System.Windows.Forms.Timer(components);
             navPanel.SuspendLayout();
+            logoutBtn.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)pictureBox1).BeginInit();
             billBtn.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)billImg).BeginInit();
             orderBtn.SuspendLayout();
@@ -84,17 +101,23 @@
             ((System.ComponentModel.ISupportInitialize)logoImg).BeginInit();
             headerPanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)menuBtn).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)avtBtn).BeginInit();
             employeePanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)printEmBtn).BeginInit();
             ((System.ComponentModel.ISupportInitialize)deleteEmBtn).BeginInit();
             ((System.ComponentModel.ISupportInitialize)editEmBtn).BeginInit();
             ((System.ComponentModel.ISupportInitialize)addEmBtn).BeginInit();
             ((System.ComponentModel.ISupportInitialize)employeeGridView).BeginInit();
+            settingPanel.SuspendLayout();
+            logout2_Btn.SuspendLayout();
+            changepassBtn.SuspendLayout();
+            profileBtn.SuspendLayout();
             SuspendLayout();
             // 
             // navPanel
             // 
             navPanel.BackColor = Color.White;
+            navPanel.Controls.Add(logoutBtn);
             navPanel.Controls.Add(billBtn);
             navPanel.Controls.Add(orderBtn);
             navPanel.Controls.Add(productBtn);
@@ -108,6 +131,49 @@
             navPanel.Name = "navPanel";
             navPanel.Size = new Size(200, 653);
             navPanel.TabIndex = 0;
+            navPanel.MouseDown += DragApplication;
+            // 
+            // logoutBtn
+            // 
+            logoutBtn.Controls.Add(panel3);
+            logoutBtn.Controls.Add(label1);
+            logoutBtn.Controls.Add(pictureBox1);
+            logoutBtn.Location = new Point(0, 578);
+            logoutBtn.Name = "logoutBtn";
+            logoutBtn.Size = new Size(200, 75);
+            logoutBtn.TabIndex = 10;
+            // 
+            // panel3
+            // 
+            panel3.Location = new Point(200, 48);
+            panel3.Name = "panel3";
+            panel3.Size = new Size(250, 125);
+            panel3.TabIndex = 2;
+            // 
+            // label1
+            // 
+            label1.AutoSize = true;
+            label1.Cursor = Cursors.Hand;
+            label1.Font = new Font("Rockwell Condensed", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            label1.ForeColor = Color.FromArgb(243, 66, 53);
+            label1.Location = new Point(79, 25);
+            label1.Name = "label1";
+            label1.Size = new Size(60, 24);
+            label1.TabIndex = 5;
+            label1.Text = "Log out";
+            label1.Click += logoutBtn_Click;
+            // 
+            // pictureBox1
+            // 
+            pictureBox1.BackgroundImage = (Image)resources.GetObject("pictureBox1.BackgroundImage");
+            pictureBox1.BackgroundImageLayout = ImageLayout.Zoom;
+            pictureBox1.Cursor = Cursors.Hand;
+            pictureBox1.Location = new Point(22, 17);
+            pictureBox1.Name = "pictureBox1";
+            pictureBox1.Size = new Size(42, 32);
+            pictureBox1.TabIndex = 0;
+            pictureBox1.TabStop = false;
+            pictureBox1.Click += logoutBtn_Click;
             // 
             // billBtn
             // 
@@ -120,8 +186,8 @@
             billBtn.Size = new Size(200, 52);
             billBtn.TabIndex = 9;
             billBtn.Click += BillClick;
+            billBtn.MouseEnter += BillHover;
             billBtn.MouseLeave += BillLeave;
-            billBtn.MouseHover += BillHover;
             // 
             // panel1
             // 
@@ -142,6 +208,8 @@
             billLabel.TabIndex = 5;
             billLabel.Text = "Bill";
             billLabel.Click += BillClick;
+            billLabel.MouseEnter += BillHover;
+            billLabel.MouseLeave += BillLeave;
             // 
             // billImg
             // 
@@ -154,6 +222,8 @@
             billImg.TabIndex = 0;
             billImg.TabStop = false;
             billImg.Click += BillClick;
+            billImg.MouseEnter += BillHover;
+            billImg.MouseLeave += BillLeave;
             // 
             // orderBtn
             // 
@@ -165,8 +235,8 @@
             orderBtn.Size = new Size(200, 52);
             orderBtn.TabIndex = 8;
             orderBtn.Click += OrderClick;
+            orderBtn.MouseEnter += OrderHover;
             orderBtn.MouseLeave += OrderLeave;
-            orderBtn.MouseHover += OrderHover;
             // 
             // orderLabel
             // 
@@ -179,6 +249,8 @@
             orderLabel.TabIndex = 5;
             orderLabel.Text = "Order";
             orderLabel.Click += OrderClick;
+            orderLabel.MouseEnter += OrderHover;
+            orderLabel.MouseLeave += OrderLeave;
             // 
             // orderImg
             // 
@@ -190,6 +262,8 @@
             orderImg.TabIndex = 0;
             orderImg.TabStop = false;
             orderImg.Click += OrderClick;
+            orderImg.MouseEnter += OrderHover;
+            orderImg.MouseLeave += OrderLeave;
             // 
             // productBtn
             // 
@@ -201,8 +275,8 @@
             productBtn.Size = new Size(200, 52);
             productBtn.TabIndex = 7;
             productBtn.Click += ProductClick;
+            productBtn.MouseEnter += ProductHover;
             productBtn.MouseLeave += ProductLeave;
-            productBtn.MouseHover += ProductHover;
             // 
             // productLabel
             // 
@@ -216,6 +290,8 @@
             productLabel.TabIndex = 5;
             productLabel.Text = "Product";
             productLabel.Click += ProductClick;
+            productLabel.MouseEnter += ProductHover;
+            productLabel.MouseLeave += ProductLeave;
             // 
             // productImg
             // 
@@ -228,6 +304,8 @@
             productImg.TabIndex = 0;
             productImg.TabStop = false;
             productImg.Click += ProductClick;
+            productImg.MouseEnter += ProductHover;
+            productImg.MouseLeave += ProductLeave;
             // 
             // clientBtn
             // 
@@ -239,8 +317,8 @@
             clientBtn.Size = new Size(200, 52);
             clientBtn.TabIndex = 6;
             clientBtn.Click += ClientClick;
+            clientBtn.MouseEnter += ClientHover;
             clientBtn.MouseLeave += ClientLeave;
-            clientBtn.MouseHover += ClientHover;
             // 
             // clientLabel
             // 
@@ -253,6 +331,8 @@
             clientLabel.TabIndex = 5;
             clientLabel.Text = "Client";
             clientLabel.Click += ClientClick;
+            clientLabel.MouseEnter += ClientHover;
+            clientLabel.MouseLeave += ClientLeave;
             // 
             // clientImg
             // 
@@ -264,6 +344,8 @@
             clientImg.TabIndex = 0;
             clientImg.TabStop = false;
             clientImg.Click += ClientClick;
+            clientImg.MouseEnter += ClientHover;
+            clientImg.MouseLeave += ClientLeave;
             // 
             // employeeBtn
             // 
@@ -275,8 +357,8 @@
             employeeBtn.Size = new Size(200, 52);
             employeeBtn.TabIndex = 3;
             employeeBtn.Click += EmployeeClick;
+            employeeBtn.MouseEnter += EmployeeHover;
             employeeBtn.MouseLeave += EmployeeLeave;
-            employeeBtn.MouseHover += EmployeeHover;
             // 
             // employeeLabel
             // 
@@ -290,6 +372,8 @@
             employeeLabel.TabIndex = 5;
             employeeLabel.Text = "Employee";
             employeeLabel.Click += EmployeeClick;
+            employeeLabel.MouseEnter += EmployeeHover;
+            employeeLabel.MouseLeave += EmployeeLeave;
             // 
             // employeeImg
             // 
@@ -302,6 +386,8 @@
             employeeImg.TabIndex = 0;
             employeeImg.TabStop = false;
             employeeImg.Click += EmployeeClick;
+            employeeImg.MouseEnter += EmployeeHover;
+            employeeImg.MouseLeave += EmployeeLeave;
             // 
             // homeBtn
             // 
@@ -315,8 +401,8 @@
             homeBtn.Size = new Size(200, 52);
             homeBtn.TabIndex = 2;
             homeBtn.Click += HomeClick;
+            homeBtn.MouseEnter += HomeHover;
             homeBtn.MouseLeave += HomeLeave;
-            homeBtn.MouseHover += HomeHover;
             // 
             // flowLayoutPanel1
             // 
@@ -336,8 +422,8 @@
             homeLabel.TabIndex = 3;
             homeLabel.Text = "Home";
             homeLabel.Click += HomeClick;
+            homeLabel.MouseEnter += HomeHover;
             homeLabel.MouseLeave += HomeLeave;
-            homeLabel.MouseHover += HomeHover;
             // 
             // homeImg
             // 
@@ -349,8 +435,8 @@
             homeImg.TabIndex = 2;
             homeImg.TabStop = false;
             homeImg.Click += HomeClick;
+            homeImg.MouseEnter += HomeHover;
             homeImg.MouseLeave += HomeLeave;
-            homeImg.MouseHover += HomeHover;
             // 
             // logoLabel
             // 
@@ -382,6 +468,7 @@
             headerPanel.Name = "headerPanel";
             headerPanel.Size = new Size(782, 60);
             headerPanel.TabIndex = 1;
+            headerPanel.MouseDown += DragApplication;
             // 
             // menuBtn
             // 
@@ -394,6 +481,19 @@
             menuBtn.TabIndex = 0;
             menuBtn.TabStop = false;
             menuBtn.Click += MenuBtn_Click;
+            // 
+            // avtBtn
+            // 
+            avtBtn.BackColor = Color.White;
+            avtBtn.BackgroundImage = (Image)resources.GetObject("avtBtn.BackgroundImage");
+            avtBtn.BackgroundImageLayout = ImageLayout.Stretch;
+            avtBtn.Cursor = Cursors.Hand;
+            avtBtn.Location = new Point(930, 15);
+            avtBtn.Name = "avtBtn";
+            avtBtn.Size = new Size(32, 32);
+            avtBtn.TabIndex = 1;
+            avtBtn.TabStop = false;
+            avtBtn.Click += avtBtn_Click;
             // 
             // timerPanel
             // 
@@ -417,6 +517,7 @@
             employeePanel.Name = "employeePanel";
             employeePanel.Size = new Size(782, 593);
             employeePanel.TabIndex = 2;
+            employeePanel.MouseDown += DragApplication;
             // 
             // printEmLabel
             // 
@@ -536,12 +637,130 @@
             employeeGridView.TabIndex = 1;
             employeeGridView.CellClick += EmployeeCellClick;
             // 
+            // settingPanel
+            // 
+            settingPanel.BackColor = Color.White;
+            settingPanel.Controls.Add(logout2_Btn);
+            settingPanel.Controls.Add(changepassBtn);
+            settingPanel.Controls.Add(profileBtn);
+            settingPanel.Location = new Point(800, 50);
+            settingPanel.Name = "settingPanel";
+            settingPanel.Size = new Size(163, 146);
+            settingPanel.TabIndex = 1;
+            // 
+            // logout2_Btn
+            // 
+            logout2_Btn.BackColor = Color.White;
+            logout2_Btn.Controls.Add(flowLayoutPanel4);
+            logout2_Btn.Controls.Add(label4);
+            logout2_Btn.Cursor = Cursors.Hand;
+            logout2_Btn.Location = new Point(3, 99);
+            logout2_Btn.Name = "logout2_Btn";
+            logout2_Btn.Size = new Size(157, 41);
+            logout2_Btn.TabIndex = 7;
+            logout2_Btn.Click += logoutBtn_Click;
+            logout2_Btn.MouseEnter += logout2_Btn_MouseEnter;
+            logout2_Btn.MouseLeave += logout2_Btn_MouseLeave;
+            // 
+            // flowLayoutPanel4
+            // 
+            flowLayoutPanel4.Location = new Point(0, 51);
+            flowLayoutPanel4.Name = "flowLayoutPanel4";
+            flowLayoutPanel4.Size = new Size(250, 125);
+            flowLayoutPanel4.TabIndex = 4;
+            // 
+            // label4
+            // 
+            label4.AutoSize = true;
+            label4.Font = new Font("Rockwell Condensed", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            label4.ForeColor = Color.Black;
+            label4.Location = new Point(49, 8);
+            label4.Name = "label4";
+            label4.Size = new Size(60, 24);
+            label4.TabIndex = 3;
+            label4.Text = "Log out";
+            label4.Click += logoutBtn_Click;
+            label4.MouseEnter += logout2_Btn_MouseEnter;
+            label4.MouseLeave += logout2_Btn_MouseLeave;
+            // 
+            // changepassBtn
+            // 
+            changepassBtn.BackColor = Color.White;
+            changepassBtn.Controls.Add(flowLayoutPanel3);
+            changepassBtn.Controls.Add(label3);
+            changepassBtn.Cursor = Cursors.Hand;
+            changepassBtn.Location = new Point(3, 52);
+            changepassBtn.Name = "changepassBtn";
+            changepassBtn.Size = new Size(157, 41);
+            changepassBtn.TabIndex = 6;
+            changepassBtn.Click += changepassBtn_Click;
+            changepassBtn.MouseEnter += changepassBtn_MouseEnter;
+            changepassBtn.MouseLeave += changepassBtn_MouseLeave;
+            // 
+            // flowLayoutPanel3
+            // 
+            flowLayoutPanel3.Location = new Point(0, 51);
+            flowLayoutPanel3.Name = "flowLayoutPanel3";
+            flowLayoutPanel3.Size = new Size(250, 125);
+            flowLayoutPanel3.TabIndex = 4;
+            // 
+            // label3
+            // 
+            label3.AutoSize = true;
+            label3.Font = new Font("Rockwell Condensed", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            label3.ForeColor = Color.Black;
+            label3.Location = new Point(18, 9);
+            label3.Name = "label3";
+            label3.Size = new Size(124, 24);
+            label3.TabIndex = 3;
+            label3.Text = "Change Password";
+            label3.Click += changepassBtn_Click;
+            label3.MouseEnter += changepassBtn_MouseEnter;
+            label3.MouseLeave += changepassBtn_MouseLeave;
+            // 
+            // profileBtn
+            // 
+            profileBtn.BackColor = Color.White;
+            profileBtn.Controls.Add(flowLayoutPanel2);
+            profileBtn.Controls.Add(label2);
+            profileBtn.Cursor = Cursors.Hand;
+            profileBtn.Location = new Point(3, 6);
+            profileBtn.Name = "profileBtn";
+            profileBtn.Size = new Size(157, 41);
+            profileBtn.TabIndex = 5;
+            profileBtn.Click += profileBtn_Click;
+            profileBtn.MouseEnter += profileBtn_MouseEnter;
+            profileBtn.MouseLeave += profileBtn_MouseLeave;
+            // 
+            // flowLayoutPanel2
+            // 
+            flowLayoutPanel2.Location = new Point(0, 51);
+            flowLayoutPanel2.Name = "flowLayoutPanel2";
+            flowLayoutPanel2.Size = new Size(250, 125);
+            flowLayoutPanel2.TabIndex = 4;
+            // 
+            // label2
+            // 
+            label2.AutoSize = true;
+            label2.Font = new Font("Rockwell Condensed", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            label2.ForeColor = Color.Black;
+            label2.Location = new Point(58, 9);
+            label2.Name = "label2";
+            label2.Size = new Size(51, 24);
+            label2.TabIndex = 3;
+            label2.Text = "Profile";
+            label2.Click += profileBtn_Click;
+            label2.MouseEnter += profileBtn_MouseEnter;
+            label2.MouseLeave += profileBtn_MouseLeave;
+            // 
             // AdminForm
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = Color.FromArgb(238, 238, 238);
             ClientSize = new Size(982, 653);
+            Controls.Add(avtBtn);
+            Controls.Add(settingPanel);
             Controls.Add(employeePanel);
             Controls.Add(headerPanel);
             Controls.Add(navPanel);
@@ -551,6 +770,9 @@
             FormClosing += AdminForm_FormClosing;
             navPanel.ResumeLayout(false);
             navPanel.PerformLayout();
+            logoutBtn.ResumeLayout(false);
+            logoutBtn.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)pictureBox1).EndInit();
             billBtn.ResumeLayout(false);
             billBtn.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)billImg).EndInit();
@@ -572,6 +794,7 @@
             ((System.ComponentModel.ISupportInitialize)logoImg).EndInit();
             headerPanel.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)menuBtn).EndInit();
+            ((System.ComponentModel.ISupportInitialize)avtBtn).EndInit();
             employeePanel.ResumeLayout(false);
             employeePanel.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)printEmBtn).EndInit();
@@ -579,6 +802,13 @@
             ((System.ComponentModel.ISupportInitialize)editEmBtn).EndInit();
             ((System.ComponentModel.ISupportInitialize)addEmBtn).EndInit();
             ((System.ComponentModel.ISupportInitialize)employeeGridView).EndInit();
+            settingPanel.ResumeLayout(false);
+            logout2_Btn.ResumeLayout(false);
+            logout2_Btn.PerformLayout();
+            changepassBtn.ResumeLayout(false);
+            changepassBtn.PerformLayout();
+            profileBtn.ResumeLayout(false);
+            profileBtn.PerformLayout();
             ResumeLayout(false);
         }
 
@@ -622,5 +852,20 @@
         private PictureBox addEmBtn;
         private Label employeeTitle;
         private System.Windows.Forms.Timer timer1;
+        private Panel logoutBtn;
+        private Panel panel3;
+        private Label label1;
+        private PictureBox pictureBox1;
+        private PictureBox avtBtn;
+        private Panel settingPanel;
+        private Panel profileBtn;
+        private FlowLayoutPanel flowLayoutPanel2;
+        private Label label2;
+        private Panel logout2_Btn;
+        private FlowLayoutPanel flowLayoutPanel4;
+        private Label label4;
+        private Panel changepassBtn;
+        private FlowLayoutPanel flowLayoutPanel3;
+        private Label label3;
     }
 }
