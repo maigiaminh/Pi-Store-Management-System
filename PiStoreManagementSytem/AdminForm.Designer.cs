@@ -815,6 +815,7 @@
             StartPosition = FormStartPosition.CenterScreen;
             Text = "AdminForm";
             FormClosing += AdminForm_FormClosing;
+            Load += AdminForm_Load;
             navPanel.ResumeLayout(false);
             navPanel.PerformLayout();
             logoutBtn.ResumeLayout(false);

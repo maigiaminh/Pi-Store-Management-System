@@ -6,6 +6,7 @@ using PiStoreManagementSytem.DAO;
 using PiStoreManagementSytem.DTO;
 using PiStoreManagementSytem.modal;
 using System.Data;
+using System.Drawing.Drawing2D;
 using System.Runtime.InteropServices;
 
 namespace PiStoreManagementSytem
@@ -13,12 +14,12 @@ namespace PiStoreManagementSytem
     public partial class AdminForm : Form
     {
         private int id;
-        private const int WM_NCLBUTTONDOWN = 0xA1;
-        private const int HTCAPTION = 0x2;
         bool isPanelExpanded = true;
         bool isSettingEnable = false;
         int panelMaxWidth = 200;
         int panelMinWidth = 75;
+        private const int WM_NCLBUTTONDOWN = 0xA1;
+        private const int HTCAPTION = 0x2;
         [DllImport("User32.dll")]
         public static extern bool ReleaseCapture();
 
@@ -572,7 +573,8 @@ namespace PiStoreManagementSytem
 
         private void profileBtn_Click(object sender, EventArgs e)
         {
-
+            Profile profile = new Profile(id);
+            profile.Show();
         }
 
         private void changepassBtn_Click(object sender, EventArgs e)
@@ -589,7 +591,7 @@ namespace PiStoreManagementSytem
             DataTable employeeTable = LoadEmployeeTable();
 
             if (string.IsNullOrEmpty(searchCriteria)) return;
-            
+
             if (!string.IsNullOrEmpty(searchValue))
             {
                 DataView dv = new DataView(employeeTable);
@@ -616,11 +618,11 @@ namespace PiStoreManagementSytem
 
         private void SortData(string order)
         {
-            string sortCriteria = cmbSearchCriteria.SelectedItem?.ToString(); 
+            string sortCriteria = cmbSearchCriteria.SelectedItem?.ToString();
 
             if (!string.IsNullOrEmpty(sortCriteria))
             {
-                if(currentSearchResult != null)
+                if (currentSearchResult != null)
                 {
                     DataView dv = new DataView(currentSearchResult);
                     dv.Sort = $"{sortCriteria} {order}";
@@ -635,8 +637,22 @@ namespace PiStoreManagementSytem
 
                     employeeGridView.DataSource = dv;
                 }
-                
+
             }
+        }
+
+        private void AdminForm_Load(object sender, EventArgs e)
+        {
+            int cornerRadius = 30;
+            GraphicsPath path = new GraphicsPath();
+
+            path.AddArc(0, 0, cornerRadius, cornerRadius, 180, 90);
+            path.AddArc(this.Width - cornerRadius, 0, cornerRadius, cornerRadius, 270, 90); 
+            path.AddArc(this.Width - cornerRadius, this.Height - cornerRadius, cornerRadius, cornerRadius, 0, 90);
+            path.AddArc(0, this.Height - cornerRadius, cornerRadius, cornerRadius, 90, 90);
+            path.CloseFigure();
+
+            this.Region = new Region(path);
         }
     }
 }

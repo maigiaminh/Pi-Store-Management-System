@@ -154,5 +154,21 @@ namespace PiStoreManagementSytem.DAO
             return DataProvider.Instance.ExecuteNonQuery(query, parameters) > 0;
         }
 
+        public Employee GetEmployeeById(int id)
+        {
+            string query = "SELECT * FROM Employee WHERE ID = @id";
+
+            DataTable result = DataProvider.Instance.ExecuteQuery(query, new SqlParameter[] { new SqlParameter("@id", id) });
+
+            if (result.Rows.Count > 0)
+            {
+                DataRow row = result.Rows[0];
+                Employee employee = new Employee(row);
+                return employee;
+            }
+
+            return null; 
+        }
+
     }
 }

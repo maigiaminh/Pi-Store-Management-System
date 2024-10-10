@@ -1,5 +1,6 @@
 using PiStoreManagementSytem.DAO;
 using PiStoreManagementSytem.validators;
+using System.Drawing.Drawing2D;
 using System.Runtime.InteropServices;
 
 namespace PiStoreManagementSytem
@@ -41,8 +42,8 @@ namespace PiStoreManagementSytem
         {
             string email = emailTxt.Text;
             string password = passwordTxt.Text;
-            
-            if(emptyField.Validate(email) 
+
+            if (emptyField.Validate(email)
                 || emptyField.Validate(password))
             {
                 MessageBox.Show("Please enter your account!");
@@ -62,7 +63,7 @@ namespace PiStoreManagementSytem
                     MessageBox.Show("Invalid Email or Password, try again!");
                 }
             }
-            
+
         }
 
         private int Login(string email, string password)
@@ -84,6 +85,20 @@ namespace PiStoreManagementSytem
                 showPassBtn.BackgroundImage = Constants.Constants.eye_blue_hidden;
                 passwordTxt.UseSystemPasswordChar = true;
             }
+        }
+
+        private void LoginForm_Load(object sender, EventArgs e)
+        {
+            int cornerRadius = 30;
+            GraphicsPath path = new GraphicsPath();
+
+            path.AddArc(0, 0, cornerRadius, cornerRadius, 180, 90);
+            path.AddArc(this.Width - cornerRadius, 0, cornerRadius, cornerRadius, 270, 90);
+            path.AddArc(this.Width - cornerRadius, this.Height - cornerRadius, cornerRadius, cornerRadius, 0, 90);
+            path.AddArc(0, this.Height - cornerRadius, cornerRadius, cornerRadius, 90, 90);
+            path.CloseFigure();
+
+            this.Region = new Region(path);
         }
     }
 }

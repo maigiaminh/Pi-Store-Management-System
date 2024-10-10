@@ -4,7 +4,9 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.Drawing.Drawing2D;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -17,11 +19,25 @@ namespace PiStoreManagementSytem
         private bool showNewPassword = false;
         private bool showConfirmPassword = false;
         private int id;
+        private const int WM_NCLBUTTONDOWN = 0xA1;
+        private const int HTCAPTION = 0x2;
+        [DllImport("User32.dll")]
+        public static extern bool ReleaseCapture();
 
+        [DllImport("User32.dll")]
+        public static extern int SendMessage(IntPtr hWnd, int Msg, int wParam, int lParam);
         public ChangePasswordForm(int id)
         {
             InitializeComponent();
             this.id = id;
+        }
+        private void DragApplication(object sender, MouseEventArgs e)
+        {
+            if (e.Button == MouseButtons.Left)
+            {
+                ReleaseCapture();
+                SendMessage(Handle, WM_NCLBUTTONDOWN, HTCAPTION, 0);
+            }
         }
 
         private void btnSave_Click(object sender, EventArgs e)
@@ -29,7 +45,7 @@ namespace PiStoreManagementSytem
             if (ValidatePasswordChange(txtCurrentPassword.Text, txtNewPassword.Text, txtConfirmNewPassword.Text))
                 if (UpdatePassword(id, txtNewPassword.Text))
                     ShowSuccess("Password change successful");
-            
+
         }
 
         private void btnCancel_Click(object sender, EventArgs e)
@@ -87,7 +103,7 @@ namespace PiStoreManagementSytem
                 return ShowError("Password not match");
             }
 
-            else if(!CheckCurrentPassword(id, currentPassword))
+            else if (!CheckCurrentPassword(id, currentPassword))
             {
                 txtCurrentPassword.Focus();
                 return ShowError("Invalid current password");
@@ -132,6 +148,20 @@ namespace PiStoreManagementSytem
         private bool UpdatePassword(int id, string newPassword)
         {
             return EmployeeDAO.Instance.UpdatePassword(id, newPassword);
+        }
+
+        private void ChangePasswordForm_Load(object sender, EventArgs e)
+        {
+            int cornerRadius = 30; 
+            GraphicsPath path = new GraphicsPath();
+
+            path.AddArc(0, 0, cornerRadius, cornerRadius, 180, 90); 
+            path.AddArc(this.Width - cornerRadius, 0, cornerRadius, cornerRadius, 270, 90); 
+            path.AddArc(this.Width - cornerRadius, this.Height - cornerRadius, cornerRadius, cornerRadius, 0, 90); 
+            path.AddArc(0, this.Height - cornerRadius, cornerRadius, cornerRadius, 90, 90); 
+            path.CloseFigure();
+
+            this.Region = new Region(path);
         }
     }
 }

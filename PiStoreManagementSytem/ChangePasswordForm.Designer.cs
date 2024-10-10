@@ -239,6 +239,8 @@
             Name = "ChangePasswordForm";
             StartPosition = FormStartPosition.CenterScreen;
             Text = "Change Password";
+            Load += ChangePasswordForm_Load;
+            MouseDown += DragApplication;
             ((System.ComponentModel.ISupportInitialize)exitBtn).EndInit();
             ((System.ComponentModel.ISupportInitialize)showCurPassBtn).EndInit();
             ((System.ComponentModel.ISupportInitialize)showNewPassBtn).EndInit();
