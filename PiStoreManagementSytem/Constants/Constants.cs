@@ -27,6 +27,10 @@ namespace PiStoreManagementSytem.Constants
         public static readonly Bitmap edit_employee = Properties.Resources.edit;
         public static readonly Bitmap add_employee = Properties.Resources.addd;
         public static readonly Bitmap logo = Properties.Resources.logo;
+        public static readonly Bitmap eye_blue = Properties.Resources.eye;
+        public static readonly Bitmap eye_blue_hidden = Properties.Resources.hidden;
+        public static readonly Bitmap eye_gray = Properties.Resources.eye_gray;
+        public static readonly Bitmap eye_gray_hidden = Properties.Resources.eye_gray_hidden;
 
         public static readonly Color activeColor = Color.FromArgb(69, 123, 157);
         public static readonly Color defaultColor = Color.Black;

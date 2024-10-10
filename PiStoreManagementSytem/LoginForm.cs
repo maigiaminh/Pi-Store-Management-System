@@ -9,8 +9,6 @@ namespace PiStoreManagementSytem
         private const int WM_NCLBUTTONDOWN = 0xA1;
         private const int HTCAPTION = 0x2;
         private bool showPassword = false;
-        private readonly Bitmap show = Properties.Resources.eye;
-        private readonly Bitmap hidden = Properties.Resources.hidden;
         private IStrategyValidator emptyField = new EmptyValidator();
 
         [DllImport("User32.dll")]
@@ -51,10 +49,11 @@ namespace PiStoreManagementSytem
             }
             else
             {
-                if (Login(email, password))
+                int id = Login(email, password);
+                if (id != -1)
                 {
-                    MessageBox.Show("OK");
-                    AdminForm adminForm = new AdminForm();
+                    MessageBox.Show(id.ToString());
+                    AdminForm adminForm = new AdminForm(id);
                     adminForm.Show();
                     this.Hide();
                 }
@@ -66,22 +65,23 @@ namespace PiStoreManagementSytem
             
         }
 
-        private bool Login(string email, string password)
+        private int Login(string email, string password)
         {
             return AccountDAO.Instance.Login(email, password);
         }
+
         private void showPassBtn_Click(object sender, EventArgs e)
         {
             showPassword = !showPassword;
 
             if (showPassword)
             {
-                showPassBtn.BackgroundImage = show;
+                showPassBtn.BackgroundImage = Constants.Constants.eye_blue;
                 passwordTxt.UseSystemPasswordChar = false;
             }
             else
             {
-                showPassBtn.BackgroundImage = hidden;
+                showPassBtn.BackgroundImage = Constants.Constants.eye_blue_hidden;
                 passwordTxt.UseSystemPasswordChar = true;
             }
         }

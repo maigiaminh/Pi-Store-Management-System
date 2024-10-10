@@ -12,6 +12,7 @@ namespace PiStoreManagementSytem
 {
     public partial class AdminForm : Form
     {
+        private int id;
         private const int WM_NCLBUTTONDOWN = 0xA1;
         private const int HTCAPTION = 0x2;
         bool isPanelExpanded = true;
@@ -26,11 +27,11 @@ namespace PiStoreManagementSytem
 
         private DataTable currentSearchResult;
 
-        public AdminForm()
+        public AdminForm(int id)
         {
             InitializeComponent();
-
             Init();
+            this.id = id;
         }
 
         private void Init()
@@ -576,7 +577,8 @@ namespace PiStoreManagementSytem
 
         private void changepassBtn_Click(object sender, EventArgs e)
         {
-
+            ChangePasswordForm changePasswordForm = new ChangePasswordForm(id);
+            changePasswordForm.Show();
         }
 
         private void txtSearch_TextChanged(object sender, EventArgs e)

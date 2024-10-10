@@ -20,9 +20,10 @@ namespace PiStoreManagementSytem.DAO
 
         private AccountDAO() { }
 
-        public bool Login(string email, string password)
+        public int Login(string email, string password)
         {
-            string query = "SELECT * FROM dbo.Employee WHERE Email = @Email AND Password = @Password";
+            int id = -1;
+            string query = "SELECT ID FROM dbo.Employee WHERE Email = @Email AND Password = @Password";
 
             SqlParameter[] parameters = new SqlParameter[]
             {
@@ -31,7 +32,13 @@ namespace PiStoreManagementSytem.DAO
             };
 
             DataTable result = DataProvider.Instance.ExecuteQuery(query, parameters);
-            return result.Rows.Count > 0;
+
+            if (result.Rows.Count > 0)
+            {
+                id = Convert.ToInt32(result.Rows[0]["ID"]);
+            }
+
+            return id;
         }
     }
 }

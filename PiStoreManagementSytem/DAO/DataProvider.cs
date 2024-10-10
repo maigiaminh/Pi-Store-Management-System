@@ -28,20 +28,24 @@ namespace PiStoreManagementSytem.DAO
             using (SqlConnection connection = new SqlConnection(connectionStr))
             {
                 connection.Open();
-                using (SqlCommand cmd = new SqlCommand(query, connection))
+
+                using (SqlCommand command = new SqlCommand(query, connection))
                 {
                     if (parameters != null)
                     {
-                        cmd.Parameters.AddRange(parameters);
+                        command.Parameters.AddRange(parameters);
                     }
 
-                    SqlDataAdapter adapter = new SqlDataAdapter(cmd);
+                    SqlDataAdapter adapter = new SqlDataAdapter(command);
                     adapter.Fill(data);
                 }
+
                 connection.Close();
             }
+
             return data;
         }
+
 
         public int ExecuteNonQuery(string query, SqlParameter[] parameters = null)
         {

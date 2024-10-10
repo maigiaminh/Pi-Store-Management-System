@@ -120,5 +120,39 @@ namespace PiStoreManagementSytem.DAO
             return DataProvider.Instance.ExecuteNonQuery(query, parameters) > 0;
         }
 
+
+        public bool CheckCurrentPassword(int id, string currentPassword)
+        {
+            string query = "SELECT Password FROM Employee WHERE ID = @id";
+
+            SqlParameter[] parameters = new SqlParameter[]
+            {
+                new SqlParameter("@id", id)
+            };
+
+            DataTable result = DataProvider.Instance.ExecuteQuery(query, parameters);
+
+            if (result.Rows.Count > 0)
+            {
+                string storedPassword = result.Rows[0]["Password"].ToString();
+                return storedPassword == currentPassword;
+            }
+
+            return false;
+        }
+
+        public bool UpdatePassword(int id, string newPassword)
+        {
+            string query = "UPDATE Employee SET Password = @NewPassword WHERE ID = @Id";
+
+            SqlParameter[] parameters = new SqlParameter[]
+            {
+                new SqlParameter("@NewPassword", newPassword),
+                new SqlParameter("@Id", id)
+            };
+
+            return DataProvider.Instance.ExecuteNonQuery(query, parameters) > 0;
+        }
+
     }
 }
