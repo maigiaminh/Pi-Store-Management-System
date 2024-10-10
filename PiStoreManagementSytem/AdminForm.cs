@@ -1,4 +1,5 @@
-﻿using PdfSharp;
+﻿using Microsoft.IdentityModel.Tokens;
+using PdfSharp;
 using PdfSharp.Drawing;
 using PdfSharp.Pdf;
 using PiStoreManagementSytem.DAO;
@@ -22,6 +23,8 @@ namespace PiStoreManagementSytem
 
         [DllImport("User32.dll")]
         public static extern int SendMessage(IntPtr hWnd, int Msg, int wParam, int lParam);
+
+        private DataTable currentSearchResult;
 
         public AdminForm()
         {
@@ -527,6 +530,7 @@ namespace PiStoreManagementSytem
             {
                 isSettingEnable = true;
                 settingPanel.Show();
+                settingPanel.BringToFront();
             }
             else
             {
@@ -575,5 +579,62 @@ namespace PiStoreManagementSytem
 
         }
 
+        private void txtSearch_TextChanged(object sender, EventArgs e)
+        {
+            string searchValue = txtSearch.Text.Trim();
+            string searchCriteria = cmbSearchCriteria.SelectedItem?.ToString();
+
+            DataTable employeeTable = LoadEmployeeTable();
+
+            if (string.IsNullOrEmpty(searchCriteria)) return;
+            
+            if (!string.IsNullOrEmpty(searchValue))
+            {
+                DataView dv = new DataView(employeeTable);
+                dv.RowFilter = $"{searchCriteria} LIKE '%{searchValue}%'";
+                currentSearchResult = dv.ToTable();
+                employeeGridView.DataSource = currentSearchResult;
+            }
+            else
+            {
+                currentSearchResult = employeeTable;
+                employeeGridView.DataSource = employeeTable;
+            }
+        }
+
+        private void btnASC_Click(object sender, EventArgs e)
+        {
+            SortData("ASC");
+        }
+
+        private void btnDESC_Click(object sender, EventArgs e)
+        {
+            SortData("DESC");
+        }
+
+        private void SortData(string order)
+        {
+            string sortCriteria = cmbSearchCriteria.SelectedItem?.ToString(); 
+
+            if (!string.IsNullOrEmpty(sortCriteria))
+            {
+                if(currentSearchResult != null)
+                {
+                    DataView dv = new DataView(currentSearchResult);
+                    dv.Sort = $"{sortCriteria} {order}";
+                    employeeGridView.DataSource = dv;
+                }
+                else
+                {
+                    DataTable employeeTable = LoadEmployeeTable();
+                    DataView dv = new DataView(employeeTable);
+
+                    dv.Sort = $"{sortCriteria} {order}";
+
+                    employeeGridView.DataSource = dv;
+                }
+                
+            }
+        }
     }
 }

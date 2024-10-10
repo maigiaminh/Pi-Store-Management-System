@@ -62,6 +62,10 @@
             avtBtn = new PictureBox();
             timerPanel = new System.Windows.Forms.Timer(components);
             employeePanel = new Panel();
+            btnDESC = new Button();
+            btnASC = new Button();
+            txtSearch = new TextBox();
+            cmbSearchCriteria = new ComboBox();
             printEmLabel = new Label();
             printEmBtn = new PictureBox();
             deleteEmLabel = new Label();
@@ -475,7 +479,7 @@
             menuBtn.BackgroundImage = (Image)resources.GetObject("menuBtn.BackgroundImage");
             menuBtn.BackgroundImageLayout = ImageLayout.Zoom;
             menuBtn.Cursor = Cursors.Hand;
-            menuBtn.Location = new Point(6, 12);
+            menuBtn.Location = new Point(16, 15);
             menuBtn.Name = "menuBtn";
             menuBtn.Size = new Size(43, 36);
             menuBtn.TabIndex = 0;
@@ -502,6 +506,10 @@
             // 
             // employeePanel
             // 
+            employeePanel.Controls.Add(btnDESC);
+            employeePanel.Controls.Add(btnASC);
+            employeePanel.Controls.Add(txtSearch);
+            employeePanel.Controls.Add(cmbSearchCriteria);
             employeePanel.Controls.Add(printEmLabel);
             employeePanel.Controls.Add(printEmBtn);
             employeePanel.Controls.Add(deleteEmLabel);
@@ -518,6 +526,45 @@
             employeePanel.Size = new Size(782, 593);
             employeePanel.TabIndex = 2;
             employeePanel.MouseDown += DragApplication;
+            // 
+            // btnDESC
+            // 
+            btnDESC.BackgroundImage = (Image)resources.GetObject("btnDESC.BackgroundImage");
+            btnDESC.BackgroundImageLayout = ImageLayout.Stretch;
+            btnDESC.Location = new Point(452, 254);
+            btnDESC.Name = "btnDESC";
+            btnDESC.Size = new Size(34, 29);
+            btnDESC.TabIndex = 31;
+            btnDESC.UseVisualStyleBackColor = true;
+            btnDESC.Click += btnDESC_Click;
+            // 
+            // btnASC
+            // 
+            btnASC.BackgroundImage = (Image)resources.GetObject("btnASC.BackgroundImage");
+            btnASC.BackgroundImageLayout = ImageLayout.Stretch;
+            btnASC.Location = new Point(412, 254);
+            btnASC.Name = "btnASC";
+            btnASC.Size = new Size(34, 29);
+            btnASC.TabIndex = 30;
+            btnASC.UseVisualStyleBackColor = true;
+            btnASC.Click += btnASC_Click;
+            // 
+            // txtSearch
+            // 
+            txtSearch.Location = new Point(130, 256);
+            txtSearch.Name = "txtSearch";
+            txtSearch.Size = new Size(276, 27);
+            txtSearch.TabIndex = 29;
+            txtSearch.TextChanged += txtSearch_TextChanged;
+            // 
+            // cmbSearchCriteria
+            // 
+            cmbSearchCriteria.FormattingEnabled = true;
+            cmbSearchCriteria.Items.AddRange(new object[] { "Name", "Email", "Phone", "Address" });
+            cmbSearchCriteria.Location = new Point(16, 256);
+            cmbSearchCriteria.Name = "cmbSearchCriteria";
+            cmbSearchCriteria.Size = new Size(108, 28);
+            cmbSearchCriteria.TabIndex = 28;
             // 
             // printEmLabel
             // 
@@ -629,11 +676,11 @@
             employeeGridView.BackgroundColor = Color.White;
             employeeGridView.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             employeeGridView.Dock = DockStyle.Bottom;
-            employeeGridView.Location = new Point(0, 247);
+            employeeGridView.Location = new Point(0, 290);
             employeeGridView.Name = "employeeGridView";
             employeeGridView.ReadOnly = true;
             employeeGridView.RowHeadersWidth = 51;
-            employeeGridView.Size = new Size(782, 346);
+            employeeGridView.Size = new Size(782, 303);
             employeeGridView.TabIndex = 1;
             employeeGridView.CellClick += EmployeeCellClick;
             // 
@@ -759,8 +806,8 @@
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = Color.FromArgb(238, 238, 238);
             ClientSize = new Size(982, 653);
-            Controls.Add(avtBtn);
             Controls.Add(settingPanel);
+            Controls.Add(avtBtn);
             Controls.Add(employeePanel);
             Controls.Add(headerPanel);
             Controls.Add(navPanel);
@@ -867,5 +914,9 @@
         private Panel changepassBtn;
         private FlowLayoutPanel flowLayoutPanel3;
         private Label label3;
+        private TextBox txtSearch;
+        private ComboBox cmbSearchCriteria;
+        private Button btnDESC;
+        private Button btnASC;
     }
 }
