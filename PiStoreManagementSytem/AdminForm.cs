@@ -5,16 +5,22 @@ using PdfSharp.Pdf;
 using PiStoreManagementSytem.DAO;
 using PiStoreManagementSytem.DTO;
 using PiStoreManagementSytem.modal;
+using System.Buffers;
 using System.Data;
+using System.Diagnostics;
 using System.Drawing.Drawing2D;
+using System.Net;
 using System.Runtime.InteropServices;
 using System.Text;
 using System.Windows.Forms;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement.ListView;
 
 namespace PiStoreManagementSytem
 {
     public partial class AdminForm : Form
     {
+        private int clientSelectedID;
+        private DataGridViewCellCollection currentClientCell;
         private int id;
         bool isPanelExpanded = true;
         bool isSettingEnable = false;
@@ -125,9 +131,12 @@ namespace PiStoreManagementSytem
         {
             UnactiveAllButton();
             HideAllPanel();
+            employeePanel.Show();
+
             employeeImg.BackgroundImage = Constants.Constants.employee_active;
             employeeLabel.ForeColor = Constants.Constants.activeColor;
-            employeePanel.Show();
+
+
             employeeGridView.DataSource = LoadEmployeeTable();
             employeeGridView.Columns["Password"].Visible = false;
 
@@ -138,12 +147,14 @@ namespace PiStoreManagementSytem
         {
             UnactiveAllButton();
             HideAllPanel();
+            clientPanel.Show();
 
             clientImg.BackgroundImage = Constants.Constants.client_active;
             clientLabel.ForeColor = Constants.Constants.activeColor;
 
-            clientPanel.Show();
+            clientGridView.DataSource = LoadClientTable();
 
+            SetClientButtonActive(false);
         }
 
         private void ProductClick(object sender, EventArgs e)
@@ -231,6 +242,11 @@ namespace PiStoreManagementSytem
             return EmployeeDAO.Instance.LoadEmployeeTable();
         }
 
+        private DataTable LoadClientTable()
+        {
+            return ClientDAO.Instance.LoadClientTable();
+        }
+
         private void EmployeeCellClick(object sender, DataGridViewCellEventArgs e)
         {
             if (e.RowIndex >= 0)
@@ -249,6 +265,28 @@ namespace PiStoreManagementSytem
         }
 
         private void SetEmployeeButtonActive(bool active)
+        {
+            if (active)
+            {
+                editEmBtn.Enabled = true;
+                deleteEmBtn.Enabled = true;
+                editEmBtn.BackgroundImage = Constants.Constants.edit;
+                deleteEmBtn.BackgroundImage = Constants.Constants.delete;
+                editEmLabel.ForeColor = Constants.Constants.editColor;
+                deleteEmLabel.ForeColor = Constants.Constants.deleteColor;
+            }
+            else
+            {
+                editEmBtn.Enabled = false;
+                deleteEmBtn.Enabled = false;
+                editEmBtn.BackgroundImage = Constants.Constants.edit_unactive;
+                deleteEmBtn.BackgroundImage = Constants.Constants.delete_unactive;
+                editEmLabel.ForeColor = Color.Silver;
+                deleteEmLabel.ForeColor = Color.Silver;
+            }
+        }
+
+        private void SetClientButtonActive(bool active)
         {
             if (active)
             {
@@ -380,8 +418,13 @@ namespace PiStoreManagementSytem
 
         private void printEmBtn_Click(object sender, EventArgs e)
         {
+            PrintPDF(employeeGridView, "Employee");
+        }
+
+        private void PrintPDF(DataGridView gridView, string name, DataGridViewCellCollection values = null)
+        {
             PdfDocument document = new PdfDocument();
-            document.Info.Title = "Company Employee List";
+            document.Info.Title = $"Company {name} List";
 
             PdfPage page = document.AddPage();
 
@@ -393,6 +436,7 @@ namespace PiStoreManagementSytem
             XFont companyFont = new XFont("Verdana", 14, XFontStyleEx.Bold);
             XFont headerFont = new XFont("Verdana", 12, XFontStyleEx.Bold);
             XFont cellFont = new XFont("Verdana", 10, XFontStyleEx.Regular);
+            XFont infoFont = new XFont("Verdana", 10, XFontStyleEx.Bold);
 
             Bitmap logoBitmap = Properties.Resources.logo;
 
@@ -402,21 +446,63 @@ namespace PiStoreManagementSytem
                 XImage logo = XImage.FromStream(stream);
 
                 gfx.DrawImage(logo, 20, 0, 200, 200);
-                gfx.DrawString("Employee List", titleFont, XBrushes.Black,
+                gfx.DrawString($"{name} List", titleFont, XBrushes.Black,
                     new XRect(page.Height, 85, page.Width - 160, 50), XStringFormats.TopLeft);
 
                 gfx.DrawString("Company: Pi Store Sneaker", companyFont, XBrushes.Black,
                     new XRect(50, 190, page.Width - 100, 50), XStringFormats.TopLeft);
             }
 
-            double tableTop = 220;
+            double tableTop = 250;
             double rowHeight = 20;
             double pageWidth = page.Width;
             double colXPos = 50;
 
+            if (name == "Client Order")
+            {
+                double headerHeight = 40;
+                gfx.DrawRectangle(XBrushes.LightGray, colXPos, tableTop, pageWidth - 100, headerHeight);
+                gfx.DrawString("Client Order", headerFont, XBrushes.Black,
+                    new XRect(colXPos + 25, tableTop + 15, pageWidth - 100, headerHeight), XStringFormats.TopLeft);
+
+                tableTop += headerHeight + 10;
+
+                gfx.DrawString("Client Name:", infoFont, XBrushes.Black,
+                    new XRect(colXPos + 25, tableTop, 200, rowHeight), XStringFormats.TopLeft);
+                gfx.DrawString(values["Name"].Value.ToString(), cellFont, XBrushes.Black,
+                    new XRect(colXPos + 150, tableTop, pageWidth - 100, rowHeight), XStringFormats.TopLeft);
+
+                tableTop += rowHeight;
+
+                gfx.DrawString("Email:", infoFont, XBrushes.Black,
+                    new XRect(colXPos + 25, tableTop, 200, rowHeight), XStringFormats.TopLeft);
+                gfx.DrawString(values["Email"].Value.ToString(), cellFont, XBrushes.Black,
+                    new XRect(colXPos + 150, tableTop, pageWidth - 100, rowHeight), XStringFormats.TopLeft);
+
+                tableTop += rowHeight;
+
+                gfx.DrawString("Phone:", infoFont, XBrushes.Black,
+                    new XRect(colXPos + 25, tableTop, 200, rowHeight), XStringFormats.TopLeft);
+                gfx.DrawString(values["Phone"].Value.ToString(), cellFont, XBrushes.Black,
+                    new XRect(colXPos + 150, tableTop, pageWidth - 100, rowHeight), XStringFormats.TopLeft);
+
+                tableTop += rowHeight;
+
+                gfx.DrawString("Address:", infoFont, XBrushes.Black,
+                    new XRect(colXPos + 25, tableTop, 200, rowHeight), XStringFormats.TopLeft);
+                gfx.DrawString(values["Address"].Value.ToString(), cellFont, XBrushes.Black,
+                    new XRect(colXPos + 150, tableTop, pageWidth - 100, rowHeight), XStringFormats.TopLeft);
+
+                tableTop += rowHeight + 10;
+
+                gfx.DrawLine(new XPen(XColors.Black, 1), colXPos, tableTop, pageWidth - 50, tableTop);
+
+                tableTop += 50;
+            }
+
 
             double totalGridViewWidth = 0;
-            foreach (DataGridViewColumn column in employeeGridView.Columns)
+            foreach (DataGridViewColumn column in gridView.Columns)
             {
                 if (column.Name != "ID" && column.Name != "Password")
                 {
@@ -429,7 +515,7 @@ namespace PiStoreManagementSytem
             XPen borderPen = new XPen(XColors.Black, 1);
             gfx.DrawRectangle(XBrushes.LightGray, colXPos, tableTop, totalGridViewWidth * scaleFactor, rowHeight);
 
-            foreach (DataGridViewColumn column in employeeGridView.Columns)
+            foreach (DataGridViewColumn column in gridView.Columns)
             {
                 if (column.Name != "ID" && column.Name != "Password")
                 {
@@ -443,7 +529,7 @@ namespace PiStoreManagementSytem
             }
 
             tableTop += rowHeight;
-            foreach (DataGridViewRow row in employeeGridView.Rows)
+            foreach (DataGridViewRow row in gridView.Rows)
             {
                 if (tableTop + rowHeight > page.Height - 50)
                 {
@@ -459,7 +545,7 @@ namespace PiStoreManagementSytem
                         XImage logo = XImage.FromStream(stream);
 
                         gfx.DrawImage(logo, 20, 0, 200, 200);
-                        gfx.DrawString("Employee List", titleFont, XBrushes.Black,
+                        gfx.DrawString($"{name} List", titleFont, XBrushes.Black,
                             new XRect(page.Height, 85, page.Width - 160, 50), XStringFormats.TopLeft);
 
                         gfx.DrawString("Company: Pi Store Sneaker", companyFont, XBrushes.Black,
@@ -468,7 +554,7 @@ namespace PiStoreManagementSytem
 
                     colXPos = 50;
                     gfx.DrawRectangle(XBrushes.LightGray, colXPos, tableTop, totalGridViewWidth * scaleFactor, rowHeight);
-                    foreach (DataGridViewColumn column in employeeGridView.Columns)
+                    foreach (DataGridViewColumn column in gridView.Columns)
                     {
                         if (column.Name != "ID" && column.Name != "Password")
                         {
@@ -485,13 +571,21 @@ namespace PiStoreManagementSytem
                 colXPos = 50;
                 foreach (DataGridViewCell cell in row.Cells)
                 {
-                    if (employeeGridView.Columns[cell.ColumnIndex].Name != "ID" && employeeGridView.Columns[cell.ColumnIndex].Name != "Password")
+                    if (gridView.Columns[cell.ColumnIndex].Name != "ID" && gridView.Columns[cell.ColumnIndex].Name != "Password")
                     {
-                        double scaledColWidth = employeeGridView.Columns[cell.ColumnIndex].Width * scaleFactor;
-
-                        string cellValue = (cell.ColumnIndex == employeeGridView.Columns["HireDate"].Index)
-                            ? Convert.ToDateTime(cell.Value).ToString("M/d/yyyy")
-                            : cell.Value?.ToString() ?? "";
+                        double scaledColWidth = gridView.Columns[cell.ColumnIndex].Width * scaleFactor;
+                        string cellValue = "";
+                        if (name == "Employee")
+                        {
+                            if (cell.ColumnIndex == gridView.Columns["HireDate"].Index)
+                                cellValue = Convert.ToDateTime(cell.Value).ToString("M/d/yyyy");
+                            else
+                                cellValue = cell.Value?.ToString();
+                        }
+                        else
+                        {
+                            cellValue = cell.Value?.ToString() ?? "";
+                        }
 
                         string truncatedText = TruncateText(gfx, cellValue, cellFont, scaledColWidth - 10);
 
@@ -508,8 +602,8 @@ namespace PiStoreManagementSytem
             SaveFileDialog saveFileDialog = new SaveFileDialog();
 
             saveFileDialog.Filter = "PDF Files|*.pdf";
-            saveFileDialog.Title = "Save Employee List PDF";
-            saveFileDialog.FileName = "EmployeeList.pdf";
+            saveFileDialog.Title = $"Save {name} List PDF";
+            saveFileDialog.FileName = $"{name}List.pdf";
 
             if (saveFileDialog.ShowDialog() == DialogResult.OK)
             {
@@ -518,7 +612,7 @@ namespace PiStoreManagementSytem
                 document.Save(filePath);
                 document.Close();
 
-                MessageBox.Show("Print Employee List Successful!", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                MessageBox.Show($"Print {name} List Successful!", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
             else
             {
@@ -733,7 +827,6 @@ namespace PiStoreManagementSytem
                     }
                 }
 
-                // Lưu vào file CSV
                 File.WriteAllText(filePath, csvContent.ToString(), Encoding.UTF8);
                 MessageBox.Show("Export CSV Successful!", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
@@ -741,6 +834,108 @@ namespace PiStoreManagementSytem
             {
                 MessageBox.Show($"An error occurred when exporting CSV: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
+        }
+
+        private void csvClientBtn_Click(object sender, EventArgs e)
+        {
+            SaveFileDialog sfd = new SaveFileDialog();
+            sfd.Filter = "CSV files (*.csv)|*.csv";
+            sfd.FileName = "Client_Export.csv";
+
+            if (sfd.ShowDialog() == DialogResult.OK)
+            {
+                ExportDataGridViewToCSV(clientGridView, sfd.FileName);
+            }
+        }
+
+        private void printClientBtn_Click(object sender, EventArgs e)
+        {
+            PrintPDF(clientGridView, "Client");
+        }
+
+        private void searchClientTxt_TextChanged(object sender, EventArgs e)
+        {
+            string searchValue = searchClientTxt.Text.Trim();
+
+            DataTable clientTable = LoadClientTable();
+
+
+            if (!string.IsNullOrEmpty(searchValue))
+            {
+                DataView dv = new DataView(clientTable);
+                dv.RowFilter = $"Phone LIKE '%{searchValue}%'";
+                currentSearchResult = dv.ToTable();
+                clientGridView.DataSource = currentSearchResult;
+            }
+            else
+            {
+                currentSearchResult = clientTable;
+                employeeGridView.DataSource = clientTable;
+            }
+        }
+
+        private void clientGridView_CellClick(object sender, DataGridViewCellEventArgs e)
+        {
+            if (e.RowIndex >= 0)
+            {
+                int clientId = Convert.ToInt32(clientGridView.Rows[e.RowIndex].Cells["ID"].Value);
+                clientSelectedID = clientId;
+                LoadRecentOrdersByClient(clientId);
+                currentClientCell = clientGridView.Rows[e.RowIndex].Cells;
+            }
+        }
+
+        private void LoadRecentOrdersByClient(int clientId)
+        {
+            DataTable orderTable = GetRecentOrdersByClient(clientId);
+            recentOrderGridView.DataSource = orderTable;
+            DataView dv = new DataView(orderTable);
+
+            dv.Sort = "OrderDate DESC";
+
+        }
+
+        private DataTable GetRecentOrdersByClient(int clientId)
+        {
+            return OrderDAO.Instance.LoadOrderTableByClientID(clientId);
+        }
+
+        private void orderDatePicker_ValueChanged(object sender, EventArgs e)
+        {
+            if (recentOrderGridView.DataSource == null || clientGridView.DataSource == null) return;
+
+            DataTable table = (DataTable)GetRecentOrdersByClient(clientSelectedID);
+            DataView dv = new DataView(table);
+
+            dv.RowFilter = $"OrderDate = #{orderDatePicker.Value:MM/dd/yyyy}#";
+            dv.Sort = "OrderDate DESC";
+
+            currentSearchResult = dv.ToTable();
+            recentOrderGridView.DataSource = currentSearchResult;
+        }
+
+        private void csvRecentClientOrderBtn_Click(object sender, EventArgs e)
+        {
+            if (recentOrderGridView.DataSource == null)
+            {
+                MessageBox.Show($"Empty Recent Client Order", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+
+            SaveFileDialog sfd = new SaveFileDialog();
+            sfd.Filter = "CSV files (*.csv)|*.csv";
+            sfd.FileName = "ClientOrder_Export.csv";
+
+            if (sfd.ShowDialog() == DialogResult.OK)
+            {
+                ExportDataGridViewToCSV(recentOrderGridView, sfd.FileName);
+            }
+        }
+
+        private void printRecentClientOrderBtn_Click(object sender, EventArgs e)
+        {
+            if (recentOrderGridView.DataSource == null) return;
+            PrintPDF(recentOrderGridView, "Client Order", currentClientCell);
         }
     }
 }

@@ -65,3 +65,10 @@ INSERT INTO Employee (Name, Email, Password, Phone, Address, Salary, HireDate) V
 (N'Nguyễn Phương Tài', 'tainguyen@gmail.com', 'Tai123456789', '0375830891', N'Quận 5, TP.HCM', 20000000, '2024-09-20'),
 (N'Bùi Anh Minh', 'anhminh@gmail.com', 'Mint199727', '0337199727', N'Quận 7, TP.HCM', 20000000, '2024-09-20')
 
+INSERT INTO Client (Name, Email, Phone, Address)
+VALUES 
+(N'Nguyễn Văn An', 'nguyenvanan@example.com', '0912345678', N'Quận 1, TP.HCM'),
+(N'Trần Thị Liên', 'tranthilien@example.com', '0987654321', N'Quận 2, TP.HCM'),
+(N'Phạm Hồng Hạnh', 'phamhonghanh@example.com', '0909090909', N'Quận 3, TP.HCM'),
+(N'Lê Hoàng Nhất', 'lehoangnhat@example.com', '0979797979', N'Quận 4, TP.HCM'),
+(N'Võ Minh Duy', 'vominhduy@example.com', '0888888888', N'Quận 5, TP.HCM');
