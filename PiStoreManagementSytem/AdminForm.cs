@@ -8,6 +8,8 @@ using PiStoreManagementSytem.modal;
 using System.Data;
 using System.Drawing.Drawing2D;
 using System.Runtime.InteropServices;
+using System.Text;
+using System.Windows.Forms;
 
 namespace PiStoreManagementSytem
 {
@@ -102,6 +104,12 @@ namespace PiStoreManagementSytem
             billLabel.ForeColor = Constants.Constants.defaultColor;
         }
 
+        private void HideAllPanel()
+        {
+            employeePanel.Hide();
+            clientPanel.Hide();
+        }
+
         private void UnactiveAllPanel()
         {
             employeePanel.Hide();
@@ -109,13 +117,14 @@ namespace PiStoreManagementSytem
         private void HomeClick(object sender, EventArgs e)
         {
             UnactiveAllButton();
-            employeePanel.Hide();
+            HideAllPanel();
             homeImg.BackgroundImage = Constants.Constants.home_active;
             homeLabel.ForeColor = Constants.Constants.activeColor;
         }
         private void EmployeeClick(object sender, EventArgs e)
         {
             UnactiveAllButton();
+            HideAllPanel();
             employeeImg.BackgroundImage = Constants.Constants.employee_active;
             employeeLabel.ForeColor = Constants.Constants.activeColor;
             employeePanel.Show();
@@ -128,8 +137,13 @@ namespace PiStoreManagementSytem
         private void ClientClick(object sender, EventArgs e)
         {
             UnactiveAllButton();
+            HideAllPanel();
+
             clientImg.BackgroundImage = Constants.Constants.client_active;
             clientLabel.ForeColor = Constants.Constants.activeColor;
+
+            clientPanel.Show();
+
         }
 
         private void ProductClick(object sender, EventArgs e)
@@ -491,18 +505,25 @@ namespace PiStoreManagementSytem
                 tableTop += rowHeight;
             }
 
+            SaveFileDialog saveFileDialog = new SaveFileDialog();
 
-            string folderPath = "PDF Output";
-            if (!Directory.Exists(folderPath))
+            saveFileDialog.Filter = "PDF Files|*.pdf";
+            saveFileDialog.Title = "Save Employee List PDF";
+            saveFileDialog.FileName = "EmployeeList.pdf";
+
+            if (saveFileDialog.ShowDialog() == DialogResult.OK)
             {
-                Directory.CreateDirectory(folderPath);
+                string filePath = saveFileDialog.FileName;
+
+                document.Save(filePath);
+                document.Close();
+
+                MessageBox.Show("Print Employee List Successful!", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
-
-            string filePath = Path.Combine(folderPath, "EmployeeList.pdf");
-            document.Save(filePath);
-            document.Close();
-
-            MessageBox.Show("Create Employee List PDF Successfully at: \n\n" + Path.GetFullPath(filePath));
+            else
+            {
+                MessageBox.Show($"An error had occurred when printing PDF", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
 
         public string TruncateText(XGraphics gfx, string text, XFont font, double maxWidth)
@@ -647,12 +668,79 @@ namespace PiStoreManagementSytem
             GraphicsPath path = new GraphicsPath();
 
             path.AddArc(0, 0, cornerRadius, cornerRadius, 180, 90);
-            path.AddArc(this.Width - cornerRadius, 0, cornerRadius, cornerRadius, 270, 90); 
+            path.AddArc(this.Width - cornerRadius, 0, cornerRadius, cornerRadius, 270, 90);
             path.AddArc(this.Width - cornerRadius, this.Height - cornerRadius, cornerRadius, cornerRadius, 0, 90);
             path.AddArc(0, this.Height - cornerRadius, cornerRadius, cornerRadius, 90, 90);
             path.CloseFigure();
 
             this.Region = new Region(path);
+        }
+
+        private void csvEmBtn_Click(object sender, EventArgs e)
+        {
+            SaveFileDialog sfd = new SaveFileDialog();
+            sfd.Filter = "CSV files (*.csv)|*.csv";
+            sfd.FileName = "Employee_Export.csv";
+
+            if (sfd.ShowDialog() == DialogResult.OK)
+            {
+                ExportDataGridViewToCSV(employeeGridView, sfd.FileName);
+            }
+        }
+
+        public void ExportDataGridViewToCSV(DataGridView dataGridView, string filePath)
+        {
+            try
+            {
+                StringBuilder csvContent = new StringBuilder();
+
+                bool firstColumn = true;
+                for (int i = 0; i < dataGridView.Columns.Count; i++)
+                {
+                    if (dataGridView.Columns[i].Name != "Password")
+                    {
+                        if (!firstColumn)
+                        {
+                            csvContent.Append(",");
+                        }
+                        csvContent.Append(dataGridView.Columns[i].HeaderText);
+                        firstColumn = false;
+                    }
+                }
+                csvContent.AppendLine();
+
+                foreach (DataGridViewRow row in dataGridView.Rows)
+                {
+                    if (!row.IsNewRow)
+                    {
+                        firstColumn = true;
+                        for (int i = 0; i < dataGridView.Columns.Count; i++)
+                        {
+                            if (dataGridView.Columns[i].Name != "Password")
+                            {
+                                if (!firstColumn)
+                                {
+                                    csvContent.Append(",");
+                                }
+                                var cellValue = row.Cells[i].Value?.ToString().Replace(",", "");
+                                if (dataGridView.Columns[i].Name == "Phone")
+                                    cellValue = "(+84) " + cellValue.Substring(1, cellValue.Length - 1);
+                                csvContent.Append(cellValue);
+                                firstColumn = false;
+                            }
+                        }
+                        csvContent.AppendLine();
+                    }
+                }
+
+                // Lưu vào file CSV
+                File.WriteAllText(filePath, csvContent.ToString(), Encoding.UTF8);
+                MessageBox.Show("Export CSV Successful!", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"An error occurred when exporting CSV: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
     }
 }
