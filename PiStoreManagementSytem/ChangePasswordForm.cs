@@ -87,7 +87,6 @@ namespace PiStoreManagementSytem
             }
         }
 
-
         private bool ValidatePasswordChange(string currentPassword, string newPassword, string confirmNewPassword)
         {
 

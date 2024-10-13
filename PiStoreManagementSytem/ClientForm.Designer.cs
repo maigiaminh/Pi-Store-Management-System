@@ -38,12 +38,13 @@
             lblAddress = new Label();
             btnCancel = new Button();
             btnSave = new Button();
+            label1 = new Label();
             SuspendLayout();
             // 
             // txtClientName
             // 
             txtClientName.Font = new Font("Segoe UI", 9F);
-            txtClientName.Location = new Point(173, 31);
+            txtClientName.Location = new Point(174, 105);
             txtClientName.Margin = new Padding(4, 5, 4, 5);
             txtClientName.Name = "txtClientName";
             txtClientName.Size = new Size(320, 27);
@@ -52,7 +53,7 @@
             // txtEmail
             // 
             txtEmail.Font = new Font("Segoe UI", 9F);
-            txtEmail.Location = new Point(173, 92);
+            txtEmail.Location = new Point(174, 166);
             txtEmail.Margin = new Padding(4, 5, 4, 5);
             txtEmail.Name = "txtEmail";
             txtEmail.Size = new Size(320, 27);
@@ -61,7 +62,7 @@
             // txtPhone
             // 
             txtPhone.Font = new Font("Segoe UI", 9F);
-            txtPhone.Location = new Point(173, 154);
+            txtPhone.Location = new Point(174, 228);
             txtPhone.Margin = new Padding(4, 5, 4, 5);
             txtPhone.Name = "txtPhone";
             txtPhone.Size = new Size(320, 27);
@@ -70,7 +71,7 @@
             // txtAddress
             // 
             txtAddress.Font = new Font("Segoe UI", 9F);
-            txtAddress.Location = new Point(173, 215);
+            txtAddress.Location = new Point(174, 289);
             txtAddress.Margin = new Padding(4, 5, 4, 5);
             txtAddress.Multiline = true;
             txtAddress.Name = "txtAddress";
@@ -81,7 +82,7 @@
             // 
             lblClientName.AutoSize = true;
             lblClientName.Font = new Font("Rockwell", 10.2F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            lblClientName.Location = new Point(27, 34);
+            lblClientName.Location = new Point(28, 108);
             lblClientName.Margin = new Padding(4, 0, 4, 0);
             lblClientName.Name = "lblClientName";
             lblClientName.Size = new Size(115, 20);
@@ -92,7 +93,7 @@
             // 
             lblEmail.AutoSize = true;
             lblEmail.Font = new Font("Rockwell", 10.2F, FontStyle.Bold);
-            lblEmail.Location = new Point(27, 92);
+            lblEmail.Location = new Point(28, 166);
             lblEmail.Margin = new Padding(4, 0, 4, 0);
             lblEmail.Name = "lblEmail";
             lblEmail.Size = new Size(59, 20);
@@ -103,7 +104,7 @@
             // 
             lblPhone.AutoSize = true;
             lblPhone.Font = new Font("Rockwell", 10.2F, FontStyle.Bold);
-            lblPhone.Location = new Point(27, 154);
+            lblPhone.Location = new Point(28, 228);
             lblPhone.Margin = new Padding(4, 0, 4, 0);
             lblPhone.Name = "lblPhone";
             lblPhone.Size = new Size(62, 20);
@@ -114,7 +115,7 @@
             // 
             lblAddress.AutoSize = true;
             lblAddress.Font = new Font("Rockwell", 10.2F, FontStyle.Bold);
-            lblAddress.Location = new Point(27, 215);
+            lblAddress.Location = new Point(28, 289);
             lblAddress.Margin = new Padding(4, 0, 4, 0);
             lblAddress.Name = "lblAddress";
             lblAddress.Size = new Size(79, 20);
@@ -126,7 +127,7 @@
             btnCancel.BackColor = Color.Red;
             btnCancel.Font = new Font("Rockwell", 10.2F, FontStyle.Bold);
             btnCancel.ForeColor = Color.White;
-            btnCancel.Location = new Point(360, 338);
+            btnCancel.Location = new Point(361, 412);
             btnCancel.Margin = new Padding(4, 5, 4, 5);
             btnCancel.Name = "btnCancel";
             btnCancel.Size = new Size(133, 46);
@@ -140,7 +141,7 @@
             btnSave.BackColor = Color.Lime;
             btnSave.Font = new Font("Rockwell", 10.2F, FontStyle.Bold);
             btnSave.ForeColor = Color.White;
-            btnSave.Location = new Point(173, 338);
+            btnSave.Location = new Point(174, 412);
             btnSave.Margin = new Padding(4, 5, 4, 5);
             btnSave.Name = "btnSave";
             btnSave.Size = new Size(133, 46);
@@ -149,11 +150,23 @@
             btnSave.UseVisualStyleBackColor = false;
             btnSave.Click += btnSave_Click;
             // 
+            // label1
+            // 
+            label1.AutoSize = true;
+            label1.Font = new Font("Rockwell", 19.8000011F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            label1.Location = new Point(198, 34);
+            label1.Name = "label1";
+            label1.Size = new Size(136, 38);
+            label1.TabIndex = 33;
+            label1.Text = "CLIENT";
+            label1.TextAlign = ContentAlignment.MiddleCenter;
+            // 
             // ClientForm
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(533, 415);
+            ClientSize = new Size(533, 483);
+            Controls.Add(label1);
             Controls.Add(btnCancel);
             Controls.Add(btnSave);
             Controls.Add(lblAddress);
@@ -167,7 +180,10 @@
             FormBorderStyle = FormBorderStyle.None;
             Margin = new Padding(4, 5, 4, 5);
             Name = "ClientForm";
+            StartPosition = FormStartPosition.CenterScreen;
             Text = "Client Form";
+            Load += ClientForm_Load;
+            MouseDown += DragApplication;
             ResumeLayout(false);
             PerformLayout();
         }
@@ -183,5 +199,6 @@
         public TextBox txtEmail;
         public TextBox txtPhone;
         public TextBox txtAddress;
+        private Label label1;
     }
 }

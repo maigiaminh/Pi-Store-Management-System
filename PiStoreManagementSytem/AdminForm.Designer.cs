@@ -90,6 +90,7 @@
             label2 = new Label();
             timer1 = new System.Windows.Forms.Timer(components);
             clientPanel = new Panel();
+            label6 = new Label();
             orderDatePicker = new DateTimePicker();
             csvRecentClientOrderBtn = new Button();
             printRecentClientOrderBtn = new Button();
@@ -106,6 +107,20 @@
             label8 = new Label();
             addClientBtn = new PictureBox();
             clientGridView = new DataGridView();
+            productPanel = new Panel();
+            label7 = new Label();
+            csvProductBtn = new PictureBox();
+            txtProductSearch = new TextBox();
+            label11 = new Label();
+            printProductBtn = new PictureBox();
+            deleteProductLabel = new Label();
+            deleteProductBtn = new PictureBox();
+            editProductLabel = new Label();
+            editProductBtn = new PictureBox();
+            label14 = new Label();
+            addProductBtn = new PictureBox();
+            label15 = new Label();
+            productGridView = new DataGridView();
             navPanel.SuspendLayout();
             logoutBtn.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)pictureBox1).BeginInit();
@@ -142,6 +157,13 @@
             ((System.ComponentModel.ISupportInitialize)editClientBtn).BeginInit();
             ((System.ComponentModel.ISupportInitialize)addClientBtn).BeginInit();
             ((System.ComponentModel.ISupportInitialize)clientGridView).BeginInit();
+            productPanel.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)csvProductBtn).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)printProductBtn).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)deleteProductBtn).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)editProductBtn).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)addProductBtn).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)productGridView).BeginInit();
             SuspendLayout();
             // 
             // navPanel
@@ -733,7 +755,7 @@
             employeeGridView.RowHeadersWidth = 51;
             employeeGridView.Size = new Size(782, 303);
             employeeGridView.TabIndex = 1;
-            employeeGridView.CellClick += EmployeeCellClick;
+            employeeGridView.CellClick += clientGridView_CellClick;
             // 
             // settingPanel
             // 
@@ -853,6 +875,7 @@
             // 
             // clientPanel
             // 
+            clientPanel.Controls.Add(label6);
             clientPanel.Controls.Add(orderDatePicker);
             clientPanel.Controls.Add(csvRecentClientOrderBtn);
             clientPanel.Controls.Add(printRecentClientOrderBtn);
@@ -875,10 +898,21 @@
             clientPanel.Size = new Size(782, 593);
             clientPanel.TabIndex = 32;
             // 
+            // label6
+            // 
+            label6.AutoSize = true;
+            label6.Font = new Font("Rockwell", 18F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            label6.ForeColor = Color.FromArgb(69, 123, 157);
+            label6.Location = new Point(244, 14);
+            label6.Name = "label6";
+            label6.Size = new Size(314, 38);
+            label6.TabIndex = 38;
+            label6.Text = "Client Management";
+            // 
             // orderDatePicker
             // 
             orderDatePicker.Font = new Font("Rockwell", 7.8F);
-            orderDatePicker.Location = new Point(407, 174);
+            orderDatePicker.Location = new Point(407, 214);
             orderDatePicker.Name = "orderDatePicker";
             orderDatePicker.Size = new Size(365, 23);
             orderDatePicker.TabIndex = 37;
@@ -967,7 +1001,7 @@
             // searchClientTxt
             // 
             searchClientTxt.Font = new Font("Rockwell", 7.8F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            searchClientTxt.Location = new Point(16, 176);
+            searchClientTxt.Location = new Point(16, 216);
             searchClientTxt.Name = "searchClientTxt";
             searchClientTxt.PlaceholderText = "Seach By Phone";
             searchClientTxt.Size = new Size(365, 23);
@@ -979,7 +1013,7 @@
             label10.AutoSize = true;
             label10.Font = new Font("Rockwell", 12F, FontStyle.Bold);
             label10.ForeColor = Color.FromArgb(69, 123, 157);
-            label10.Location = new Point(405, 140);
+            label10.Location = new Point(405, 180);
             label10.Name = "label10";
             label10.Size = new Size(142, 24);
             label10.TabIndex = 30;
@@ -990,7 +1024,7 @@
             label9.AutoSize = true;
             label9.Font = new Font("Rockwell", 12F, FontStyle.Bold);
             label9.ForeColor = Color.FromArgb(69, 123, 157);
-            label9.Location = new Point(16, 140);
+            label9.Location = new Point(16, 180);
             label9.Name = "label9";
             label9.Size = new Size(113, 24);
             label9.TabIndex = 29;
@@ -1002,11 +1036,11 @@
             recentOrderGridView.AllowUserToDeleteRows = false;
             recentOrderGridView.BackgroundColor = Color.White;
             recentOrderGridView.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            recentOrderGridView.Location = new Point(405, 209);
+            recentOrderGridView.Location = new Point(405, 247);
             recentOrderGridView.Name = "recentOrderGridView";
             recentOrderGridView.ReadOnly = true;
             recentOrderGridView.RowHeadersWidth = 51;
-            recentOrderGridView.Size = new Size(365, 339);
+            recentOrderGridView.Size = new Size(365, 301);
             recentOrderGridView.TabIndex = 28;
             // 
             // deleteClientLabel
@@ -1014,7 +1048,7 @@
             deleteClientLabel.AutoSize = true;
             deleteClientLabel.Font = new Font("Rockwell", 10.2F, FontStyle.Bold);
             deleteClientLabel.ForeColor = Color.Silver;
-            deleteClientLabel.Location = new Point(602, 102);
+            deleteClientLabel.Location = new Point(602, 142);
             deleteClientLabel.Name = "deleteClientLabel";
             deleteClientLabel.Size = new Size(79, 20);
             deleteClientLabel.TabIndex = 25;
@@ -1025,7 +1059,7 @@
             deleteClientBtn.BackgroundImage = Properties.Resources.remove_unactive;
             deleteClientBtn.BackgroundImageLayout = ImageLayout.Zoom;
             deleteClientBtn.Cursor = Cursors.Hand;
-            deleteClientBtn.Location = new Point(607, 28);
+            deleteClientBtn.Location = new Point(607, 68);
             deleteClientBtn.Name = "deleteClientBtn";
             deleteClientBtn.Size = new Size(69, 62);
             deleteClientBtn.TabIndex = 24;
@@ -1037,7 +1071,7 @@
             editClientLabel.AutoSize = true;
             editClientLabel.Font = new Font("Rockwell", 10.2F, FontStyle.Bold);
             editClientLabel.ForeColor = Color.Silver;
-            editClientLabel.Location = new Point(367, 111);
+            editClientLabel.Location = new Point(367, 151);
             editClientLabel.Name = "editClientLabel";
             editClientLabel.Size = new Size(53, 20);
             editClientLabel.TabIndex = 23;
@@ -1048,7 +1082,7 @@
             editClientBtn.BackgroundImage = Properties.Resources.pen_unactive;
             editClientBtn.BackgroundImageLayout = ImageLayout.Zoom;
             editClientBtn.Cursor = Cursors.Hand;
-            editClientBtn.Location = new Point(358, 28);
+            editClientBtn.Location = new Point(358, 68);
             editClientBtn.Name = "editClientBtn";
             editClientBtn.Size = new Size(68, 62);
             editClientBtn.TabIndex = 22;
@@ -1060,7 +1094,7 @@
             label8.AutoSize = true;
             label8.Font = new Font("Rockwell", 10.2F, FontStyle.Bold);
             label8.ForeColor = Color.FromArgb(75, 174, 79);
-            label8.Location = new Point(150, 105);
+            label8.Location = new Point(150, 145);
             label8.Name = "label8";
             label8.Size = new Size(49, 20);
             label8.TabIndex = 21;
@@ -1071,7 +1105,7 @@
             addClientBtn.BackgroundImage = (Image)resources.GetObject("addClientBtn.BackgroundImage");
             addClientBtn.BackgroundImageLayout = ImageLayout.Zoom;
             addClientBtn.Cursor = Cursors.Hand;
-            addClientBtn.Location = new Point(139, 28);
+            addClientBtn.Location = new Point(139, 68);
             addClientBtn.Name = "addClientBtn";
             addClientBtn.Size = new Size(70, 62);
             addClientBtn.TabIndex = 20;
@@ -1084,13 +1118,185 @@
             clientGridView.AllowUserToDeleteRows = false;
             clientGridView.BackgroundColor = Color.White;
             clientGridView.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            clientGridView.Location = new Point(16, 209);
+            clientGridView.Location = new Point(16, 247);
             clientGridView.Name = "clientGridView";
             clientGridView.ReadOnly = true;
             clientGridView.RowHeadersWidth = 51;
-            clientGridView.Size = new Size(365, 339);
+            clientGridView.Size = new Size(365, 301);
             clientGridView.TabIndex = 1;
             clientGridView.CellClick += clientGridView_CellClick;
+            // 
+            // productPanel
+            // 
+            productPanel.Controls.Add(label7);
+            productPanel.Controls.Add(csvProductBtn);
+            productPanel.Controls.Add(txtProductSearch);
+            productPanel.Controls.Add(label11);
+            productPanel.Controls.Add(printProductBtn);
+            productPanel.Controls.Add(deleteProductLabel);
+            productPanel.Controls.Add(deleteProductBtn);
+            productPanel.Controls.Add(editProductLabel);
+            productPanel.Controls.Add(editProductBtn);
+            productPanel.Controls.Add(label14);
+            productPanel.Controls.Add(addProductBtn);
+            productPanel.Controls.Add(label15);
+            productPanel.Controls.Add(productGridView);
+            productPanel.Dock = DockStyle.Fill;
+            productPanel.Location = new Point(200, 60);
+            productPanel.Name = "productPanel";
+            productPanel.Size = new Size(782, 593);
+            productPanel.TabIndex = 34;
+            // 
+            // label7
+            // 
+            label7.AutoSize = true;
+            label7.Font = new Font("Rockwell", 10.2F, FontStyle.Bold);
+            label7.ForeColor = Color.FromArgb(137, 196, 41);
+            label7.Location = new Point(688, 192);
+            label7.Name = "label7";
+            label7.Size = new Size(43, 20);
+            label7.TabIndex = 33;
+            label7.Text = "CSV";
+            // 
+            // csvProductBtn
+            // 
+            csvProductBtn.BackgroundImage = (Image)resources.GetObject("csvProductBtn.BackgroundImage");
+            csvProductBtn.BackgroundImageLayout = ImageLayout.Zoom;
+            csvProductBtn.Cursor = Cursors.Hand;
+            csvProductBtn.Location = new Point(673, 115);
+            csvProductBtn.Name = "csvProductBtn";
+            csvProductBtn.Size = new Size(72, 62);
+            csvProductBtn.TabIndex = 32;
+            csvProductBtn.TabStop = false;
+            csvProductBtn.Click += csvProductBtn_Click;
+            // 
+            // txtProductSearch
+            // 
+            txtProductSearch.Font = new Font("Rockwell", 7.8F);
+            txtProductSearch.Location = new Point(16, 256);
+            txtProductSearch.Name = "txtProductSearch";
+            txtProductSearch.PlaceholderText = "Search By Name";
+            txtProductSearch.Size = new Size(390, 23);
+            txtProductSearch.TabIndex = 29;
+            txtProductSearch.TextChanged += txtProductSearch_TextChanged;
+            // 
+            // label11
+            // 
+            label11.AutoSize = true;
+            label11.Font = new Font("Rockwell", 10.2F, FontStyle.Bold);
+            label11.ForeColor = Color.FromArgb(255, 163, 0);
+            label11.Location = new Point(515, 192);
+            label11.Name = "label11";
+            label11.Size = new Size(64, 20);
+            label11.TabIndex = 27;
+            label11.Text = "PRINT";
+            // 
+            // printProductBtn
+            // 
+            printProductBtn.BackgroundImage = (Image)resources.GetObject("printProductBtn.BackgroundImage");
+            printProductBtn.BackgroundImageLayout = ImageLayout.Zoom;
+            printProductBtn.Cursor = Cursors.Hand;
+            printProductBtn.Location = new Point(511, 116);
+            printProductBtn.Name = "printProductBtn";
+            printProductBtn.Size = new Size(72, 62);
+            printProductBtn.TabIndex = 26;
+            printProductBtn.TabStop = false;
+            printProductBtn.Click += printProductBtn_Click;
+            // 
+            // deleteProductLabel
+            // 
+            deleteProductLabel.AutoSize = true;
+            deleteProductLabel.Font = new Font("Rockwell", 10.2F, FontStyle.Bold);
+            deleteProductLabel.ForeColor = Color.Silver;
+            deleteProductLabel.Location = new Point(352, 192);
+            deleteProductLabel.Name = "deleteProductLabel";
+            deleteProductLabel.Size = new Size(79, 20);
+            deleteProductLabel.TabIndex = 25;
+            deleteProductLabel.Text = "DELETE";
+            // 
+            // deleteProductBtn
+            // 
+            deleteProductBtn.BackgroundImage = Properties.Resources.remove_unactive;
+            deleteProductBtn.BackgroundImageLayout = ImageLayout.Zoom;
+            deleteProductBtn.Cursor = Cursors.Hand;
+            deleteProductBtn.Location = new Point(357, 115);
+            deleteProductBtn.Name = "deleteProductBtn";
+            deleteProductBtn.Size = new Size(69, 62);
+            deleteProductBtn.TabIndex = 24;
+            deleteProductBtn.TabStop = false;
+            deleteProductBtn.Click += deleteProductBtn_Click;
+            // 
+            // editProductLabel
+            // 
+            editProductLabel.AutoSize = true;
+            editProductLabel.Font = new Font("Rockwell", 10.2F, FontStyle.Bold);
+            editProductLabel.ForeColor = Color.Silver;
+            editProductLabel.Location = new Point(210, 192);
+            editProductLabel.Name = "editProductLabel";
+            editProductLabel.Size = new Size(53, 20);
+            editProductLabel.TabIndex = 23;
+            editProductLabel.Text = "EDIT";
+            // 
+            // editProductBtn
+            // 
+            editProductBtn.BackgroundImage = Properties.Resources.pen_unactive;
+            editProductBtn.BackgroundImageLayout = ImageLayout.Zoom;
+            editProductBtn.Cursor = Cursors.Hand;
+            editProductBtn.Location = new Point(202, 116);
+            editProductBtn.Name = "editProductBtn";
+            editProductBtn.Size = new Size(68, 62);
+            editProductBtn.TabIndex = 22;
+            editProductBtn.TabStop = false;
+            editProductBtn.Click += editProductBtn_Click;
+            // 
+            // label14
+            // 
+            label14.AutoSize = true;
+            label14.Font = new Font("Rockwell", 10.2F, FontStyle.Bold);
+            label14.ForeColor = Color.FromArgb(75, 174, 79);
+            label14.Location = new Point(56, 192);
+            label14.Name = "label14";
+            label14.Size = new Size(49, 20);
+            label14.TabIndex = 21;
+            label14.Text = "ADD";
+            // 
+            // addProductBtn
+            // 
+            addProductBtn.BackgroundImage = (Image)resources.GetObject("addProductBtn.BackgroundImage");
+            addProductBtn.BackgroundImageLayout = ImageLayout.Zoom;
+            addProductBtn.Cursor = Cursors.Hand;
+            addProductBtn.Location = new Point(45, 115);
+            addProductBtn.Name = "addProductBtn";
+            addProductBtn.Size = new Size(70, 62);
+            addProductBtn.TabIndex = 20;
+            addProductBtn.TabStop = false;
+            addProductBtn.Click += addProductBtn_Click;
+            // 
+            // label15
+            // 
+            label15.AutoSize = true;
+            label15.Font = new Font("Rockwell", 18F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            label15.ForeColor = Color.FromArgb(69, 123, 157);
+            label15.Location = new Point(230, 28);
+            label15.Name = "label15";
+            label15.Size = new Size(338, 38);
+            label15.TabIndex = 19;
+            label15.Text = "Product Management";
+            // 
+            // productGridView
+            // 
+            productGridView.AllowUserToAddRows = false;
+            productGridView.AllowUserToDeleteRows = false;
+            productGridView.BackgroundColor = Color.White;
+            productGridView.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            productGridView.Dock = DockStyle.Bottom;
+            productGridView.Location = new Point(0, 290);
+            productGridView.Name = "productGridView";
+            productGridView.ReadOnly = true;
+            productGridView.RowHeadersWidth = 51;
+            productGridView.Size = new Size(782, 303);
+            productGridView.TabIndex = 1;
+            productGridView.CellClick += productGridView_CellClick;
             // 
             // AdminForm
             // 
@@ -1098,6 +1304,7 @@
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = Color.FromArgb(238, 238, 238);
             ClientSize = new Size(982, 653);
+            Controls.Add(productPanel);
             Controls.Add(clientPanel);
             Controls.Add(employeePanel);
             Controls.Add(settingPanel);
@@ -1158,6 +1365,14 @@
             ((System.ComponentModel.ISupportInitialize)editClientBtn).EndInit();
             ((System.ComponentModel.ISupportInitialize)addClientBtn).EndInit();
             ((System.ComponentModel.ISupportInitialize)clientGridView).EndInit();
+            productPanel.ResumeLayout(false);
+            productPanel.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)csvProductBtn).EndInit();
+            ((System.ComponentModel.ISupportInitialize)printProductBtn).EndInit();
+            ((System.ComponentModel.ISupportInitialize)deleteProductBtn).EndInit();
+            ((System.ComponentModel.ISupportInitialize)editProductBtn).EndInit();
+            ((System.ComponentModel.ISupportInitialize)addProductBtn).EndInit();
+            ((System.ComponentModel.ISupportInitialize)productGridView).EndInit();
             ResumeLayout(false);
         }
 
@@ -1239,5 +1454,20 @@
         public Button csvRecentClientOrderBtn;
         public Button printRecentClientOrderBtn;
         private DateTimePicker orderDatePicker;
+        private Label label6;
+        private Panel productPanel;
+        private Label label7;
+        private PictureBox csvProductBtn;
+        private TextBox txtProductSearch;
+        private Label label11;
+        private PictureBox printProductBtn;
+        private Label deleteProductLabel;
+        private PictureBox deleteProductBtn;
+        private Label editProductLabel;
+        private PictureBox editProductBtn;
+        private Label label14;
+        private PictureBox addProductBtn;
+        private Label label15;
+        private DataGridView productGridView;
     }
 }

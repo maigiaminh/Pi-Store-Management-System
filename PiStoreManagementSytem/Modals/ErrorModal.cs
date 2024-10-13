@@ -10,7 +10,6 @@ namespace PiStoreManagementSytem.modal
 {
     public partial class ErrorModal : Form
     {
-
         private int targetY;
         private int step = 50;
         public ErrorModal()

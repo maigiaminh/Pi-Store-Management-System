@@ -7,8 +7,10 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.Drawing.Drawing2D;
 using System.Linq;
 using System.Runtime.CompilerServices;
+using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -24,6 +26,13 @@ namespace PiStoreManagementSytem
         IStrategyValidator phone;
         private AdminForm parent;
         private Client currentClient;
+        private const int WM_NCLBUTTONDOWN = 0xA1;
+        private const int HTCAPTION = 0x2;
+        [DllImport("User32.dll")]
+        public static extern bool ReleaseCapture();
+
+        [DllImport("User32.dll")]
+        public static extern int SendMessage(IntPtr hWnd, int Msg, int wParam, int lParam);
         public ClientForm(AdminForm parent, Client client = null)
         {
             InitializeComponent();
@@ -35,12 +44,19 @@ namespace PiStoreManagementSytem
             this.parent = parent;
             this.currentClient = client;
         }
-
+        private void DragApplication(object sender, MouseEventArgs e)
+        {
+            if (e.Button == MouseButtons.Left)
+            {
+                ReleaseCapture();
+                SendMessage(Handle, WM_NCLBUTTONDOWN, HTCAPTION, 0);
+            }
+        }
         private void btnSave_Click(object sender, EventArgs e)
         {
             if (CheckAllFields())
             {
-                if(currentClient == null)
+                if (currentClient == null)
                 {
                     if (AddClient
                         (txtClientName.Text,
@@ -105,7 +121,7 @@ namespace PiStoreManagementSytem
 
         private void DisplaySuccess(string msg)
         {
-            SuccessModal successModal = new SuccessModal();
+            SuccessModal successModal = new SuccessModal(this);
             successModal.successTxt.Text = msg;
             successModal.Show();
         }
@@ -155,6 +171,20 @@ namespace PiStoreManagementSytem
             }
 
             return ClientDAO.Instance.UpdateClient(id, name, email, phone, address);
+        }
+
+        private void ClientForm_Load(object sender, EventArgs e)
+        {
+            int cornerRadius = 30;
+            GraphicsPath path = new GraphicsPath();
+
+            path.AddArc(0, 0, cornerRadius, cornerRadius, 180, 90);
+            path.AddArc(this.Width - cornerRadius, 0, cornerRadius, cornerRadius, 270, 90);
+            path.AddArc(this.Width - cornerRadius, this.Height - cornerRadius, cornerRadius, cornerRadius, 0, 90);
+            path.AddArc(0, this.Height - cornerRadius, cornerRadius, cornerRadius, 90, 90);
+            path.CloseFigure();
+
+            this.Region = new Region(path);
         }
     }
 }

@@ -35,7 +35,6 @@ namespace PiStoreManagementSytem
         public static extern int SendMessage(IntPtr hWnd, int Msg, int wParam, int lParam);
 
         private DataTable currentSearchResult;
-
         public AdminForm(int id)
         {
             InitializeComponent();
@@ -114,6 +113,7 @@ namespace PiStoreManagementSytem
         {
             employeePanel.Hide();
             clientPanel.Hide();
+            productPanel.Hide();
         }
 
         private void UnactiveAllPanel()
@@ -160,8 +160,15 @@ namespace PiStoreManagementSytem
         private void ProductClick(object sender, EventArgs e)
         {
             UnactiveAllButton();
+            HideAllPanel();
+            productPanel.Show();
+
             productImg.BackgroundImage = Constants.Constants.product_active;
             productLabel.ForeColor = Constants.Constants.activeColor;
+
+            productGridView.DataSource = LoadProductTable();
+
+            SetProductButtonActive(false);
         }
 
         private void OrderClick(object sender, EventArgs e)
@@ -247,6 +254,11 @@ namespace PiStoreManagementSytem
             return ClientDAO.Instance.LoadClientTable();
         }
 
+        private DataTable LoadProductTable()
+        {
+            return ProductDAO.Instance.LoadProductTable();
+        }
+
         private void EmployeeCellClick(object sender, DataGridViewCellEventArgs e)
         {
             if (e.RowIndex >= 0)
@@ -305,6 +317,28 @@ namespace PiStoreManagementSytem
                 deleteClientBtn.BackgroundImage = Constants.Constants.delete_unactive;
                 editClientLabel.ForeColor = Color.Silver;
                 deleteClientLabel.ForeColor = Color.Silver;
+            }
+        }
+
+        private void SetProductButtonActive(bool active)
+        {
+            if (active)
+            {
+                editProductBtn.Enabled = true;
+                deleteProductBtn.Enabled = true;
+                editProductBtn.BackgroundImage = Constants.Constants.edit;
+                deleteProductBtn.BackgroundImage = Constants.Constants.delete;
+                editProductLabel.ForeColor = Constants.Constants.editColor;
+                deleteProductLabel.ForeColor = Constants.Constants.deleteColor;
+            }
+            else
+            {
+                editProductBtn.Enabled = false;
+                deleteProductBtn.Enabled = false;
+                editProductBtn.BackgroundImage = Constants.Constants.edit_unactive;
+                deleteProductBtn.BackgroundImage = Constants.Constants.delete_unactive;
+                editProductLabel.ForeColor = Color.Silver;
+                deleteProductLabel.ForeColor = Color.Silver;
             }
         }
         private void editEmBtn_Click(object sender, EventArgs e)
@@ -374,6 +408,10 @@ namespace PiStoreManagementSytem
         {
             clientGridView.DataSource = LoadClientTable();
         }
+        public void UpdateProductGridView()
+        {
+            productGridView.DataSource = LoadProductTable();
+        }
 
         private void deleteEmBtn_Click(object sender, EventArgs e)
         {
@@ -433,7 +471,8 @@ namespace PiStoreManagementSytem
 
         private void printEmBtn_Click(object sender, EventArgs e)
         {
-            PrintPDF(employeeGridView, "Employee");
+            if (employeeGridView != null)
+                PrintPDF(employeeGridView, "Employee");
         }
 
         private void PrintPDF(DataGridView gridView, string name, DataGridViewCellCollection values = null)
@@ -548,7 +587,7 @@ namespace PiStoreManagementSytem
             {
                 if (tableTop + rowHeight > page.Height - 50)
                 {
-                    tableTop = 220;
+                    tableTop = 250;
                     page = document.AddPage();
                     page.Size = PageSize.A4;
                     page.Orientation = PageOrientation.Landscape;
@@ -865,7 +904,8 @@ namespace PiStoreManagementSytem
 
         private void printClientBtn_Click(object sender, EventArgs e)
         {
-            PrintPDF(clientGridView, "Client");
+            if (clientGridView != null)
+                PrintPDF(clientGridView, "Client");
         }
 
         private void searchClientTxt_TextChanged(object sender, EventArgs e)
@@ -1034,6 +1074,129 @@ namespace PiStoreManagementSytem
         private bool DeleteClient(int id)
         {
             return ClientDAO.Instance.DeleteClient(id);
+        }
+
+        private void txtProductSearch_TextChanged(object sender, EventArgs e)
+        {
+            string searchValue = txtProductSearch.Text.Trim();
+
+            DataTable productTable = LoadProductTable();
+
+            if (!string.IsNullOrEmpty(searchValue))
+            {
+                DataView dv = new DataView(productTable);
+                dv.RowFilter = $"Name LIKE '%{searchValue}%'";
+                currentSearchResult = dv.ToTable();
+                productGridView.DataSource = currentSearchResult;
+            }
+            else
+            {
+                currentSearchResult = productTable;
+                productGridView.DataSource = productTable;
+            }
+        }
+
+        private void printProductBtn_Click(object sender, EventArgs e)
+        {
+            if (productGridView.DataSource != null)
+                PrintPDF(productGridView, "Product");
+        }
+
+        private void csvProductBtn_Click(object sender, EventArgs e)
+        {
+            SaveFileDialog sfd = new SaveFileDialog();
+            sfd.Filter = "CSV files (*.csv)|*.csv";
+            sfd.FileName = "Product_Export.csv";
+
+            if (sfd.ShowDialog() == DialogResult.OK)
+            {
+                ExportDataGridViewToCSV(productGridView, sfd.FileName);
+            }
+        }
+
+        private void productGridView_CellClick(object sender, DataGridViewCellEventArgs e)
+        {
+            if (e.RowIndex >= 0)
+            {
+                DataGridViewRow row = productGridView.Rows[e.RowIndex];
+
+                if (row.Cells["ID"].Value != null && !string.IsNullOrEmpty(row.Cells["ID"].Value.ToString()))
+                {
+                    SetProductButtonActive(true);
+                }
+                else
+                {
+                    SetProductButtonActive(false);
+                }
+            }
+        }
+
+        private void addProductBtn_Click(object sender, EventArgs e)
+        {
+            ProductForm productForm = new ProductForm(this);
+
+            productForm.ShowDialog();
+        }
+
+        private void editProductBtn_Click(object sender, EventArgs e)
+        {
+            if (productGridView.CurrentRow != null && productGridView.CurrentRow.Cells["ID"].Value != null)
+            {
+                DataGridViewRow row = productGridView.CurrentRow;
+                int productID = Convert.ToInt32(row.Cells["ID"].Value);
+                string productName = row.Cells["Name"].Value.ToString();
+                string productDescription = row.Cells["Description"].Value.ToString();
+                decimal productPrice = Convert.ToDecimal(row.Cells["Price"].Value);
+                int productQuantity = Convert.ToInt32(row.Cells["Quantity"].Value);
+
+                ProductForm productForm = new ProductForm(this);
+
+                productForm.productID = productID;
+                productForm.txtName.Text = productName;
+                productForm.txtDescription.Text = productDescription;
+                productForm.numPrice.Value = productPrice;
+                productForm.numQuantity.Value = productQuantity;
+
+                productForm.ShowDialog();
+            }
+        }
+
+        private void deleteProductBtn_Click(object sender, EventArgs e)
+        {
+            if (productGridView.CurrentRow != null && productGridView.CurrentRow.Cells["ID"].Value != null)
+            {
+                int productID = Convert.ToInt32(productGridView.CurrentRow.Cells["ID"].Value);
+                DialogResult dialogResult = MessageBox.Show("Are you sure to delete this product?", "Delete Product", MessageBoxButtons.YesNo);
+                if (dialogResult == DialogResult.Yes)
+                {
+                    if (CanDeleteProduct(productID))
+                    {
+                        if (DeleteProduct(productID))
+                        {
+                            UpdateProductGridView();
+                            DisplaySuccess("Successfully Delete Product!");
+                        }
+                        else
+                        {
+                            DisplayError("An error has orcurred while deleting product! Please try again!");
+                        }
+                    }
+                    else
+                    {
+                        DisplayError("Can not delete a Product had orders!");
+                    }
+
+                }
+            }
+        }
+
+        private bool CanDeleteProduct(int id)
+        {
+            return ProductDAO.Instance.CanDeleteProduct(id);
+        }
+        private bool DeleteProduct(int id)
+        {
+            return ProductDAO.Instance.DeleteProduct(id);
         }
     }
 }

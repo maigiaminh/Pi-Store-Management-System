@@ -84,7 +84,17 @@ VALUES
 (N'Adidas UltraBoost', N'Giày sneaker thể thao', 3000000, 50),
 (N'Converse Chuck Taylor', N'Giày sneaker cổ cao', 1800000, 80),
 (N'Puma Suede Classic', N'Giày sneaker màu đen', 2200000, 120),
-(N'Vans Old Skool', N'Giày sneaker phong cách retro', 1700000, 90);
+(N'Vans Old Skool', N'Giày sneaker phong cách retro', 1700000, 90),
+(N'Asics Gel-Lyte III', N'Giày sneaker hỗ trợ chạy bộ', 2400000, 70),
+(N'Reebok Classic Leather', N'Giày sneaker cổ điển', 2100000, 60),
+(N'New Balance 574', N'Giày sneaker mang phong cách cổ điển', 2300000, 75),
+(N'Jordan 1 Retro High', N'Giày bóng rổ biểu tượng', 4000000, 40),
+(N'Nike Dunk Low', N'Giày sneaker bóng rổ màu trắng', 2700000, 65),
+(N'Yeezy Boost 350', N'Giày sneaker hợp tác với Kanye West', 5000000, 30),
+(N'Fila Disruptor II', N'Giày sneaker đế chunky', 1900000, 100),
+(N'Balenciaga Triple S', N'Giày sneaker cao cấp', 9000000, 15),
+(N'Under Armour HOVR Phantom', N'Giày chạy bộ với công nghệ HOVR', 2800000, 50),
+(N'Saucony Shadow 5000', N'Giày sneaker chạy bộ', 2000000, 80);
 
 INSERT INTO [Order] (ClientID, EmployeeID, OrderDate, TotalPrice)
 VALUES 
@@ -110,4 +120,3 @@ VALUES
 (8, 3, 1, '2024-10-17', 2500000),
 (9, 4, 2, '2024-10-18', 5000000),
 (10, 5, 3, '2024-10-19', 4200000);
-

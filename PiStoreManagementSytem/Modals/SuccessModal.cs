@@ -12,12 +12,14 @@ namespace PiStoreManagementSytem.modal
 {
     public partial class SuccessModal : Form
     {
+        private Form form;
         private int targetY;
         private int step = 50;
-        public SuccessModal()
+        public SuccessModal(Form form = null)
         {
             InitializeComponent();
             this.Opacity = 0;
+            this.form = form;
         }
 
         private void closeBtn_Click(object sender, EventArgs e)
@@ -55,6 +57,8 @@ namespace PiStoreManagementSytem.modal
             {
                 closeTimer.Stop();
                 this.Close();
+                if(form != null)
+                    form.Close();
             }
         }
     }

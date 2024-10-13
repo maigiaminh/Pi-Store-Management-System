@@ -175,7 +175,6 @@ namespace PiStoreManagementSytem.DAO
             bool hasOrders = false;
 
             string query = "SELECT COUNT(*) FROM [Order] WHERE EmployeeID = @EmployeeID";
-            MessageBox.Show(query);
 
             SqlParameter[] parameters = new SqlParameter[]
             {

@@ -368,6 +368,8 @@
             Name = "EmployeeForm";
             StartPosition = FormStartPosition.CenterScreen;
             Text = "Form1";
+            Load += EmployeeForm_Load;
+            MouseDown += DragApplication;
             ((System.ComponentModel.ISupportInitialize)imgEmployee).EndInit();
             ((System.ComponentModel.ISupportInitialize)salaryTxt).EndInit();
             ((System.ComponentModel.ISupportInitialize)exitBtn).EndInit();
