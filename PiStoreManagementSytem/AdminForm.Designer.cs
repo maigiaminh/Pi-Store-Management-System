@@ -1030,6 +1030,7 @@
             deleteClientBtn.Size = new Size(69, 62);
             deleteClientBtn.TabIndex = 24;
             deleteClientBtn.TabStop = false;
+            deleteClientBtn.Click += deleteClientBtn_Click;
             // 
             // editClientLabel
             // 
@@ -1052,6 +1053,7 @@
             editClientBtn.Size = new Size(68, 62);
             editClientBtn.TabIndex = 22;
             editClientBtn.TabStop = false;
+            editClientBtn.Click += editClientBtn_Click;
             // 
             // label8
             // 
@@ -1074,6 +1076,7 @@
             addClientBtn.Size = new Size(70, 62);
             addClientBtn.TabIndex = 20;
             addClientBtn.TabStop = false;
+            addClientBtn.Click += addClientBtn_Click;
             // 
             // clientGridView
             // 

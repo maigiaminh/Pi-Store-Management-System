@@ -290,21 +290,21 @@ namespace PiStoreManagementSytem
         {
             if (active)
             {
-                editEmBtn.Enabled = true;
-                deleteEmBtn.Enabled = true;
-                editEmBtn.BackgroundImage = Constants.Constants.edit;
-                deleteEmBtn.BackgroundImage = Constants.Constants.delete;
-                editEmLabel.ForeColor = Constants.Constants.editColor;
-                deleteEmLabel.ForeColor = Constants.Constants.deleteColor;
+                editClientBtn.Enabled = true;
+                deleteClientBtn.Enabled = true;
+                editClientBtn.BackgroundImage = Constants.Constants.edit;
+                deleteClientBtn.BackgroundImage = Constants.Constants.delete;
+                editClientLabel.ForeColor = Constants.Constants.editColor;
+                deleteClientLabel.ForeColor = Constants.Constants.deleteColor;
             }
             else
             {
-                editEmBtn.Enabled = false;
-                deleteEmBtn.Enabled = false;
-                editEmBtn.BackgroundImage = Constants.Constants.edit_unactive;
-                deleteEmBtn.BackgroundImage = Constants.Constants.delete_unactive;
-                editEmLabel.ForeColor = Color.Silver;
-                deleteEmLabel.ForeColor = Color.Silver;
+                editClientBtn.Enabled = false;
+                deleteClientBtn.Enabled = false;
+                editClientBtn.BackgroundImage = Constants.Constants.edit_unactive;
+                deleteClientBtn.BackgroundImage = Constants.Constants.delete_unactive;
+                editClientLabel.ForeColor = Color.Silver;
+                deleteClientLabel.ForeColor = Color.Silver;
             }
         }
         private void editEmBtn_Click(object sender, EventArgs e)
@@ -370,6 +370,11 @@ namespace PiStoreManagementSytem
             employeeGridView.DataSource = LoadEmployeeTable();
         }
 
+        public void UpdateClientGridView()
+        {
+            clientGridView.DataSource = LoadClientTable();
+        }
+
         private void deleteEmBtn_Click(object sender, EventArgs e)
         {
             if (employeeGridView.CurrentRow != null && employeeGridView.CurrentRow.Cells["ID"].Value != null)
@@ -378,24 +383,34 @@ namespace PiStoreManagementSytem
                 DialogResult dialogResult = MessageBox.Show("Are you sure to delete this employee?", "Delete Employee", MessageBoxButtons.YesNo);
                 if (dialogResult == DialogResult.Yes)
                 {
-                    if (DeleteEmployee(employeeID))
+                    if (CanDeleteEmployee(employeeID))
                     {
-                        UpdateEmployeeGridView();
-                        DisplaySuccess("Successfully Delete Employee!");
+                        if (DeleteEmployee(employeeID))
+                        {
+                            UpdateEmployeeGridView();
+                            DisplaySuccess("Successfully Delete Employee!");
+                        }
+                        else
+                        {
+                            DisplayError("An error has orcurred while deleting employee! Please try again!");
+                        }
                     }
                     else
                     {
-                        DisplaySuccess("An error has orcurred while deleting employee! Please try again!");
+                        DisplayError("Can not delete an Employee had orders!");
                     }
+
                 }
             }
         }
-
+        private bool CanDeleteEmployee(int id)
+        {
+            return EmployeeDAO.Instance.CanDeleteEmployee(id);
+        }
         private bool DeleteEmployee(int id)
         {
             return EmployeeDAO.Instance.DeleteEmployee(id);
         }
-
 
         private void DisplayError(string msg)
         {
@@ -874,14 +889,27 @@ namespace PiStoreManagementSytem
             }
         }
 
+
+
         private void clientGridView_CellClick(object sender, DataGridViewCellEventArgs e)
         {
             if (e.RowIndex >= 0)
             {
-                int clientId = Convert.ToInt32(clientGridView.Rows[e.RowIndex].Cells["ID"].Value);
-                clientSelectedID = clientId;
-                LoadRecentOrdersByClient(clientId);
-                currentClientCell = clientGridView.Rows[e.RowIndex].Cells;
+
+                DataGridViewRow row = clientGridView.Rows[e.RowIndex];
+
+                if (row.Cells["ID"].Value != null && !string.IsNullOrEmpty(row.Cells["ID"].Value.ToString()))
+                {
+                    int clientId = Convert.ToInt32(clientGridView.Rows[e.RowIndex].Cells["ID"].Value);
+                    clientSelectedID = clientId;
+                    LoadRecentOrdersByClient(clientId);
+                    currentClientCell = clientGridView.Rows[e.RowIndex].Cells;
+                    SetClientButtonActive(true);
+                }
+                else
+                {
+                    SetClientButtonActive(false);
+                }
             }
         }
 
@@ -936,6 +964,76 @@ namespace PiStoreManagementSytem
         {
             if (recentOrderGridView.DataSource == null) return;
             PrintPDF(recentOrderGridView, "Client Order", currentClientCell);
+        }
+
+        private void addClientBtn_Click(object sender, EventArgs e)
+        {
+            ClientForm clientForm = new ClientForm(this);
+
+            clientForm.ShowDialog();
+        }
+
+        private void editClientBtn_Click(object sender, EventArgs e)
+        {
+            if (clientGridView.CurrentRow != null && clientGridView.CurrentRow.Cells["ID"].Value != null)
+            {
+
+                DataGridViewRow row = clientGridView.CurrentRow;
+
+                int clientID = Convert.ToInt32(row.Cells["ID"].Value);
+                string clientName = row.Cells["Name"].Value.ToString();
+                string clientEmail = row.Cells["Email"].Value.ToString();
+                string clientPhone = row.Cells["Phone"].Value.ToString();
+                string clientAddress = row.Cells["Address"].Value.ToString();
+
+                Client employee = new Client(clientID, clientName, clientEmail, clientPhone, clientAddress);
+
+                ClientForm clientForm = new ClientForm(this, employee);
+
+                clientForm.txtClientName.Text = clientName;
+                clientForm.txtEmail.Text = clientEmail;
+                clientForm.txtPhone.Text = clientPhone;
+                clientForm.txtAddress.Text = clientAddress;
+
+                clientForm.ShowDialog();
+            }
+        }
+
+        private void deleteClientBtn_Click(object sender, EventArgs e)
+        {
+            if (clientGridView.CurrentRow != null && clientGridView.CurrentRow.Cells["ID"].Value != null)
+            {
+                int clientID = Convert.ToInt32(clientGridView.CurrentRow.Cells["ID"].Value);
+                DialogResult dialogResult = MessageBox.Show("Are you sure to delete this Client?", "Delete Employee", MessageBoxButtons.YesNo);
+                if (dialogResult == DialogResult.Yes)
+                {
+                    if (CanDeleteClient(clientID))
+                    {
+                        if (DeleteClient(clientID))
+                        {
+                            UpdateClientGridView();
+                            DisplaySuccess("Successfully Delete Client!");
+                        }
+                        else
+                        {
+                            DisplayError("An error has orcurred while deleting client! Please try again!");
+                        }
+                    }
+                    else
+                    {
+                        DisplayError("Can not delete an Client had orders!");
+                    }
+                }
+            }
+        }
+
+        private bool CanDeleteClient(int id)
+        {
+            return ClientDAO.Instance.CanDeleteClient(id);
+        }
+        private bool DeleteClient(int id)
+        {
+            return ClientDAO.Instance.DeleteClient(id);
         }
     }
 }

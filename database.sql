@@ -71,4 +71,43 @@ VALUES
 (N'Trần Thị Liên', 'tranthilien@example.com', '0987654321', N'Quận 2, TP.HCM'),
 (N'Phạm Hồng Hạnh', 'phamhonghanh@example.com', '0909090909', N'Quận 3, TP.HCM'),
 (N'Lê Hoàng Nhất', 'lehoangnhat@example.com', '0979797979', N'Quận 4, TP.HCM'),
-(N'Võ Minh Duy', 'vominhduy@example.com', '0888888888', N'Quận 5, TP.HCM');
+(N'Võ Minh Duy', 'vominhduy@example.com', '0888888888', N'Quận 5, TP.HCM'),
+(N'Nguyễn An Khang', 'nguyenankhang@example.com', '0911111111', N'12 Đường Khang, Quận 6, TP.HCM'),
+(N'Lê Hữu Lộc', 'lehuuloc@example.com', '0922222222', N'34 Đường Lộc, Quận 7, TP.HCM'),
+(N'Phạm Nhật Nam', 'phamnhatnam@example.com', '0933333333', N'56 Đường Nam, Quận 8, TP.HCM'),
+(N'Trần Thanh Tùng', 'tranthanhtung@example.com', '0944444444', N'78 Đường Tùng, Quận 9, TP.HCM'),
+(N'Hoàng Minh Triết', 'hoangminhtriet@example.com', '0955555555', N'90 Đường Triết, Quận 10, TP.HCM');
+
+INSERT INTO Product (Name, Description, Price, Quantity)
+VALUES 
+(N'Nike Air Force 1', N'Giày sneaker màu trắng', 2500000, 100),
+(N'Adidas UltraBoost', N'Giày sneaker thể thao', 3000000, 50),
+(N'Converse Chuck Taylor', N'Giày sneaker cổ cao', 1800000, 80),
+(N'Puma Suede Classic', N'Giày sneaker màu đen', 2200000, 120),
+(N'Vans Old Skool', N'Giày sneaker phong cách retro', 1700000, 90);
+
+INSERT INTO [Order] (ClientID, EmployeeID, OrderDate, TotalPrice)
+VALUES 
+(1, 1, '2024-11-15', 4500000),
+(2, 1, '2024-10-16', 3000000),
+(3, 1, '2024-10-17', 2500000),
+(4, 2, '2024-10-18', 5000000),
+(5, 3, '2024-10-19', 4200000);
+
+INSERT INTO OrderItem (OrderID, ProductID, Quantity)
+VALUES 
+(6, 1, 1),
+(6, 3, 1),
+(7, 2, 1),
+(8, 1, 1),
+(9, 4, 2),
+(10, 5, 2); 
+
+INSERT INTO Bill (OrderID, ClientID, EmployeeID, BillDate, TotalPrice)
+VALUES 
+(6, 1, 1, '2024-11-15', 4500000),
+(7, 2, 1, '2024-10-16', 3000000),
+(8, 3, 1, '2024-10-17', 2500000),
+(9, 4, 2, '2024-10-18', 5000000),
+(10, 5, 3, '2024-10-19', 4200000);
+

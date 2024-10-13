@@ -170,5 +170,26 @@ namespace PiStoreManagementSytem.DAO
             return null; 
         }
 
+        public bool CanDeleteEmployee(int empID)
+        {
+            bool hasOrders = false;
+
+            string query = "SELECT COUNT(*) FROM [Order] WHERE EmployeeID = @EmployeeID";
+            MessageBox.Show(query);
+
+            SqlParameter[] parameters = new SqlParameter[]
+            {
+                new SqlParameter("@EmployeeID", empID)
+            };
+
+            int orderCount = (int)DataProvider.Instance.ExecuteScalar(query, parameters);
+
+            if (orderCount > 0)
+            {
+                hasOrders = true;
+            }
+            return !hasOrders;
+        }
+           
     }
 }

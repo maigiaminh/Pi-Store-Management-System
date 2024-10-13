@@ -168,7 +168,7 @@ namespace PiStoreManagementSytem
             return EmployeeDAO.Instance.UpdateEmployee(id, name, email, phone, address, salary, hireDate);
         }
 
-            private bool CheckPhoneExist(string phone)
+        private bool CheckPhoneExist(string phone)
         {
             return EmployeeDAO.Instance.CheckPhoneNumberExist(phone);
         }

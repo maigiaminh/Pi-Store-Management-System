@@ -45,19 +45,16 @@ namespace PiStoreManagementSytem.DAO
             return DataProvider.Instance.ExecuteQuery(query);
         }
 
-        public bool AddNewEmployee(string name, string email, string password, string phone, string address, decimal salary, DateTime hireDate)
+        public bool AddNewClient(string name, string email, string phone, string address)
         {
-            string query = "INSERT INTO Employee (Name, Email, Password, Phone, Address, Salary, HireDate) VALUES (@Name, @Email, @Password, @Phone, @Address, @Salary, @HireDate)";
+            string query = "INSERT INTO Client (Name, Email, Phone, Address) VALUES (@Name, @Email, @Phone, @Address)";
 
             SqlParameter[] parameters = new SqlParameter[]
             {
                 new SqlParameter("@Name", name),
                 new SqlParameter("@Email", email),
-                new SqlParameter("@Password", password),
                 new SqlParameter("@Phone", phone),
                 new SqlParameter("@Address", address),
-                new SqlParameter("@Salary", salary),
-                new SqlParameter("@HireDate", hireDate)
             };
 
             return DataProvider.Instance.ExecuteNonQuery(query, parameters) > 0;
@@ -65,7 +62,7 @@ namespace PiStoreManagementSytem.DAO
 
         public bool CheckPhoneNumberExist(string phone)
         {
-            string query = "SELECT COUNT(*) FROM Employee WHERE Phone = @Phone";
+            string query = "SELECT COUNT(*) FROM Client WHERE Phone = @Phone";
 
             SqlParameter[] parameters = new SqlParameter[]
             {
@@ -78,7 +75,7 @@ namespace PiStoreManagementSytem.DAO
 
         public bool CheckEmailExist(string email)
         {
-            string query = "SELECT COUNT(*) FROM Employee WHERE Email = @Email";
+            string query = "SELECT COUNT(*) FROM Client WHERE Email = @Email";
 
             SqlParameter[] parameters = new SqlParameter[]
             {
@@ -89,21 +86,10 @@ namespace PiStoreManagementSytem.DAO
             return count > 0;
         }
 
-        public bool DeleteEmployee(int id)
+        public bool UpdateClient(int id, string name, string email, string phone, string address)
         {
-            string query = "DELETE FROM Employee WHERE ID = @ID";
-            SqlParameter[] parameters = new SqlParameter[]
-            {
-                new SqlParameter("@ID", id)
-            };
-
-            return DataProvider.Instance.ExecuteNonQuery(query, parameters) > 0;
-        }
-
-        public bool UpdateEmployee(int id, string name, string email, string phone, string address, decimal salary, DateTime hireDate)
-        {
-            string query = "UPDATE Employee " +
-                           "SET Name = @Name, Email = @Email, Phone = @Phone, Address = @Address, Salary = @Salary, HireDate = @HireDate " +
+            string query = "UPDATE Client " +
+                           "SET Name = @Name, Email = @Email, Phone = @Phone, Address = @Address " +
                            "WHERE ID = @ID";
 
             SqlParameter[] parameters = new SqlParameter[]
@@ -112,62 +98,41 @@ namespace PiStoreManagementSytem.DAO
                 new SqlParameter("@Name", name),
                 new SqlParameter("@Email", email),
                 new SqlParameter("@Phone", phone),
-                new SqlParameter("@Address", address),
-                new SqlParameter("@Salary", salary),
-                new SqlParameter("@HireDate", hireDate)
+                new SqlParameter("@Address", address)
             };
 
             return DataProvider.Instance.ExecuteNonQuery(query, parameters) > 0;
         }
 
-
-        public bool CheckCurrentPassword(int id, string currentPassword)
+        public bool DeleteClient(int id)
         {
-            string query = "SELECT Password FROM Employee WHERE ID = @id";
-
+            string query = "DELETE FROM Client WHERE ID = @ID";
             SqlParameter[] parameters = new SqlParameter[]
             {
-                new SqlParameter("@id", id)
-            };
-
-            DataTable result = DataProvider.Instance.ExecuteQuery(query, parameters);
-
-            if (result.Rows.Count > 0)
-            {
-                string storedPassword = result.Rows[0]["Password"].ToString();
-                return storedPassword == currentPassword;
-            }
-
-            return false;
-        }
-
-        public bool UpdatePassword(int id, string newPassword)
-        {
-            string query = "UPDATE Employee SET Password = @NewPassword WHERE ID = @Id";
-
-            SqlParameter[] parameters = new SqlParameter[]
-            {
-                new SqlParameter("@NewPassword", newPassword),
-                new SqlParameter("@Id", id)
+                new SqlParameter("@ID", id)
             };
 
             return DataProvider.Instance.ExecuteNonQuery(query, parameters) > 0;
         }
 
-        public Employee GetEmployeeById(int id)
+        public bool CanDeleteClient(int clientID)
         {
-            string query = "SELECT * FROM Employee WHERE ID = @id";
+            bool hasOrders = false;
 
-            DataTable result = DataProvider.Instance.ExecuteQuery(query, new SqlParameter[] { new SqlParameter("@id", id) });
+            string query = "SELECT COUNT(*) FROM [Order] WHERE ClientID = @ClientID";
 
-            if (result.Rows.Count > 0)
+            SqlParameter[] parameters = new SqlParameter[]
             {
-                DataRow row = result.Rows[0];
-                Employee employee = new Employee(row);
-                return employee;
-            }
+                new SqlParameter("@ClientID", clientID)
+            };
 
-            return null; 
+            int orderCount = (int)DataProvider.Instance.ExecuteScalar(query, parameters);
+
+            if (orderCount > 0)
+            {
+                hasOrders = true;
+            }
+            return !hasOrders;
         }
 
     }
