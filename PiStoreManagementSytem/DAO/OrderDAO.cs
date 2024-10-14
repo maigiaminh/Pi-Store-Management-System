@@ -34,5 +34,25 @@ namespace PiStoreManagementSytem.DAO
 
             return recentOrders;
         }
+
+        public DataTable LoadOrderTable()
+        {
+            string query = @"
+            SELECT 
+                O.ID,
+                E.Name AS EmployeeName,
+                C.Name AS ClientName,
+                C.Phone AS ClientPhone,
+                O.OrderDate,
+                O.TotalPrice
+            FROM 
+                [Order] O
+            JOIN 
+                Client C ON O.ClientID = C.ID
+            JOIN 
+                Employee E ON O.EmployeeID = E.ID";
+
+            return DataProvider.Instance.ExecuteQuery(query);
+}
     }
 }

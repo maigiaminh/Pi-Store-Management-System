@@ -1,5 +1,6 @@
 ﻿using Microsoft.IdentityModel.Tokens;
 using PdfSharp;
+using PdfSharp.Charting;
 using PdfSharp.Drawing;
 using PdfSharp.Pdf;
 using PiStoreManagementSytem.DAO;
@@ -20,6 +21,7 @@ namespace PiStoreManagementSytem
     public partial class AdminForm : Form
     {
         private int clientSelectedID;
+        private int orderSelectedID;
         private DataGridViewCellCollection currentClientCell;
         private int id;
         bool isPanelExpanded = true;
@@ -35,6 +37,7 @@ namespace PiStoreManagementSytem
         public static extern int SendMessage(IntPtr hWnd, int Msg, int wParam, int lParam);
 
         private DataTable currentSearchResult;
+        private DataTable currentOrderResult;
         public AdminForm(int id)
         {
             InitializeComponent();
@@ -114,6 +117,7 @@ namespace PiStoreManagementSytem
             employeePanel.Hide();
             clientPanel.Hide();
             productPanel.Hide();
+            orderPanel.Hide();
         }
 
         private void UnactiveAllPanel()
@@ -174,8 +178,13 @@ namespace PiStoreManagementSytem
         private void OrderClick(object sender, EventArgs e)
         {
             UnactiveAllButton();
+            HideAllPanel();
+            orderPanel.Show();
+
             orderImg.BackgroundImage = Constants.Constants.order_active;
             orderLabel.ForeColor = Constants.Constants.activeColor;
+
+            LoadOrder();
         }
 
         private void BillClick(object sender, EventArgs e)
@@ -257,6 +266,11 @@ namespace PiStoreManagementSytem
         private DataTable LoadProductTable()
         {
             return ProductDAO.Instance.LoadProductTable();
+        }
+
+        private DataTable LoadOrderTable()
+        {
+            return OrderDAO.Instance.LoadOrderTable();
         }
 
         private void EmployeeCellClick(object sender, DataGridViewCellEventArgs e)
@@ -471,7 +485,7 @@ namespace PiStoreManagementSytem
 
         private void printEmBtn_Click(object sender, EventArgs e)
         {
-            if (employeeGridView != null)
+            if (employeeGridView.Rows.Count > 0)
                 PrintPDF(employeeGridView, "Employee");
         }
 
@@ -512,7 +526,7 @@ namespace PiStoreManagementSytem
             double pageWidth = page.Width;
             double colXPos = 50;
 
-            if (name == "Client Order")
+            if (name == "ClientOrder")
             {
                 double headerHeight = 40;
                 gfx.DrawRectangle(XBrushes.LightGray, colXPos, tableTop, pageWidth - 100, headerHeight);
@@ -826,6 +840,8 @@ namespace PiStoreManagementSytem
 
         private void csvEmBtn_Click(object sender, EventArgs e)
         {
+            if (employeeGridView.Rows.Count <= 0) { return; }
+
             SaveFileDialog sfd = new SaveFileDialog();
             sfd.Filter = "CSV files (*.csv)|*.csv";
             sfd.FileName = "Employee_Export.csv";
@@ -892,6 +908,8 @@ namespace PiStoreManagementSytem
 
         private void csvClientBtn_Click(object sender, EventArgs e)
         {
+            if (clientGridView.Rows.Count <= 0) { return; }
+
             SaveFileDialog sfd = new SaveFileDialog();
             sfd.Filter = "CSV files (*.csv)|*.csv";
             sfd.FileName = "Client_Export.csv";
@@ -904,7 +922,7 @@ namespace PiStoreManagementSytem
 
         private void printClientBtn_Click(object sender, EventArgs e)
         {
-            if (clientGridView != null)
+            if (clientGridView.Rows.Count > 0)
                 PrintPDF(clientGridView, "Client");
         }
 
@@ -960,7 +978,6 @@ namespace PiStoreManagementSytem
             DataView dv = new DataView(orderTable);
 
             dv.Sort = "OrderDate DESC";
-
         }
 
         private DataTable GetRecentOrdersByClient(int clientId)
@@ -984,11 +1001,8 @@ namespace PiStoreManagementSytem
 
         private void csvRecentClientOrderBtn_Click(object sender, EventArgs e)
         {
-            if (recentOrderGridView.DataSource == null)
-            {
-                MessageBox.Show($"Empty Recent Client Order", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                return;
-            }
+            if (recentOrderGridView.Rows.Count <= 0) { return; }
+
 
             SaveFileDialog sfd = new SaveFileDialog();
             sfd.Filter = "CSV files (*.csv)|*.csv";
@@ -1003,7 +1017,8 @@ namespace PiStoreManagementSytem
         private void printRecentClientOrderBtn_Click(object sender, EventArgs e)
         {
             if (recentOrderGridView.DataSource == null) return;
-            PrintPDF(recentOrderGridView, "Client Order", currentClientCell);
+            if (recentOrderGridView.Rows.Count > 0)
+                PrintPDF(recentOrderGridView, "ClientOrder", currentClientCell);
         }
 
         private void addClientBtn_Click(object sender, EventArgs e)
@@ -1104,6 +1119,8 @@ namespace PiStoreManagementSytem
 
         private void csvProductBtn_Click(object sender, EventArgs e)
         {
+            if (productGridView.Rows.Count <= 0) { return; }
+
             SaveFileDialog sfd = new SaveFileDialog();
             sfd.Filter = "CSV files (*.csv)|*.csv";
             sfd.FileName = "Product_Export.csv";
@@ -1197,6 +1214,127 @@ namespace PiStoreManagementSytem
         private bool DeleteProduct(int id)
         {
             return ProductDAO.Instance.DeleteProduct(id);
+        }
+
+        private void LoadOrder()
+        {
+            orderGridView.AutoGenerateColumns = true;
+            orderGridView.DataSource = LoadOrderTable();
+
+            orderGridView.Columns[2].HeaderText = "ClientName";
+            orderGridView.Columns[3].HeaderText = "ClientPhone";
+
+            currentOrderResult = (DataTable)orderGridView.DataSource;
+        }
+
+        private void txtOrderSearch_TextChanged(object sender, EventArgs e)
+        {
+            string searchValue = txtOrderSearch.Text.Trim();
+            string searchCriteria = cmbOrderCriteria.SelectedItem?.ToString();
+
+            if (string.IsNullOrEmpty(searchCriteria)) return;
+
+            if (!string.IsNullOrEmpty(searchValue))
+            {
+                DataView dv = new DataView(currentOrderResult);
+                dv.RowFilter = $"{searchCriteria} LIKE '%{searchValue}%'";
+
+                currentSearchResult = dv.ToTable();
+                orderGridView.DataSource = currentSearchResult;
+            }
+            else
+            {
+                LoadOrder();
+            }
+        }
+
+        private void orderGridView_CellClick(object sender, DataGridViewCellEventArgs e)
+        {
+            if (e.RowIndex >= 0)
+            {
+                DataGridViewRow row = orderGridView.Rows[e.RowIndex];
+
+                if (row.Cells["ID"].Value != null && !string.IsNullOrEmpty(row.Cells["ID"].Value.ToString()))
+                {
+                    int orderId = Convert.ToInt32(orderGridView.Rows[e.RowIndex].Cells["ID"].Value);
+                    orderSelectedID = orderId;
+                    orderItemGridView.DataSource = LoadOrderItemByID(orderId);
+                }
+            }
+        }
+
+        private DataTable LoadOrderItemByID(int orderID)
+        {
+            DataTable orderTable = LoadOrderItemTable(orderID);
+            return orderTable;
+        }
+
+        private DataTable LoadOrderItemTable(int orderID)
+        {
+            return OrderItemDAO.Instance.LoadOrderItemByID(orderID);
+        }
+
+        private void txtOrderItemSearch_TextChanged(object sender, EventArgs e)
+        {
+            string searchValue = txtOrderItemSearch.Text.Trim();
+
+            DataTable orderTable = LoadOrderItemTable(orderSelectedID);
+
+            if (!string.IsNullOrEmpty(searchValue))
+            {
+                DataView dv = new DataView(orderTable);
+                dv.RowFilter = $"ProductName LIKE '%{searchValue}%'";
+                currentSearchResult = dv.ToTable();
+                orderItemGridView.DataSource = dv;
+            }
+            else
+            {
+                currentSearchResult = orderTable;
+                orderItemGridView.DataSource = orderTable;
+            }
+        }
+
+        private void printOrderBtn_Click(object sender, EventArgs e)
+        {
+            if (orderGridView.Rows.Count > 0)
+                PrintPDF(orderGridView, "Order");
+        }
+
+        private void csvOderBtn_Click(object sender, EventArgs e)
+        {
+            if (orderGridView.Rows.Count <= 0) { return; }
+
+            SaveFileDialog sfd = new SaveFileDialog();
+            sfd.Filter = "CSV files (*.csv)|*.csv";
+            sfd.FileName = "Order_Export.csv";
+
+            if (sfd.ShowDialog() == DialogResult.OK)
+            {
+                ExportDataGridViewToCSV(orderGridView, sfd.FileName);
+            }
+        }
+
+        private void csvOrderItemBtn_Click(object sender, EventArgs e)
+        {
+            if (orderItemGridView.Rows.Count <= 0) { return; }
+
+            SaveFileDialog sfd = new SaveFileDialog();
+            sfd.Filter = "CSV files (*.csv)|*.csv";
+            sfd.FileName = "OrderItem_Export.csv";
+
+            if (sfd.ShowDialog() == DialogResult.OK)
+            {
+                ExportDataGridViewToCSV(orderItemGridView, sfd.FileName);
+            }
+        }
+
+        private void printOrderItemBtn_Click(object sender, EventArgs e)
+        {
+            if (orderItemGridView.Rows.Count > 0)
+            {
+
+            }
+
         }
     }
 }

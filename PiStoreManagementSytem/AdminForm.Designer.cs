@@ -121,6 +121,19 @@
             addProductBtn = new PictureBox();
             label15 = new Label();
             productGridView = new DataGridView();
+            orderPanel = new Panel();
+            csvOrderItemBtn = new Button();
+            printOrderItemBtn = new Button();
+            csvOderBtn = new Button();
+            printOrderBtn = new Button();
+            txtOrderItemSearch = new TextBox();
+            label13 = new Label();
+            orderItemGridView = new DataGridView();
+            txtOrderSearch = new TextBox();
+            label12 = new Label();
+            cmbOrderCriteria = new ComboBox();
+            label19 = new Label();
+            orderGridView = new DataGridView();
             navPanel.SuspendLayout();
             logoutBtn.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)pictureBox1).BeginInit();
@@ -164,6 +177,9 @@
             ((System.ComponentModel.ISupportInitialize)editProductBtn).BeginInit();
             ((System.ComponentModel.ISupportInitialize)addProductBtn).BeginInit();
             ((System.ComponentModel.ISupportInitialize)productGridView).BeginInit();
+            orderPanel.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)orderItemGridView).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)orderGridView).BeginInit();
             SuspendLayout();
             // 
             // navPanel
@@ -1298,15 +1314,203 @@
             productGridView.TabIndex = 1;
             productGridView.CellClick += productGridView_CellClick;
             // 
+            // orderPanel
+            // 
+            orderPanel.Controls.Add(csvOrderItemBtn);
+            orderPanel.Controls.Add(printOrderItemBtn);
+            orderPanel.Controls.Add(csvOderBtn);
+            orderPanel.Controls.Add(printOrderBtn);
+            orderPanel.Controls.Add(txtOrderItemSearch);
+            orderPanel.Controls.Add(label13);
+            orderPanel.Controls.Add(orderItemGridView);
+            orderPanel.Controls.Add(txtOrderSearch);
+            orderPanel.Controls.Add(label12);
+            orderPanel.Controls.Add(cmbOrderCriteria);
+            orderPanel.Controls.Add(label19);
+            orderPanel.Controls.Add(orderGridView);
+            orderPanel.Dock = DockStyle.Fill;
+            orderPanel.Location = new Point(200, 60);
+            orderPanel.Name = "orderPanel";
+            orderPanel.Size = new Size(782, 593);
+            orderPanel.TabIndex = 34;
+            // 
+            // csvOrderItemBtn
+            // 
+            csvOrderItemBtn.BackColor = Color.FromArgb(238, 238, 238);
+            csvOrderItemBtn.BackgroundImageLayout = ImageLayout.None;
+            csvOrderItemBtn.FlatAppearance.BorderColor = Color.DarkGreen;
+            csvOrderItemBtn.FlatAppearance.BorderSize = 0;
+            csvOrderItemBtn.FlatStyle = FlatStyle.Flat;
+            csvOrderItemBtn.Font = new Font("Rockwell", 9F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            csvOrderItemBtn.ForeColor = Color.Black;
+            csvOrderItemBtn.Image = (Image)resources.GetObject("csvOrderItemBtn.Image");
+            csvOrderItemBtn.ImageAlign = ContentAlignment.MiddleLeft;
+            csvOrderItemBtn.Location = new Point(551, 554);
+            csvOrderItemBtn.Name = "csvOrderItemBtn";
+            csvOrderItemBtn.Size = new Size(115, 36);
+            csvOrderItemBtn.TabIndex = 40;
+            csvOrderItemBtn.Text = "Export CSV";
+            csvOrderItemBtn.TextAlign = ContentAlignment.MiddleRight;
+            csvOrderItemBtn.UseVisualStyleBackColor = false;
+            csvOrderItemBtn.Click += csvOrderItemBtn_Click;
+            // 
+            // printOrderItemBtn
+            // 
+            printOrderItemBtn.BackColor = Color.FromArgb(238, 238, 238);
+            printOrderItemBtn.BackgroundImageLayout = ImageLayout.None;
+            printOrderItemBtn.FlatAppearance.BorderColor = Color.DarkGreen;
+            printOrderItemBtn.FlatAppearance.BorderSize = 0;
+            printOrderItemBtn.FlatStyle = FlatStyle.Flat;
+            printOrderItemBtn.Font = new Font("Rockwell", 9F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            printOrderItemBtn.ForeColor = Color.Black;
+            printOrderItemBtn.Image = (Image)resources.GetObject("printOrderItemBtn.Image");
+            printOrderItemBtn.ImageAlign = ContentAlignment.MiddleLeft;
+            printOrderItemBtn.Location = new Point(682, 554);
+            printOrderItemBtn.Name = "printOrderItemBtn";
+            printOrderItemBtn.Size = new Size(100, 36);
+            printOrderItemBtn.TabIndex = 39;
+            printOrderItemBtn.Text = "Print PDF";
+            printOrderItemBtn.TextAlign = ContentAlignment.MiddleRight;
+            printOrderItemBtn.UseVisualStyleBackColor = false;
+            printOrderItemBtn.Click += printOrderItemBtn_Click;
+            // 
+            // csvOderBtn
+            // 
+            csvOderBtn.BackColor = Color.FromArgb(238, 238, 238);
+            csvOderBtn.BackgroundImageLayout = ImageLayout.None;
+            csvOderBtn.FlatAppearance.BorderColor = Color.DarkGreen;
+            csvOderBtn.FlatAppearance.BorderSize = 0;
+            csvOderBtn.FlatStyle = FlatStyle.Flat;
+            csvOderBtn.Font = new Font("Rockwell", 9F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            csvOderBtn.ForeColor = Color.Black;
+            csvOderBtn.Image = (Image)resources.GetObject("csvOderBtn.Image");
+            csvOderBtn.ImageAlign = ContentAlignment.MiddleLeft;
+            csvOderBtn.Location = new Point(256, 554);
+            csvOderBtn.Name = "csvOderBtn";
+            csvOderBtn.Size = new Size(115, 36);
+            csvOderBtn.TabIndex = 38;
+            csvOderBtn.Text = "Export CSV";
+            csvOderBtn.TextAlign = ContentAlignment.MiddleRight;
+            csvOderBtn.UseVisualStyleBackColor = false;
+            csvOderBtn.Click += csvOderBtn_Click;
+            // 
+            // printOrderBtn
+            // 
+            printOrderBtn.BackColor = Color.FromArgb(238, 238, 238);
+            printOrderBtn.BackgroundImageLayout = ImageLayout.None;
+            printOrderBtn.FlatAppearance.BorderColor = Color.DarkGreen;
+            printOrderBtn.FlatAppearance.BorderSize = 0;
+            printOrderBtn.FlatStyle = FlatStyle.Flat;
+            printOrderBtn.Font = new Font("Rockwell", 9F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            printOrderBtn.ForeColor = Color.Black;
+            printOrderBtn.Image = (Image)resources.GetObject("printOrderBtn.Image");
+            printOrderBtn.ImageAlign = ContentAlignment.MiddleLeft;
+            printOrderBtn.Location = new Point(387, 554);
+            printOrderBtn.Name = "printOrderBtn";
+            printOrderBtn.Size = new Size(100, 36);
+            printOrderBtn.TabIndex = 37;
+            printOrderBtn.Text = "Print PDF";
+            printOrderBtn.TextAlign = ContentAlignment.MiddleRight;
+            printOrderBtn.UseVisualStyleBackColor = false;
+            printOrderBtn.Click += printOrderBtn_Click;
+            // 
+            // txtOrderItemSearch
+            // 
+            txtOrderItemSearch.Font = new Font("Rockwell", 7.8F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            txtOrderItemSearch.Location = new Point(511, 119);
+            txtOrderItemSearch.Name = "txtOrderItemSearch";
+            txtOrderItemSearch.PlaceholderText = "Seach By Product";
+            txtOrderItemSearch.Size = new Size(271, 23);
+            txtOrderItemSearch.TabIndex = 36;
+            txtOrderItemSearch.TextChanged += txtOrderItemSearch_TextChanged;
+            // 
+            // label13
+            // 
+            label13.AutoSize = true;
+            label13.Font = new Font("Rockwell", 12F, FontStyle.Bold);
+            label13.ForeColor = Color.FromArgb(69, 123, 157);
+            label13.Location = new Point(511, 86);
+            label13.Name = "label13";
+            label13.Size = new Size(119, 24);
+            label13.TabIndex = 34;
+            label13.Text = "Order Item";
+            // 
+            // orderItemGridView
+            // 
+            orderItemGridView.AllowUserToAddRows = false;
+            orderItemGridView.AllowUserToDeleteRows = false;
+            orderItemGridView.BackgroundColor = Color.White;
+            orderItemGridView.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            orderItemGridView.Location = new Point(511, 151);
+            orderItemGridView.Name = "orderItemGridView";
+            orderItemGridView.ReadOnly = true;
+            orderItemGridView.RowHeadersWidth = 51;
+            orderItemGridView.Size = new Size(271, 397);
+            orderItemGridView.TabIndex = 32;
+            // 
+            // txtOrderSearch
+            // 
+            txtOrderSearch.Location = new Point(169, 115);
+            txtOrderSearch.Name = "txtOrderSearch";
+            txtOrderSearch.Size = new Size(317, 27);
+            txtOrderSearch.TabIndex = 29;
+            txtOrderSearch.TextChanged += txtOrderSearch_TextChanged;
+            // 
+            // label12
+            // 
+            label12.AutoSize = true;
+            label12.Font = new Font("Rockwell", 12F, FontStyle.Bold);
+            label12.ForeColor = Color.FromArgb(69, 123, 157);
+            label12.Location = new Point(21, 86);
+            label12.Name = "label12";
+            label12.Size = new Size(142, 24);
+            label12.TabIndex = 33;
+            label12.Text = "Recent Order";
+            // 
+            // cmbOrderCriteria
+            // 
+            cmbOrderCriteria.FormattingEnabled = true;
+            cmbOrderCriteria.Items.AddRange(new object[] { "EmployeeName", "ClientName", "ClientPhone" });
+            cmbOrderCriteria.Location = new Point(21, 115);
+            cmbOrderCriteria.Name = "cmbOrderCriteria";
+            cmbOrderCriteria.Size = new Size(142, 28);
+            cmbOrderCriteria.TabIndex = 28;
+            // 
+            // label19
+            // 
+            label19.AutoSize = true;
+            label19.Font = new Font("Rockwell", 18F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            label19.ForeColor = Color.FromArgb(69, 123, 157);
+            label19.Location = new Point(237, 14);
+            label19.Name = "label19";
+            label19.Size = new Size(310, 38);
+            label19.TabIndex = 19;
+            label19.Text = "Order Management";
+            // 
+            // orderGridView
+            // 
+            orderGridView.AllowUserToAddRows = false;
+            orderGridView.AllowUserToDeleteRows = false;
+            orderGridView.BackgroundColor = Color.White;
+            orderGridView.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            orderGridView.Location = new Point(0, 151);
+            orderGridView.Name = "orderGridView";
+            orderGridView.ReadOnly = true;
+            orderGridView.RowHeadersWidth = 51;
+            orderGridView.Size = new Size(486, 397);
+            orderGridView.TabIndex = 1;
+            orderGridView.CellClick += orderGridView_CellClick;
+            // 
             // AdminForm
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = Color.FromArgb(238, 238, 238);
             ClientSize = new Size(982, 653);
-            Controls.Add(productPanel);
+            Controls.Add(orderPanel);
             Controls.Add(clientPanel);
             Controls.Add(employeePanel);
+            Controls.Add(productPanel);
             Controls.Add(settingPanel);
             Controls.Add(avtBtn);
             Controls.Add(headerPanel);
@@ -1373,6 +1577,10 @@
             ((System.ComponentModel.ISupportInitialize)editProductBtn).EndInit();
             ((System.ComponentModel.ISupportInitialize)addProductBtn).EndInit();
             ((System.ComponentModel.ISupportInitialize)productGridView).EndInit();
+            orderPanel.ResumeLayout(false);
+            orderPanel.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)orderItemGridView).EndInit();
+            ((System.ComponentModel.ISupportInitialize)orderGridView).EndInit();
             ResumeLayout(false);
         }
 
@@ -1469,5 +1677,18 @@
         private PictureBox addProductBtn;
         private Label label15;
         private DataGridView productGridView;
+        private Panel orderPanel;
+        private TextBox txtOrderSearch;
+        private ComboBox cmbOrderCriteria;
+        private Label label19;
+        private DataGridView orderGridView;
+        private DataGridView orderItemGridView;
+        private Label label13;
+        private Label label12;
+        private TextBox txtOrderItemSearch;
+        public Button csvOderBtn;
+        public Button printOrderBtn;
+        public Button csvOrderItemBtn;
+        public Button printOrderItemBtn;
     }
 }
