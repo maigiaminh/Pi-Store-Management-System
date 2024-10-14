@@ -40,6 +40,7 @@ namespace PiStoreManagementSytem.DAO
             string query = @"
             SELECT 
                 O.ID,
+                E.ID AS EmployeeID,
                 E.Name AS EmployeeName,
                 C.Name AS ClientName,
                 C.Phone AS ClientPhone,
@@ -53,6 +54,6 @@ namespace PiStoreManagementSytem.DAO
                 Employee E ON O.EmployeeID = E.ID";
 
             return DataProvider.Instance.ExecuteQuery(query);
-}
+        }
     }
 }

@@ -489,7 +489,7 @@ namespace PiStoreManagementSytem
                 PrintPDF(employeeGridView, "Employee");
         }
 
-        private void PrintPDF(DataGridView gridView, string name, DataGridViewCellCollection values = null)
+        private void PrintPDF(DataGridView gridView, string name, DataGridViewCellCollection values = null, Client client = null)
         {
             PdfDocument document = new PdfDocument();
             document.Info.Title = $"Company {name} List";
@@ -559,6 +559,47 @@ namespace PiStoreManagementSytem
                 gfx.DrawString("Address:", infoFont, XBrushes.Black,
                     new XRect(colXPos + 25, tableTop, 200, rowHeight), XStringFormats.TopLeft);
                 gfx.DrawString(values["Address"].Value.ToString(), cellFont, XBrushes.Black,
+                    new XRect(colXPos + 150, tableTop, pageWidth - 100, rowHeight), XStringFormats.TopLeft);
+
+                tableTop += rowHeight + 10;
+
+                gfx.DrawLine(new XPen(XColors.Black, 1), colXPos, tableTop, pageWidth - 50, tableTop);
+
+                tableTop += 50;
+            }
+            else if (name == "OrderItem")
+            {
+                double headerHeight = 40;
+                gfx.DrawRectangle(XBrushes.LightGray, colXPos, tableTop, pageWidth - 100, headerHeight);
+                gfx.DrawString("Client Order", headerFont, XBrushes.Black,
+                    new XRect(colXPos + 25, tableTop + 15, pageWidth - 100, headerHeight), XStringFormats.TopLeft);
+
+                tableTop += headerHeight + 10;
+
+                gfx.DrawString("Client Name:", infoFont, XBrushes.Black,
+                    new XRect(colXPos + 25, tableTop, 200, rowHeight), XStringFormats.TopLeft);
+                gfx.DrawString(client.Name.ToString(), cellFont, XBrushes.Black,
+                    new XRect(colXPos + 150, tableTop, pageWidth - 100, rowHeight), XStringFormats.TopLeft);
+
+                tableTop += rowHeight;
+
+                gfx.DrawString("Email:", infoFont, XBrushes.Black,
+                    new XRect(colXPos + 25, tableTop, 200, rowHeight), XStringFormats.TopLeft);
+                gfx.DrawString(client.Email.ToString(), cellFont, XBrushes.Black,
+                    new XRect(colXPos + 150, tableTop, pageWidth - 100, rowHeight), XStringFormats.TopLeft);
+
+                tableTop += rowHeight;
+
+                gfx.DrawString("Phone:", infoFont, XBrushes.Black,
+                    new XRect(colXPos + 25, tableTop, 200, rowHeight), XStringFormats.TopLeft);
+                gfx.DrawString(client.Phone.ToString(), cellFont, XBrushes.Black,
+                    new XRect(colXPos + 150, tableTop, pageWidth - 100, rowHeight), XStringFormats.TopLeft);
+
+                tableTop += rowHeight;
+
+                gfx.DrawString("Address:", infoFont, XBrushes.Black,
+                    new XRect(colXPos + 25, tableTop, 200, rowHeight), XStringFormats.TopLeft);
+                gfx.DrawString(client.Address.ToString(), cellFont, XBrushes.Black,
                     new XRect(colXPos + 150, tableTop, pageWidth - 100, rowHeight), XStringFormats.TopLeft);
 
                 tableTop += rowHeight + 10;
@@ -1332,7 +1373,12 @@ namespace PiStoreManagementSytem
         {
             if (orderItemGridView.Rows.Count > 0)
             {
-
+                Client client = ClientDAO.Instance.GetClientByPhone(orderGridView.CurrentRow.Cells["ClientPhone"].Value.ToString());
+                
+                    if(client != null)
+                {
+                    PrintPDF(orderItemGridView, "OrderItem", null, client);
+                }
             }
 
         }

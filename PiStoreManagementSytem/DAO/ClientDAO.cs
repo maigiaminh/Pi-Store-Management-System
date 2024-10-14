@@ -135,5 +135,18 @@ namespace PiStoreManagementSytem.DAO
             return !hasOrders;
         }
 
+        public Client GetClientByPhone(string phone)
+        {
+            string query = "SELECT * FROM Client WHERE Phone = @Phone";
+
+            SqlParameter[] parameters = new SqlParameter[]
+            {
+                new SqlParameter("@Phone", phone)
+            };
+
+            DataTable data = DataProvider.Instance.ExecuteQuery(query, parameters);
+            Client c = new Client(data.Rows[0]);
+            return c;
+        }
     }
 }
