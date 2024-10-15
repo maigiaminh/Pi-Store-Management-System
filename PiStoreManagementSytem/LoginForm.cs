@@ -53,7 +53,6 @@ namespace PiStoreManagementSytem
                 int id = Login(email, password);
                 if (id != -1)
                 {
-                    MessageBox.Show(id.ToString());
                     AdminForm adminForm = new AdminForm(id);
                     adminForm.Show();
                     this.Hide();

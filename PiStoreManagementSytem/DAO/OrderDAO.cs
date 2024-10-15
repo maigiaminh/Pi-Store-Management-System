@@ -55,5 +55,23 @@ namespace PiStoreManagementSytem.DAO
 
             return DataProvider.Instance.ExecuteQuery(query);
         }
+
+        public int AddNewOrder(int clientID, int employeeID, DateTime orderDate, decimal totalPrice)
+        {
+            string query = @"
+            INSERT INTO [Order] (ClientID, EmployeeID, OrderDate, TotalPrice)
+            VALUES (@ClientID, @EmployeeID, @OrderDate, @TotalPrice);
+            SELECT SCOPE_IDENTITY();";
+
+            SqlParameter[] parameters = new SqlParameter[]
+            {
+                new SqlParameter("@ClientID", clientID),
+                new SqlParameter("@EmployeeID", employeeID),
+                new SqlParameter("@OrderDate", orderDate),
+                new SqlParameter("@TotalPrice", totalPrice)
+            };
+
+            return Convert.ToInt32(DataProvider.Instance.ExecuteScalar(query, parameters));
+        }
     }
 }

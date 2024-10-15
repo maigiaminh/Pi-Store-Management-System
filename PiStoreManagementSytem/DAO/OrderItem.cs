@@ -46,6 +46,40 @@ namespace PiStoreManagementSytem.DAO
                      WHERE OI.OrderID = @OrderID";
 
             return DataProvider.Instance.ExecuteQuery(query);
-}
+        }
+
+        public void AddOrderItem(int orderID, int productID, int quantity)
+        {
+            string query = @"
+            INSERT INTO OrderItem (OrderID, ProductID, Quantity)
+            VALUES (@OrderID, @ProductID, @Quantity)";
+
+            SqlParameter[] parameters = new SqlParameter[]
+            {
+                new SqlParameter("@OrderID", orderID),
+                new SqlParameter("@ProductID", productID),
+                new SqlParameter("@Quantity", quantity),
+            };
+
+            DataProvider.Instance.ExecuteNonQuery(query, parameters);
+
+            UpdateProductQuantity(productID, quantity);
+        }
+
+        public void UpdateProductQuantity(int productID, int quantitySold)
+        {
+            string query = @"
+                UPDATE Product 
+                SET Quantity = Quantity - @QuantitySold 
+                WHERE ID = @ProductID";
+
+            SqlParameter[] parameters = new SqlParameter[]
+            {
+                new SqlParameter("@QuantitySold", quantitySold),
+                new SqlParameter("@ProductID", productID)
+            };
+
+            DataProvider.Instance.ExecuteNonQuery(query, parameters);
+        }
     }
 }

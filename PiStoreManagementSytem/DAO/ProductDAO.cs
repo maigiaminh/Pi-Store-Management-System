@@ -124,6 +124,5 @@ namespace PiStoreManagementSytem.DAO
             }
             return !hasOrders;
         }
-           
     }
 }

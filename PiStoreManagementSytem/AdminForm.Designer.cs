@@ -122,6 +122,7 @@
             label15 = new Label();
             productGridView = new DataGridView();
             orderPanel = new Panel();
+            addOrderBtn = new PictureBox();
             csvOrderItemBtn = new Button();
             printOrderItemBtn = new Button();
             csvOderBtn = new Button();
@@ -134,6 +135,25 @@
             cmbOrderCriteria = new ComboBox();
             label19 = new Label();
             orderGridView = new DataGridView();
+            newOrderPanel = new Panel();
+            viewOrderBtn = new Button();
+            clientPhoneTxt = new TextBox();
+            label22 = new Label();
+            label21 = new Label();
+            addItemBtn = new Button();
+            productQuantityNum = new NumericUpDown();
+            label20 = new Label();
+            cartGridView = new DataGridView();
+            insertOrderBtn = new Button();
+            label18 = new Label();
+            insertOrderDate = new DateTimePicker();
+            productOrderSearchTxt = new TextBox();
+            clientOrderSearchTxt = new TextBox();
+            totalPriceTxt = new TextBox();
+            label17 = new Label();
+            productOrderGridView = new DataGridView();
+            clientOrderGridView = new DataGridView();
+            label16 = new Label();
             navPanel.SuspendLayout();
             logoutBtn.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)pictureBox1).BeginInit();
@@ -178,8 +198,14 @@
             ((System.ComponentModel.ISupportInitialize)addProductBtn).BeginInit();
             ((System.ComponentModel.ISupportInitialize)productGridView).BeginInit();
             orderPanel.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)addOrderBtn).BeginInit();
             ((System.ComponentModel.ISupportInitialize)orderItemGridView).BeginInit();
             ((System.ComponentModel.ISupportInitialize)orderGridView).BeginInit();
+            newOrderPanel.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)productQuantityNum).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)cartGridView).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)productOrderGridView).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)clientOrderGridView).BeginInit();
             SuspendLayout();
             // 
             // navPanel
@@ -1316,6 +1342,7 @@
             // 
             // orderPanel
             // 
+            orderPanel.Controls.Add(addOrderBtn);
             orderPanel.Controls.Add(csvOrderItemBtn);
             orderPanel.Controls.Add(printOrderItemBtn);
             orderPanel.Controls.Add(csvOderBtn);
@@ -1333,6 +1360,18 @@
             orderPanel.Name = "orderPanel";
             orderPanel.Size = new Size(782, 593);
             orderPanel.TabIndex = 34;
+            // 
+            // addOrderBtn
+            // 
+            addOrderBtn.BackgroundImage = (Image)resources.GetObject("addOrderBtn.BackgroundImage");
+            addOrderBtn.BackgroundImageLayout = ImageLayout.Zoom;
+            addOrderBtn.Cursor = Cursors.Hand;
+            addOrderBtn.Location = new Point(709, 25);
+            addOrderBtn.Name = "addOrderBtn";
+            addOrderBtn.Size = new Size(48, 48);
+            addOrderBtn.TabIndex = 41;
+            addOrderBtn.TabStop = false;
+            addOrderBtn.Click += addOrderBtn_Click;
             // 
             // csvOrderItemBtn
             // 
@@ -1501,12 +1540,241 @@
             orderGridView.TabIndex = 1;
             orderGridView.CellClick += orderGridView_CellClick;
             // 
+            // newOrderPanel
+            // 
+            newOrderPanel.Controls.Add(viewOrderBtn);
+            newOrderPanel.Controls.Add(clientPhoneTxt);
+            newOrderPanel.Controls.Add(label22);
+            newOrderPanel.Controls.Add(label21);
+            newOrderPanel.Controls.Add(addItemBtn);
+            newOrderPanel.Controls.Add(productQuantityNum);
+            newOrderPanel.Controls.Add(label20);
+            newOrderPanel.Controls.Add(cartGridView);
+            newOrderPanel.Controls.Add(insertOrderBtn);
+            newOrderPanel.Controls.Add(label18);
+            newOrderPanel.Controls.Add(insertOrderDate);
+            newOrderPanel.Controls.Add(productOrderSearchTxt);
+            newOrderPanel.Controls.Add(clientOrderSearchTxt);
+            newOrderPanel.Controls.Add(totalPriceTxt);
+            newOrderPanel.Controls.Add(label17);
+            newOrderPanel.Controls.Add(productOrderGridView);
+            newOrderPanel.Controls.Add(clientOrderGridView);
+            newOrderPanel.Controls.Add(label16);
+            newOrderPanel.Dock = DockStyle.Fill;
+            newOrderPanel.Location = new Point(200, 60);
+            newOrderPanel.Name = "newOrderPanel";
+            newOrderPanel.Size = new Size(782, 593);
+            newOrderPanel.TabIndex = 42;
+            // 
+            // viewOrderBtn
+            // 
+            viewOrderBtn.BackColor = Color.FromArgb(69, 123, 157);
+            viewOrderBtn.Cursor = Cursors.Hand;
+            viewOrderBtn.Font = new Font("Rockwell", 10.2F);
+            viewOrderBtn.ForeColor = Color.White;
+            viewOrderBtn.Location = new Point(44, 477);
+            viewOrderBtn.Name = "viewOrderBtn";
+            viewOrderBtn.Size = new Size(119, 71);
+            viewOrderBtn.TabIndex = 57;
+            viewOrderBtn.Text = "View Order";
+            viewOrderBtn.UseVisualStyleBackColor = false;
+            viewOrderBtn.Click += viewOrderBtn_Click;
+            // 
+            // clientPhoneTxt
+            // 
+            clientPhoneTxt.Location = new Point(155, 340);
+            clientPhoneTxt.Name = "clientPhoneTxt";
+            clientPhoneTxt.Size = new Size(226, 27);
+            clientPhoneTxt.TabIndex = 56;
+            clientPhoneTxt.KeyPress += clientPhoneTxt_KeyPress;
+            // 
+            // label22
+            // 
+            label22.AutoSize = true;
+            label22.Font = new Font("Rockwell", 10.2F, FontStyle.Bold);
+            label22.ForeColor = Color.FromArgb(69, 123, 157);
+            label22.Location = new Point(16, 347);
+            label22.Name = "label22";
+            label22.Size = new Size(118, 20);
+            label22.TabIndex = 55;
+            label22.Text = "Client Phone";
+            // 
+            // label21
+            // 
+            label21.AutoSize = true;
+            label21.Font = new Font("Rockwell", 12F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            label21.ForeColor = Color.FromArgb(69, 123, 157);
+            label21.Location = new Point(503, 557);
+            label21.Name = "label21";
+            label21.Size = new Size(117, 24);
+            label21.TabIndex = 54;
+            label21.Text = "Total Price";
+            // 
+            // addItemBtn
+            // 
+            addItemBtn.BackColor = Color.FromArgb(69, 123, 157);
+            addItemBtn.Cursor = Cursors.Hand;
+            addItemBtn.Font = new Font("Rockwell", 10.2F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            addItemBtn.ForeColor = Color.White;
+            addItemBtn.Location = new Point(600, 288);
+            addItemBtn.Name = "addItemBtn";
+            addItemBtn.Size = new Size(160, 29);
+            addItemBtn.TabIndex = 52;
+            addItemBtn.Text = "Add to Cart";
+            addItemBtn.UseVisualStyleBackColor = false;
+            addItemBtn.Click += addItemBtn_Click;
+            // 
+            // productQuantityNum
+            // 
+            productQuantityNum.Location = new Point(504, 291);
+            productQuantityNum.Minimum = new decimal(new int[] { 1, 0, 0, 0 });
+            productQuantityNum.Name = "productQuantityNum";
+            productQuantityNum.Size = new Size(79, 27);
+            productQuantityNum.TabIndex = 51;
+            productQuantityNum.Value = new decimal(new int[] { 1, 0, 0, 0 });
+            // 
+            // label20
+            // 
+            label20.AutoSize = true;
+            label20.Font = new Font("Rockwell", 12F, FontStyle.Bold);
+            label20.ForeColor = Color.FromArgb(69, 123, 157);
+            label20.Location = new Point(398, 290);
+            label20.Name = "label20";
+            label20.Size = new Size(98, 24);
+            label20.TabIndex = 50;
+            label20.Text = "Quantity";
+            // 
+            // cartGridView
+            // 
+            cartGridView.AllowUserToAddRows = false;
+            cartGridView.AllowUserToDeleteRows = false;
+            cartGridView.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            cartGridView.Location = new Point(398, 327);
+            cartGridView.MultiSelect = false;
+            cartGridView.Name = "cartGridView";
+            cartGridView.ReadOnly = true;
+            cartGridView.RowHeadersWidth = 51;
+            cartGridView.Size = new Size(365, 221);
+            cartGridView.TabIndex = 49;
+            // 
+            // insertOrderBtn
+            // 
+            insertOrderBtn.BackColor = Color.FromArgb(69, 123, 157);
+            insertOrderBtn.Cursor = Cursors.Hand;
+            insertOrderBtn.Font = new Font("Rockwell", 10.2F);
+            insertOrderBtn.ForeColor = Color.White;
+            insertOrderBtn.Location = new Point(230, 477);
+            insertOrderBtn.Name = "insertOrderBtn";
+            insertOrderBtn.Size = new Size(119, 71);
+            insertOrderBtn.TabIndex = 48;
+            insertOrderBtn.Text = "Insert Order";
+            insertOrderBtn.UseVisualStyleBackColor = false;
+            insertOrderBtn.Click += insertOrderBtn_Click;
+            // 
+            // label18
+            // 
+            label18.AutoSize = true;
+            label18.Font = new Font("Rockwell", 10.2F, FontStyle.Bold);
+            label18.ForeColor = Color.FromArgb(69, 123, 157);
+            label18.Location = new Point(16, 407);
+            label18.Name = "label18";
+            label18.Size = new Size(105, 20);
+            label18.TabIndex = 46;
+            label18.Text = "Order Date";
+            // 
+            // insertOrderDate
+            // 
+            insertOrderDate.Font = new Font("Rockwell", 7.8F);
+            insertOrderDate.Location = new Point(155, 404);
+            insertOrderDate.Name = "insertOrderDate";
+            insertOrderDate.Size = new Size(226, 23);
+            insertOrderDate.TabIndex = 45;
+            // 
+            // productOrderSearchTxt
+            // 
+            productOrderSearchTxt.Font = new Font("Rockwell", 7.8F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            productOrderSearchTxt.Location = new Point(397, 52);
+            productOrderSearchTxt.Name = "productOrderSearchTxt";
+            productOrderSearchTxt.PlaceholderText = "Seach Product By Name";
+            productOrderSearchTxt.Size = new Size(365, 23);
+            productOrderSearchTxt.TabIndex = 44;
+            productOrderSearchTxt.TextChanged += productOrderSearchTxt_TextChanged;
+            // 
+            // clientOrderSearchTxt
+            // 
+            clientOrderSearchTxt.Font = new Font("Rockwell", 7.8F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            clientOrderSearchTxt.Location = new Point(16, 53);
+            clientOrderSearchTxt.Name = "clientOrderSearchTxt";
+            clientOrderSearchTxt.PlaceholderText = "Seach Client By Phone";
+            clientOrderSearchTxt.Size = new Size(365, 23);
+            clientOrderSearchTxt.TabIndex = 43;
+            clientOrderSearchTxt.TextChanged += clientOrderSearchTxt_TextChanged;
+            // 
+            // totalPriceTxt
+            // 
+            totalPriceTxt.Font = new Font("Segoe UI", 10.2F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            totalPriceTxt.Location = new Point(626, 554);
+            totalPriceTxt.Name = "totalPriceTxt";
+            totalPriceTxt.ReadOnly = true;
+            totalPriceTxt.Size = new Size(136, 30);
+            totalPriceTxt.TabIndex = 42;
+            // 
+            // label17
+            // 
+            label17.AutoSize = true;
+            label17.Font = new Font("Rockwell", 12F, FontStyle.Bold);
+            label17.ForeColor = Color.FromArgb(69, 123, 157);
+            label17.Location = new Point(398, 24);
+            label17.Name = "label17";
+            label17.Size = new Size(129, 24);
+            label17.TabIndex = 41;
+            label17.Text = "Product List";
+            // 
+            // productOrderGridView
+            // 
+            productOrderGridView.AllowUserToAddRows = false;
+            productOrderGridView.AllowUserToDeleteRows = false;
+            productOrderGridView.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            productOrderGridView.Location = new Point(398, 82);
+            productOrderGridView.MultiSelect = false;
+            productOrderGridView.Name = "productOrderGridView";
+            productOrderGridView.ReadOnly = true;
+            productOrderGridView.RowHeadersWidth = 51;
+            productOrderGridView.Size = new Size(365, 188);
+            productOrderGridView.TabIndex = 40;
+            // 
+            // clientOrderGridView
+            // 
+            clientOrderGridView.AllowUserToAddRows = false;
+            clientOrderGridView.AllowUserToDeleteRows = false;
+            clientOrderGridView.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            clientOrderGridView.Location = new Point(16, 82);
+            clientOrderGridView.MultiSelect = false;
+            clientOrderGridView.Name = "clientOrderGridView";
+            clientOrderGridView.ReadOnly = true;
+            clientOrderGridView.RowHeadersWidth = 51;
+            clientOrderGridView.Size = new Size(365, 188);
+            clientOrderGridView.TabIndex = 0;
+            clientOrderGridView.CellClick += clientOrderGridView_CellClick;
+            // 
+            // label16
+            // 
+            label16.AutoSize = true;
+            label16.Font = new Font("Rockwell", 12F, FontStyle.Bold);
+            label16.ForeColor = Color.FromArgb(69, 123, 157);
+            label16.Location = new Point(16, 25);
+            label16.Name = "label16";
+            label16.Size = new Size(113, 24);
+            label16.TabIndex = 39;
+            label16.Text = "Client List";
+            // 
             // AdminForm
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = Color.FromArgb(238, 238, 238);
             ClientSize = new Size(982, 653);
+            Controls.Add(newOrderPanel);
             Controls.Add(orderPanel);
             Controls.Add(clientPanel);
             Controls.Add(employeePanel);
@@ -1579,8 +1847,15 @@
             ((System.ComponentModel.ISupportInitialize)productGridView).EndInit();
             orderPanel.ResumeLayout(false);
             orderPanel.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)addOrderBtn).EndInit();
             ((System.ComponentModel.ISupportInitialize)orderItemGridView).EndInit();
             ((System.ComponentModel.ISupportInitialize)orderGridView).EndInit();
+            newOrderPanel.ResumeLayout(false);
+            newOrderPanel.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)productQuantityNum).EndInit();
+            ((System.ComponentModel.ISupportInitialize)cartGridView).EndInit();
+            ((System.ComponentModel.ISupportInitialize)productOrderGridView).EndInit();
+            ((System.ComponentModel.ISupportInitialize)clientOrderGridView).EndInit();
             ResumeLayout(false);
         }
 
@@ -1690,5 +1965,25 @@
         public Button printOrderBtn;
         public Button csvOrderItemBtn;
         public Button printOrderItemBtn;
+        private PictureBox addOrderBtn;
+        private Panel newOrderPanel;
+        private Label label17;
+        private DataGridView productOrderGridView;
+        private DataGridView clientOrderGridView;
+        private Label label16;
+        private Label label20;
+        private DataGridView cartGridView;
+        private Button insertOrderBtn;
+        private Label label18;
+        private DateTimePicker insertOrderDate;
+        private TextBox productOrderSearchTxt;
+        private TextBox clientOrderSearchTxt;
+        private TextBox totalPriceTxt;
+        private Label label21;
+        private Button addItemBtn;
+        private NumericUpDown productQuantityNum;
+        private TextBox clientPhoneTxt;
+        private Label label22;
+        private Button viewOrderBtn;
     }
 }

@@ -30,6 +30,7 @@ namespace PiStoreManagementSytem
         int panelMinWidth = 75;
         private const int WM_NCLBUTTONDOWN = 0xA1;
         private const int HTCAPTION = 0x2;
+        private List<CartItem> cartItems = new List<CartItem>();
         [DllImport("User32.dll")]
         public static extern bool ReleaseCapture();
 
@@ -118,6 +119,7 @@ namespace PiStoreManagementSytem
             clientPanel.Hide();
             productPanel.Hide();
             orderPanel.Hide();
+            newOrderPanel.Hide();
         }
 
         private void UnactiveAllPanel()
@@ -421,10 +423,12 @@ namespace PiStoreManagementSytem
         public void UpdateClientGridView()
         {
             clientGridView.DataSource = LoadClientTable();
+            clientOrderGridView.DataSource = clientGridView.DataSource;
         }
         public void UpdateProductGridView()
         {
             productGridView.DataSource = LoadProductTable();
+            productOrderGridView.DataSource = productGridView.DataSource;
         }
 
         private void deleteEmBtn_Click(object sender, EventArgs e)
@@ -1374,13 +1378,211 @@ namespace PiStoreManagementSytem
             if (orderItemGridView.Rows.Count > 0)
             {
                 Client client = ClientDAO.Instance.GetClientByPhone(orderGridView.CurrentRow.Cells["ClientPhone"].Value.ToString());
-                
-                    if(client != null)
+
+                if (client != null)
                 {
                     PrintPDF(orderItemGridView, "OrderItem", null, client);
                 }
             }
 
+        }
+
+        private void addOrderBtn_Click(object sender, EventArgs e)
+        {
+            HideAllPanel();
+            newOrderPanel.Show();
+            clientOrderGridView.DataSource = LoadClientTable();
+            productOrderGridView.DataSource = LoadProductTable();
+
+        }
+
+        private void viewOrderBtn_Click(object sender, EventArgs e)
+        {
+            HideAllPanel();
+            orderPanel.Show();
+            LoadOrder();
+        }
+
+        private void clientPhoneTxt_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            if (!char.IsDigit(e.KeyChar) && !char.IsControl(e.KeyChar))
+            {
+                e.Handled = true;
+            }
+        }
+
+        private void clientOrderSearchTxt_TextChanged(object sender, EventArgs e)
+        {
+            string searchValue = clientOrderSearchTxt.Text.Trim();
+
+            DataTable clientTable = LoadClientTable();
+
+            if (!string.IsNullOrEmpty(searchValue))
+            {
+                DataView dv = new DataView(clientTable);
+                dv.RowFilter = $"Phone LIKE '%{searchValue}%'";
+                currentSearchResult = dv.ToTable();
+                clientOrderGridView.DataSource = currentSearchResult;
+            }
+            else
+            {
+                currentSearchResult = clientTable;
+                clientOrderGridView.DataSource = clientTable;
+            }
+        }
+
+        private void productOrderSearchTxt_TextChanged(object sender, EventArgs e)
+        {
+            string searchValue = productOrderSearchTxt.Text.Trim();
+
+            DataTable productTable = LoadProductTable();
+
+            if (!string.IsNullOrEmpty(searchValue))
+            {
+                DataView dv = new DataView(productTable);
+                dv.RowFilter = $"Name LIKE '%{searchValue}%'";
+                currentSearchResult = dv.ToTable();
+                productOrderGridView.DataSource = currentSearchResult;
+            }
+            else
+            {
+                currentSearchResult = productTable;
+                productOrderGridView.DataSource = productTable;
+            }
+        }
+
+        private void addItemBtn_Click(object sender, EventArgs e)
+        {
+            if (productOrderGridView.CurrentRow == null || productOrderGridView.CurrentRow.Cells["ID"].Value == null)
+            {
+                MessageBox.Show("Please select a product.");
+                return;
+            }
+
+            var selectedRow = productOrderGridView.CurrentRow;
+            var productName = selectedRow.Cells["Name"].Value.ToString();
+            var productId = Convert.ToInt32(selectedRow.Cells["ID"].Value);
+            var quantity = Convert.ToInt32(productQuantityNum.Value);
+            var price = Convert.ToInt32(selectedRow.Cells["Price"].Value);
+
+            var cartItem = new CartItem
+            {
+                ProductID = productId,
+                ProductName = productName,
+                Quantity = quantity,
+                Price = price * quantity
+            };
+            bool existed = false;
+
+            foreach (CartItem item in cartItems)
+            {
+                if (item.ProductName == cartItem.ProductName)
+                {
+                    item.Quantity += cartItem.Quantity;
+                    item.Price = item.Quantity * price;
+                    existed = true;
+                }
+            }
+            if (!existed)
+            {
+                cartItems.Add(cartItem);
+            }
+
+            UpdateCartGridView();
+
+        }
+
+        private void UpdateCartGridView()
+        {
+            cartGridView.DataSource = null;
+            cartGridView.DataSource = cartItems;
+            var price = 0;
+            foreach (CartItem item in cartItems)
+            {
+                price += item.Price;
+            }
+
+            totalPriceTxt.Text = string.Format("{0:N0} VND", price);
+        }
+
+        private void insertOrderBtn_Click(object sender, EventArgs e)
+        {
+            if (string.IsNullOrEmpty(clientPhoneTxt.Text))
+            {
+                MessageBox.Show("Please select a client", "Empty Client", MessageBoxButtons.OK);
+            }
+            else if(cartItems.Count == 0)
+            {
+                MessageBox.Show("Please select a product", "Empty Client", MessageBoxButtons.OK);
+            }
+            else if (!CheckPhoneExist(clientPhoneTxt.Text))
+            {
+                DialogResult dialogResult = MessageBox.Show("This Phone number is not exist. Do you want to create new client?", "Client Phone", MessageBoxButtons.YesNo);
+                if (dialogResult == DialogResult.Yes)
+                {
+                    ClientForm clientForm = new ClientForm(this);
+                    clientForm.txtPhone.Text = clientPhoneTxt.Text;
+                    clientForm.ShowDialog();
+                }
+            }
+
+            else
+            {
+                Client client = ClientDAO.Instance.GetClientByPhone(clientPhoneTxt.Text);
+                int clientID = client.ID;
+                int employeeID = id;
+                DateTime orderDate = insertOrderDate.Value;
+                string totalPriceString = totalPriceTxt.Text.Replace(" VND", "").Replace(",", "");
+                decimal totalPriceDecimal;
+
+                if (decimal.TryParse(totalPriceString, out totalPriceDecimal))
+                {
+                    Console.WriteLine(totalPriceDecimal);
+                }
+                else
+                {
+                    foreach (CartItem item in cartItems)
+                    {
+                        totalPriceDecimal += item.Price;
+                    }
+                }
+
+                int newOrderID = OrderDAO.Instance.AddNewOrder(clientID, employeeID, orderDate, totalPriceDecimal);
+
+                foreach (CartItem item in cartItems)
+                {
+                    OrderItemDAO.Instance.AddOrderItem(newOrderID, item.ProductID, item.Quantity);
+                }
+
+                if (newOrderID != -1)
+                {
+                    DisplaySuccess("Successfully Insert New Order");
+                    LoadOrder();
+                    UpdateClientGridView();
+                    UpdateProductGridView();
+                    totalPriceTxt.Clear();
+                    cartItems.Clear();
+                    cartGridView.DataSource = null;
+                }
+            }
+        }
+
+        private bool CheckPhoneExist(string phone)
+        {
+            return ClientDAO.Instance.CheckPhoneNumberExist(phone);
+        }
+
+        private void clientOrderGridView_CellClick(object sender, DataGridViewCellEventArgs e)
+        {
+            if (e.RowIndex >= 0)
+            {
+                DataGridViewRow row = clientOrderGridView.Rows[e.RowIndex];
+
+                if (row.Cells["ID"].Value != null && !string.IsNullOrEmpty(row.Cells["ID"].Value.ToString()))
+                {
+                    clientPhoneTxt.Text = row.Cells["Phone"].Value.ToString();
+                }
+            }
         }
     }
 }
