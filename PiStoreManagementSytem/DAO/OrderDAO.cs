@@ -87,5 +87,11 @@ namespace PiStoreManagementSytem.DAO
             Order o = new Order(data.Rows[0]);
             return o;
         }
+
+        public DataTable LoadRevenue()
+        {
+            string query = "SELECT MONTH(OrderDate) AS Month, SUM(TotalPrice) AS Revenue FROM [Order] GROUP BY MONTH(OrderDate)";
+            return DataProvider.Instance.ExecuteQuery(query);
+        }
     }
 }

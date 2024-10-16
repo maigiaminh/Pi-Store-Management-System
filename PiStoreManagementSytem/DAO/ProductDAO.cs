@@ -124,5 +124,17 @@ namespace PiStoreManagementSytem.DAO
             }
             return !hasOrders;
         }
+
+        public DataTable GetBestSellingProducts()
+        {
+            string query = @"
+                SELECT TOP 10 P.Name AS ProductName, SUM(OI.Quantity) AS TotalSold
+                FROM OrderItem OI
+                JOIN Product P ON OI.ProductID = P.ID
+                GROUP BY P.Name
+                ORDER BY TotalSold DESC";
+
+            return DataProvider.Instance.ExecuteQuery(query);
+        }
     }
 }

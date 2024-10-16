@@ -30,6 +30,12 @@
         {
             components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(AdminForm));
+            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea1 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
+            System.Windows.Forms.DataVisualization.Charting.Legend legend1 = new System.Windows.Forms.DataVisualization.Charting.Legend();
+            System.Windows.Forms.DataVisualization.Charting.Series series1 = new System.Windows.Forms.DataVisualization.Charting.Series();
+            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea2 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
+            System.Windows.Forms.DataVisualization.Charting.Legend legend2 = new System.Windows.Forms.DataVisualization.Charting.Legend();
+            System.Windows.Forms.DataVisualization.Charting.Series series2 = new System.Windows.Forms.DataVisualization.Charting.Series();
             navPanel = new Panel();
             logoutBtn = new Panel();
             panel3 = new Panel();
@@ -176,6 +182,12 @@
             orderItemsGridView = new DataGridView();
             lblSelectOrder = new Label();
             cmbOrderList = new ComboBox();
+            homePanel = new Panel();
+            panel2 = new Panel();
+            chart2 = new System.Windows.Forms.DataVisualization.Charting.Chart();
+            chart1 = new System.Windows.Forms.DataVisualization.Charting.Chart();
+            cmbChartType = new ComboBox();
+            lblTitle = new Label();
             navPanel.SuspendLayout();
             logoutBtn.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)pictureBox1).BeginInit();
@@ -230,6 +242,10 @@
             ((System.ComponentModel.ISupportInitialize)clientOrderGridView).BeginInit();
             billPanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)orderItemsGridView).BeginInit();
+            homePanel.SuspendLayout();
+            panel2.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)chart2).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)chart1).BeginInit();
             SuspendLayout();
             // 
             // navPanel
@@ -821,7 +837,7 @@
             employeeGridView.RowHeadersWidth = 51;
             employeeGridView.Size = new Size(782, 303);
             employeeGridView.TabIndex = 1;
-            employeeGridView.CellClick += clientGridView_CellClick;
+            employeeGridView.CellClick += EmployeeCellClick;
             // 
             // settingPanel
             // 
@@ -2051,17 +2067,96 @@
             cmbOrderList.TabIndex = 5;
             cmbOrderList.SelectedIndexChanged += cmbOrderList_SelectedIndexChanged;
             // 
+            // homePanel
+            // 
+            homePanel.Controls.Add(panel2);
+            homePanel.Controls.Add(cmbChartType);
+            homePanel.Controls.Add(lblTitle);
+            homePanel.Dock = DockStyle.Fill;
+            homePanel.Location = new Point(200, 60);
+            homePanel.Name = "homePanel";
+            homePanel.Size = new Size(782, 593);
+            homePanel.TabIndex = 59;
+            // 
+            // panel2
+            // 
+            panel2.Controls.Add(chart2);
+            panel2.Controls.Add(chart1);
+            panel2.Dock = DockStyle.Bottom;
+            panel2.Location = new Point(0, 78);
+            panel2.Name = "panel2";
+            panel2.Size = new Size(782, 515);
+            panel2.TabIndex = 6;
+            // 
+            // chart2
+            // 
+            chartArea1.Name = "ChartArea1";
+            chart2.ChartAreas.Add(chartArea1);
+            legend1.Name = "Legend1";
+            chart2.Legends.Add(legend1);
+            chart2.Location = new Point(21, 8);
+            chart2.Name = "chart2";
+            series1.ChartArea = "ChartArea1";
+            series1.Legend = "Legend1";
+            series1.Name = "Series1";
+            chart2.Series.Add(series1);
+            chart2.Size = new Size(742, 481);
+            chart2.TabIndex = 3;
+            chart2.Text = "chart2";
+            // 
+            // chart1
+            // 
+            chartArea2.Name = "ChartArea1";
+            chart1.ChartAreas.Add(chartArea2);
+            legend2.Name = "Legend1";
+            chart1.Legends.Add(legend2);
+            chart1.Location = new Point(21, 8);
+            chart1.Name = "chart1";
+            series2.ChartArea = "ChartArea1";
+            series2.Legend = "Legend1";
+            series2.Name = "Series1";
+            chart1.Series.Add(series2);
+            chart1.Size = new Size(741, 481);
+            chart1.TabIndex = 2;
+            chart1.Text = "chart1";
+            // 
+            // cmbChartType
+            // 
+            cmbChartType.DropDownStyle = ComboBoxStyle.DropDownList;
+            cmbChartType.Font = new Font("Rockwell", 7.8F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            cmbChartType.FormattingEnabled = true;
+            cmbChartType.Items.AddRange(new object[] { "Monthly Revenue", "Best Selling Products" });
+            cmbChartType.Location = new Point(476, 27);
+            cmbChartType.Margin = new Padding(4, 5, 4, 5);
+            cmbChartType.Name = "cmbChartType";
+            cmbChartType.Size = new Size(287, 24);
+            cmbChartType.TabIndex = 5;
+            cmbChartType.SelectedIndexChanged += cmbChartType_SelectedIndexChanged;
+            // 
+            // lblTitle
+            // 
+            lblTitle.AutoSize = true;
+            lblTitle.Font = new Font("Rockwell", 16.2F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            lblTitle.ForeColor = Color.FromArgb(69, 123, 157);
+            lblTitle.Location = new Point(15, 24);
+            lblTitle.Margin = new Padding(4, 0, 4, 0);
+            lblTitle.Name = "lblTitle";
+            lblTitle.Size = new Size(244, 33);
+            lblTitle.TabIndex = 4;
+            lblTitle.Text = "Sales Dashboard";
+            // 
             // AdminForm
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = Color.FromArgb(238, 238, 238);
             ClientSize = new Size(982, 653);
+            Controls.Add(homePanel);
+            Controls.Add(employeePanel);
             Controls.Add(billPanel);
             Controls.Add(newOrderPanel);
             Controls.Add(orderPanel);
             Controls.Add(clientPanel);
-            Controls.Add(employeePanel);
             Controls.Add(productPanel);
             Controls.Add(settingPanel);
             Controls.Add(avtBtn);
@@ -2143,6 +2238,11 @@
             billPanel.ResumeLayout(false);
             billPanel.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)orderItemsGridView).EndInit();
+            homePanel.ResumeLayout(false);
+            homePanel.PerformLayout();
+            panel2.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)chart2).EndInit();
+            ((System.ComponentModel.ISupportInitialize)chart1).EndInit();
             ResumeLayout(false);
         }
 
@@ -2294,5 +2394,11 @@
         private TextBox txtBillPhone;
         private TextBox txtBillEmail;
         private TextBox txtBillTotal;
+        private Panel homePanel;
+        private ComboBox cmbChartType;
+        private Label lblTitle;
+        private Panel panel2;
+        private System.Windows.Forms.DataVisualization.Charting.Chart chart1;
+        private System.Windows.Forms.DataVisualization.Charting.Chart chart2;
     }
 }

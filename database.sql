@@ -120,17 +120,3 @@ VALUES
 (8, 3, 1, '2024-10-17', 2500000),
 (9, 4, 2, '2024-10-18', 5000000),
 (10, 5, 3, '2024-10-19', 4200000);
-
-SELECT 
-    O.ID,
-    C.Name,
-    C.Phone,
-    O.ClientID,
-    O.OrderDate,
-    O.TotalPrice
-FROM 
-    [Order] O
-JOIN 
-    Client C ON O.ClientID = C.ID
-JOIN 
-    Employee E ON O.EmployeeID = E.ID

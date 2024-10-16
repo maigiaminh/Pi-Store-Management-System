@@ -1,4 +1,6 @@
-﻿using Microsoft.IdentityModel.Tokens;
+﻿using LiveCharts.Wpf;
+using LiveCharts;
+using Microsoft.IdentityModel.Tokens;
 using PdfSharp;
 using PdfSharp.Charting;
 using PdfSharp.Drawing;
@@ -16,6 +18,7 @@ using System.Runtime.InteropServices;
 using System.Text;
 using System.Windows.Forms;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement.ListView;
+using System.Windows.Forms.DataVisualization.Charting;
 
 namespace PiStoreManagementSytem
 {
@@ -60,6 +63,16 @@ namespace PiStoreManagementSytem
             homeLabel.ForeColor = Constants.Constants.activeColor;
 
             settingPanel.Hide();
+
+            UnactiveAllButton();
+            HideAllPanel();
+            homePanel.Show();
+
+            homeImg.BackgroundImage = Constants.Constants.home_active;
+            homeLabel.ForeColor = Constants.Constants.activeColor;
+
+            cmbChartType.SelectedIndex = 0;
+            chart1.Visible = true;
         }
 
         private void DragApplication(object sender, MouseEventArgs e)
@@ -123,6 +136,7 @@ namespace PiStoreManagementSytem
             orderPanel.Hide();
             newOrderPanel.Hide();
             billPanel.Hide();
+            homePanel.Hide();
 
             cmbOrderList.Items.Clear();
         }
@@ -135,8 +149,13 @@ namespace PiStoreManagementSytem
         {
             UnactiveAllButton();
             HideAllPanel();
+            homePanel.Show();
+
             homeImg.BackgroundImage = Constants.Constants.home_active;
             homeLabel.ForeColor = Constants.Constants.activeColor;
+
+            cmbChartType.SelectedIndex = 0;
+            chart1.Visible = true;
         }
         private void EmployeeClick(object sender, EventArgs e)
         {
@@ -538,11 +557,11 @@ namespace PiStoreManagementSytem
                 }
                 else
                 {
-                    gfx.DrawImage(logo, page.Height/2 + 50, 0, 200, 200);
+                    gfx.DrawImage(logo, page.Height / 2 + 50, 0, 200, 200);
                     gfx.DrawString("PI STORE SNEAKER", companyFont, XBrushes.Black,
-                    new XRect(page.Height/2 + 70, 190, page.Width - 100, 50), XStringFormats.TopLeft);
+                    new XRect(page.Height / 2 + 70, 190, page.Width - 100, 50), XStringFormats.TopLeft);
                 }
-                
+
             }
 
             double tableTop = 250;
@@ -641,7 +660,7 @@ namespace PiStoreManagementSytem
                     new XRect(colXPos + 25, tableTop + 15, pageWidth - 60, headerHeight), XStringFormats.TopLeft);
 
                 gfx.DrawString($"{order.OrderDate.ToShortDateString()}", headerFont, XBrushes.Black,
-                    new XRect(page.Height+ 80, tableTop + 15, page.Width - 160, 50), XStringFormats.TopLeft);
+                    new XRect(page.Height + 80, tableTop + 15, page.Width - 160, 50), XStringFormats.TopLeft);
 
                 tableTop += headerHeight + 10;
 
@@ -776,7 +795,7 @@ namespace PiStoreManagementSytem
                 }
                 tableTop += rowHeight;
             }
-            if(name == "Bill")
+            if (name == "Bill")
             {
                 string total = string.Format("{0:N0} VND", order.TotalPrice);
                 tableTop += 20;
@@ -1070,7 +1089,6 @@ namespace PiStoreManagementSytem
         {
             if (e.RowIndex >= 0)
             {
-
                 DataGridViewRow row = clientGridView.Rows[e.RowIndex];
 
                 if (row.Cells["ID"].Value != null && !string.IsNullOrEmpty(row.Cells["ID"].Value.ToString()))
@@ -1744,6 +1762,79 @@ namespace PiStoreManagementSytem
 
             if (cmbOrderList.SelectedIndex != -1)
                 PrintPDF(orderItemsGridView, "Bill", null, client, order);
+        }
+
+        private void cmbChartType_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            string selectedChart = cmbChartType.SelectedItem.ToString();
+
+            chart1.Visible = false;
+            chart2.Visible = false;
+
+            if (selectedChart == "Monthly Revenue")
+            {
+                LoadMonthlyRevenueChart();
+                chart1.Visible = true; 
+            }
+            else if (selectedChart == "Best Selling Products")
+            {
+                LoadBestSellingProductsChart();
+                chart2.Visible = true;
+            }
+        }
+
+        private void LoadMonthlyRevenueChart()
+        {
+            DataTable monthlyRevenue = OrderDAO.Instance.LoadRevenue();
+
+            if (monthlyRevenue.Rows.Count == 0)
+            {
+                MessageBox.Show("Không có dữ liệu doanh thu tháng.");
+                return;
+            }
+
+            chart1.Series.Clear();
+
+            System.Windows.Forms.DataVisualization.Charting.Series series = new System.Windows.Forms.DataVisualization.Charting.Series("Monthly Revenue");
+            series.ChartType = SeriesChartType.Column;
+            series.BorderWidth = 3;
+            series.IsValueShownAsLabel = true;
+            int i = 1;
+            foreach (DataRow row in monthlyRevenue.Rows)
+            {
+                int month = Convert.ToInt32(row["Month"]);
+
+                decimal revenue = Convert.ToDecimal(row["Revenue"]);
+
+                series.Points.AddXY(month, revenue);
+            }
+
+            chart1.Series.Add(series);
+
+            chart1.ChartAreas[0].AxisX.Title = "Month";
+            chart1.ChartAreas[0].AxisY.Title = "Revenue (VND)";
+            chart1.ChartAreas[0].AxisX.Interval = 1;
+            chart1.ChartAreas[0].AxisX.IsLabelAutoFit = true;
+            chart1.ChartAreas[0].AxisY.LabelStyle.Format = "{0:N0}";
+        }
+        private void LoadBestSellingProductsChart()
+        {
+
+            DataTable bestSellingProducts = ProductDAO.Instance.GetBestSellingProducts();
+
+            chart2.Series.Clear();
+            System.Windows.Forms.DataVisualization.Charting.Series series = new System.Windows.Forms.DataVisualization.Charting.Series("Best Selling Products");
+            series.ChartType = SeriesChartType.Pie;
+
+            foreach (DataRow row in bestSellingProducts.Rows)
+            {
+                string productName = row["ProductName"].ToString();
+                int totalSold = Convert.ToInt32(row["TotalSold"]);
+
+                series.Points.AddXY(productName, totalSold);
+            }
+
+            chart2.Series.Add(series);
         }
     }
 }
