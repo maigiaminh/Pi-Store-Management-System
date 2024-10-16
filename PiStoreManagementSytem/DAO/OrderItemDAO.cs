@@ -81,5 +81,21 @@ namespace PiStoreManagementSytem.DAO
 
             DataProvider.Instance.ExecuteNonQuery(query, parameters);
         }
+
+        public DataTable GetOrderItemsByOrderID(int orderID)
+        {
+            string query = @"
+                SELECT P.Name AS ProductName, OI.Quantity, (P.Price * OI.Quantity) AS TotalPrice
+                FROM OrderItem OI
+                JOIN Product P ON OI.ProductID = P.ID
+                WHERE OI.OrderID = @OrderID";
+
+            SqlParameter[] parameters = new SqlParameter[]
+            {
+                new SqlParameter("@OrderID", orderID)
+            };
+
+            return DataProvider.Instance.ExecuteQuery(query, parameters);
+        }
     }
 }

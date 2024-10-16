@@ -10,6 +10,7 @@ using System.Buffers;
 using System.Data;
 using System.Diagnostics;
 using System.Drawing.Drawing2D;
+using System.Drawing.Printing;
 using System.Net;
 using System.Runtime.InteropServices;
 using System.Text;
@@ -20,6 +21,7 @@ namespace PiStoreManagementSytem
 {
     public partial class AdminForm : Form
     {
+        private Client currentClientBill;
         private int clientSelectedID;
         private int orderSelectedID;
         private DataGridViewCellCollection currentClientCell;
@@ -120,6 +122,9 @@ namespace PiStoreManagementSytem
             productPanel.Hide();
             orderPanel.Hide();
             newOrderPanel.Hide();
+            billPanel.Hide();
+
+            cmbOrderList.Items.Clear();
         }
 
         private void UnactiveAllPanel()
@@ -192,8 +197,13 @@ namespace PiStoreManagementSytem
         private void BillClick(object sender, EventArgs e)
         {
             UnactiveAllButton();
+            HideAllPanel();
+            billPanel.Show();
+
             billImg.BackgroundImage = Constants.Constants.bill_active;
             billLabel.ForeColor = Constants.Constants.activeColor;
+
+            LoadOrderList();
         }
 
         private void HomeHover(object sender, EventArgs e)
@@ -493,7 +503,7 @@ namespace PiStoreManagementSytem
                 PrintPDF(employeeGridView, "Employee");
         }
 
-        private void PrintPDF(DataGridView gridView, string name, DataGridViewCellCollection values = null, Client client = null)
+        private void PrintPDF(DataGridView gridView, string name, DataGridViewCellCollection values = null, Client client = null, Order order = null)
         {
             PdfDocument document = new PdfDocument();
             document.Info.Title = $"Company {name} List";
@@ -517,12 +527,22 @@ namespace PiStoreManagementSytem
                 logoBitmap.Save(stream, System.Drawing.Imaging.ImageFormat.Png);
                 XImage logo = XImage.FromStream(stream);
 
-                gfx.DrawImage(logo, 20, 0, 200, 200);
-                gfx.DrawString($"{name} List", titleFont, XBrushes.Black,
-                    new XRect(page.Height, 85, page.Width - 160, 50), XStringFormats.TopLeft);
+                if (name != "Bill")
+                {
+                    gfx.DrawImage(logo, 20, 0, 200, 200);
 
-                gfx.DrawString("Company: Pi Store Sneaker", companyFont, XBrushes.Black,
+                    gfx.DrawString($"{name} List", titleFont, XBrushes.Black,
+                    new XRect(page.Height, 85, page.Width - 160, 50), XStringFormats.TopLeft);
+                    gfx.DrawString("Company: Pi Store Sneaker", companyFont, XBrushes.Black,
                     new XRect(50, 190, page.Width - 100, 50), XStringFormats.TopLeft);
+                }
+                else
+                {
+                    gfx.DrawImage(logo, page.Height/2 + 50, 0, 200, 200);
+                    gfx.DrawString("PI STORE SNEAKER", companyFont, XBrushes.Black,
+                    new XRect(page.Height/2 + 70, 190, page.Width - 100, 50), XStringFormats.TopLeft);
+                }
+                
             }
 
             double tableTop = 250;
@@ -577,6 +597,51 @@ namespace PiStoreManagementSytem
                 gfx.DrawRectangle(XBrushes.LightGray, colXPos, tableTop, pageWidth - 100, headerHeight);
                 gfx.DrawString("Client Order", headerFont, XBrushes.Black,
                     new XRect(colXPos + 25, tableTop + 15, pageWidth - 100, headerHeight), XStringFormats.TopLeft);
+
+                tableTop += headerHeight + 10;
+
+                gfx.DrawString("Client Name:", infoFont, XBrushes.Black,
+                    new XRect(colXPos + 25, tableTop, 200, rowHeight), XStringFormats.TopLeft);
+                gfx.DrawString(client.Name.ToString(), cellFont, XBrushes.Black,
+                    new XRect(colXPos + 150, tableTop, pageWidth - 100, rowHeight), XStringFormats.TopLeft);
+
+                tableTop += rowHeight;
+
+                gfx.DrawString("Email:", infoFont, XBrushes.Black,
+                    new XRect(colXPos + 25, tableTop, 200, rowHeight), XStringFormats.TopLeft);
+                gfx.DrawString(client.Email.ToString(), cellFont, XBrushes.Black,
+                    new XRect(colXPos + 150, tableTop, pageWidth - 100, rowHeight), XStringFormats.TopLeft);
+
+                tableTop += rowHeight;
+
+                gfx.DrawString("Phone:", infoFont, XBrushes.Black,
+                    new XRect(colXPos + 25, tableTop, 200, rowHeight), XStringFormats.TopLeft);
+                gfx.DrawString(client.Phone.ToString(), cellFont, XBrushes.Black,
+                    new XRect(colXPos + 150, tableTop, pageWidth - 100, rowHeight), XStringFormats.TopLeft);
+
+                tableTop += rowHeight;
+
+                gfx.DrawString("Address:", infoFont, XBrushes.Black,
+                    new XRect(colXPos + 25, tableTop, 200, rowHeight), XStringFormats.TopLeft);
+                gfx.DrawString(client.Address.ToString(), cellFont, XBrushes.Black,
+                    new XRect(colXPos + 150, tableTop, pageWidth - 100, rowHeight), XStringFormats.TopLeft);
+
+                tableTop += rowHeight + 10;
+
+                gfx.DrawLine(new XPen(XColors.Black, 1), colXPos, tableTop, pageWidth - 50, tableTop);
+
+                tableTop += 50;
+            }
+
+            else if (name == "Bill")
+            {
+                double headerHeight = 40;
+                gfx.DrawRectangle(XBrushes.LightGray, colXPos, tableTop, pageWidth - 100, headerHeight);
+                gfx.DrawString("INVOICE", headerFont, XBrushes.Black,
+                    new XRect(colXPos + 25, tableTop + 15, pageWidth - 60, headerHeight), XStringFormats.TopLeft);
+
+                gfx.DrawString($"{order.OrderDate.ToShortDateString()}", headerFont, XBrushes.Black,
+                    new XRect(page.Height+ 80, tableTop + 15, page.Width - 160, 50), XStringFormats.TopLeft);
 
                 tableTop += headerHeight + 10;
 
@@ -711,12 +776,19 @@ namespace PiStoreManagementSytem
                 }
                 tableTop += rowHeight;
             }
+            if(name == "Bill")
+            {
+                string total = string.Format("{0:N0} VND", order.TotalPrice);
+                tableTop += 20;
+                gfx.DrawString($"Total Price: {total}", companyFont, XBrushes.Black,
+                                new XRect(50, tableTop, page.Width - 100, 50), XStringFormats.CenterRight);
+            }
 
             SaveFileDialog saveFileDialog = new SaveFileDialog();
 
             saveFileDialog.Filter = "PDF Files|*.pdf";
-            saveFileDialog.Title = $"Save {name} List PDF";
-            saveFileDialog.FileName = $"{name}List.pdf";
+            saveFileDialog.Title = $"Save {name} PDF";
+            saveFileDialog.FileName = $"{name}.pdf";
 
             if (saveFileDialog.ShowDialog() == DialogResult.OK)
             {
@@ -725,7 +797,7 @@ namespace PiStoreManagementSytem
                 document.Save(filePath);
                 document.Close();
 
-                MessageBox.Show($"Print {name} List Successful!", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                MessageBox.Show($"Print {name} Successful!", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
             else
             {
@@ -1511,7 +1583,7 @@ namespace PiStoreManagementSytem
             {
                 MessageBox.Show("Please select a client", "Empty Client", MessageBoxButtons.OK);
             }
-            else if(cartItems.Count == 0)
+            else if (cartItems.Count == 0)
             {
                 MessageBox.Show("Please select a product", "Empty Client", MessageBoxButtons.OK);
             }
@@ -1583,6 +1655,95 @@ namespace PiStoreManagementSytem
                     clientPhoneTxt.Text = row.Cells["Phone"].Value.ToString();
                 }
             }
+        }
+
+        private void LoadOrderList()
+        {
+            DataTable orders = OrderDAO.Instance.LoadOrderTable();
+            foreach (DataRow row in orders.Rows)
+            {
+                cmbOrderList.Items.Add((int)row["ID"]);
+            }
+        }
+
+        private void cmbOrderList_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (cmbOrderList.SelectedIndex != -1)
+            {
+                int orderID = Convert.ToInt32(cmbOrderList.Items[cmbOrderList.SelectedIndex]);
+                Client client = ClientDAO.Instance.GetClientByOrderID(orderID);
+                Order order = OrderDAO.Instance.GetOrderByID(orderID);
+                bool isBillExist = BillDAO.Instance.IsBillExistByOrderID(orderID);
+                currentClientBill = client;
+                if (isBillExist)
+                {
+                    btnGenerateBill.Enabled = false;
+                }
+                else
+                {
+                    btnGenerateBill.Enabled = true;
+                }
+                LoadClientBillInfo(client);
+                LoadBillInfo(order);
+                LoadOrderItems(orderID);
+            }
+        }
+
+        private void LoadClientBillInfo(Client client)
+        {
+            txtBillClientName.Text = client.Name;
+            txtBillEmail.Text = client.Email;
+            txtBillPhone.Text = client.Phone;
+            txtBillAddress.Text = client.Address;
+        }
+
+        private void LoadBillInfo(Order order)
+        {
+            txtBillOrderID.Text = order.ID.ToString();
+            txtBillOrderDate.Text = order.OrderDate.ToShortDateString();
+            txtBillTotal.Text = string.Format("{0:N0} VND", order.TotalPrice);
+        }
+        private void LoadOrderItems(int orderID)
+        {
+            DataTable orderItems = OrderItemDAO.Instance.GetOrderItemsByOrderID(orderID);
+            orderItemsGridView.DataSource = orderItems;
+        }
+
+        private void btnGenerateBill_Click(object sender, EventArgs e)
+        {
+            int orderID = Convert.ToInt32(txtBillOrderID.Text.ToString());
+            DateTime date = Convert.ToDateTime(txtBillOrderDate.Text.ToString());
+            string totalPriceString = txtBillTotal.Text.Replace(" VND", "").Replace(",", "");
+            decimal totalPriceDecimal = decimal.Parse(totalPriceString);
+
+            if (BillDAO.Instance.AddNewBill(orderID, currentClientBill.ID, id, date, totalPriceDecimal) > 0)
+            {
+                DisplaySuccess("Generate Bill Successfully");
+                ClearBillField();
+            }
+        }
+
+        private void ClearBillField()
+        {
+            txtBillOrderID.Clear();
+            txtBillOrderDate.Clear();
+            txtBillTotal.Clear();
+            txtBillClientName.Clear();
+            txtBillEmail.Clear();
+            txtBillAddress.Clear();
+            txtBillPhone.Clear();
+            btnGenerateBill.Enabled = false;
+            orderItemsGridView.DataSource = null;
+        }
+
+        private void btnPrintBill_Click(object sender, EventArgs e)
+        {
+            int orderID = Convert.ToInt32(cmbOrderList.Items[cmbOrderList.SelectedIndex]);
+            Client client = ClientDAO.Instance.GetClientByOrderID(orderID);
+            Order order = OrderDAO.Instance.GetOrderByID(orderID);
+
+            if (cmbOrderList.SelectedIndex != -1)
+                PrintPDF(orderItemsGridView, "Bill", null, client, order);
         }
     }
 }

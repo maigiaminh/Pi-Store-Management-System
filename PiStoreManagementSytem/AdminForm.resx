@@ -3956,6 +3956,23 @@
         qQmk5uMkcFwi5/XUJLKGpPQGM7sL2xQ5d/sAAAAASUVORK5CYII=
 </value>
   </data>
+  <data name="btnPrintBill.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+    <value>
+        iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAABGdBTUEAALGPC/xhBQAAAAlwSFlzAAAO
+        vAAADrwBlbxySQAAALhJREFUOE+1kTEKAkEMRecuFhY2goVYLGhpJ4IItrsI3sD7eB9PYGNpYWk9mpDE
+        n9kMbuOH1yT5r5hJUfI15QhZ1xOVIuTcR5er9TbvDkdjtlgao/EkluhwkODyvZV6X4BQCWGBSFy5PZ2Z
+        XwKdm6QUbPatYzpvHE7wwQm6+41RGaGFklAQEZWJ/wl4CXk8X0bvEUmAP6FDDApsL3CZYgKVQAYJKE4C
+        qQmk5uMkcFwi5/XUJLKGpPQGM7sL2xQ5d/sAAAAASUVORK5CYII=
+</value>
+  </data>
+  <data name="btnGenerateBill.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+    <value>
+        iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAABGdBTUEAALGPC/xhBQAAAAlwSFlzAAAO
+        vAAADrwBlbxySQAAAGxJREFUOE+dkcENwDAIxNh/pE6UFfpqxSPoADepYslS4I5XDLnsQbfQEYlQcWWC
+        Cn8MKPzQifnkeBJ7LaxUUlYLKSyZ0/L5ULSg6D7UQaEZrQuidpL0E0rNkgGE4x5t10xQYSVCRXILHbkN
+        sxeH+bDPMjkHBgAAAABJRU5ErkJggg==
+</value>
+  </data>
   <metadata name="$this.TrayHeight" type="System.Int32, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>25</value>
   </metadata>

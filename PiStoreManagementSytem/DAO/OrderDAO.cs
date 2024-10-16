@@ -73,5 +73,19 @@ namespace PiStoreManagementSytem.DAO
 
             return Convert.ToInt32(DataProvider.Instance.ExecuteScalar(query, parameters));
         }
+
+        public Order GetOrderByID(int id)
+        {
+            string query = "SELECT * FROM [Order] WHERE ID = @ID";
+
+            SqlParameter[] parameters = new SqlParameter[]
+            {
+                new SqlParameter("@ID", id)
+            };
+
+            DataTable data = DataProvider.Instance.ExecuteQuery(query, parameters);
+            Order o = new Order(data.Rows[0]);
+            return o;
+        }
     }
 }

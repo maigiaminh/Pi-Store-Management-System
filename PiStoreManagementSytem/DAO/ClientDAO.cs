@@ -148,5 +148,21 @@ namespace PiStoreManagementSytem.DAO
             Client c = new Client(data.Rows[0]);
             return c;
         }
+        public Client GetClientByOrderID(int orderID)
+        {
+            string query = @"
+                SELECT C.ID, C.Name, C.Phone, C.Email, C.Address
+                FROM [Order] O
+                JOIN Client C ON O.ClientID = C.ID
+                WHERE O.ID = @OrderID";
+            SqlParameter[] parameters = new SqlParameter[]
+            {
+                new SqlParameter("@OrderID", orderID)
+            };
+
+            DataTable data = DataProvider.Instance.ExecuteQuery(query, parameters);
+            Client c = new Client(data.Rows[0]);
+            return c;
+        }
     }
 }

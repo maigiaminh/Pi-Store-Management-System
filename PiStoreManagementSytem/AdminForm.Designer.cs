@@ -154,6 +154,28 @@
             productOrderGridView = new DataGridView();
             clientOrderGridView = new DataGridView();
             label16 = new Label();
+            billPanel = new Panel();
+            txtBillTotal = new TextBox();
+            txtBillAddress = new TextBox();
+            txtBillPhone = new TextBox();
+            txtBillEmail = new TextBox();
+            txtBillClientName = new TextBox();
+            txtBillOrderDate = new TextBox();
+            txtBillOrderID = new TextBox();
+            label31 = new Label();
+            label30 = new Label();
+            label29 = new Label();
+            label28 = new Label();
+            label27 = new Label();
+            label26 = new Label();
+            label25 = new Label();
+            label24 = new Label();
+            btnPrintBill = new Button();
+            btnGenerateBill = new Button();
+            label23 = new Label();
+            orderItemsGridView = new DataGridView();
+            lblSelectOrder = new Label();
+            cmbOrderList = new ComboBox();
             navPanel.SuspendLayout();
             logoutBtn.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)pictureBox1).BeginInit();
@@ -206,6 +228,8 @@
             ((System.ComponentModel.ISupportInitialize)cartGridView).BeginInit();
             ((System.ComponentModel.ISupportInitialize)productOrderGridView).BeginInit();
             ((System.ComponentModel.ISupportInitialize)clientOrderGridView).BeginInit();
+            billPanel.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)orderItemsGridView).BeginInit();
             SuspendLayout();
             // 
             // navPanel
@@ -1768,12 +1792,272 @@
             label16.TabIndex = 39;
             label16.Text = "Client List";
             // 
+            // billPanel
+            // 
+            billPanel.Controls.Add(txtBillTotal);
+            billPanel.Controls.Add(txtBillAddress);
+            billPanel.Controls.Add(txtBillPhone);
+            billPanel.Controls.Add(txtBillEmail);
+            billPanel.Controls.Add(txtBillClientName);
+            billPanel.Controls.Add(txtBillOrderDate);
+            billPanel.Controls.Add(txtBillOrderID);
+            billPanel.Controls.Add(label31);
+            billPanel.Controls.Add(label30);
+            billPanel.Controls.Add(label29);
+            billPanel.Controls.Add(label28);
+            billPanel.Controls.Add(label27);
+            billPanel.Controls.Add(label26);
+            billPanel.Controls.Add(label25);
+            billPanel.Controls.Add(label24);
+            billPanel.Controls.Add(btnPrintBill);
+            billPanel.Controls.Add(btnGenerateBill);
+            billPanel.Controls.Add(label23);
+            billPanel.Controls.Add(orderItemsGridView);
+            billPanel.Controls.Add(lblSelectOrder);
+            billPanel.Controls.Add(cmbOrderList);
+            billPanel.Dock = DockStyle.Fill;
+            billPanel.Location = new Point(200, 60);
+            billPanel.Name = "billPanel";
+            billPanel.Size = new Size(782, 593);
+            billPanel.TabIndex = 58;
+            // 
+            // txtBillTotal
+            // 
+            txtBillTotal.Location = new Point(616, 512);
+            txtBillTotal.Name = "txtBillTotal";
+            txtBillTotal.ReadOnly = true;
+            txtBillTotal.Size = new Size(141, 27);
+            txtBillTotal.TabIndex = 56;
+            // 
+            // txtBillAddress
+            // 
+            txtBillAddress.Location = new Point(119, 472);
+            txtBillAddress.Name = "txtBillAddress";
+            txtBillAddress.ReadOnly = true;
+            txtBillAddress.Size = new Size(312, 27);
+            txtBillAddress.TabIndex = 55;
+            // 
+            // txtBillPhone
+            // 
+            txtBillPhone.Location = new Point(119, 419);
+            txtBillPhone.Name = "txtBillPhone";
+            txtBillPhone.ReadOnly = true;
+            txtBillPhone.Size = new Size(312, 27);
+            txtBillPhone.TabIndex = 54;
+            // 
+            // txtBillEmail
+            // 
+            txtBillEmail.Location = new Point(119, 364);
+            txtBillEmail.Name = "txtBillEmail";
+            txtBillEmail.ReadOnly = true;
+            txtBillEmail.Size = new Size(312, 27);
+            txtBillEmail.TabIndex = 53;
+            // 
+            // txtBillClientName
+            // 
+            txtBillClientName.Location = new Point(119, 311);
+            txtBillClientName.Name = "txtBillClientName";
+            txtBillClientName.ReadOnly = true;
+            txtBillClientName.Size = new Size(312, 27);
+            txtBillClientName.TabIndex = 52;
+            // 
+            // txtBillOrderDate
+            // 
+            txtBillOrderDate.Location = new Point(271, 243);
+            txtBillOrderDate.Name = "txtBillOrderDate";
+            txtBillOrderDate.ReadOnly = true;
+            txtBillOrderDate.Size = new Size(160, 27);
+            txtBillOrderDate.TabIndex = 51;
+            // 
+            // txtBillOrderID
+            // 
+            txtBillOrderID.Location = new Point(119, 241);
+            txtBillOrderID.Name = "txtBillOrderID";
+            txtBillOrderID.ReadOnly = true;
+            txtBillOrderID.Size = new Size(80, 27);
+            txtBillOrderID.TabIndex = 50;
+            // 
+            // label31
+            // 
+            label31.AutoSize = true;
+            label31.Font = new Font("Rockwell", 10.2F, FontStyle.Bold);
+            label31.ForeColor = Color.Black;
+            label31.Location = new Point(210, 244);
+            label31.Name = "label31";
+            label31.Size = new Size(55, 20);
+            label31.TabIndex = 49;
+            label31.Text = "Date:";
+            // 
+            // label30
+            // 
+            label30.AutoSize = true;
+            label30.Font = new Font("Rockwell", 10.2F, FontStyle.Bold);
+            label30.ForeColor = Color.Black;
+            label30.Location = new Point(21, 245);
+            label30.Name = "label30";
+            label30.Size = new Size(92, 20);
+            label30.TabIndex = 48;
+            label30.Text = "Order ID:";
+            // 
+            // label29
+            // 
+            label29.AutoSize = true;
+            label29.Font = new Font("Rockwell", 10.2F, FontStyle.Bold);
+            label29.ForeColor = Color.Black;
+            label29.Location = new Point(24, 314);
+            label29.Name = "label29";
+            label29.Size = new Size(65, 20);
+            label29.TabIndex = 47;
+            label29.Text = "Name:";
+            // 
+            // label28
+            // 
+            label28.AutoSize = true;
+            label28.Font = new Font("Rockwell", 10.2F, FontStyle.Bold);
+            label28.ForeColor = Color.Black;
+            label28.Location = new Point(551, 518);
+            label28.Name = "label28";
+            label28.Size = new Size(59, 20);
+            label28.TabIndex = 46;
+            label28.Text = "Total:";
+            // 
+            // label27
+            // 
+            label27.AutoSize = true;
+            label27.Font = new Font("Rockwell", 10.2F, FontStyle.Bold);
+            label27.ForeColor = Color.Black;
+            label27.Location = new Point(24, 479);
+            label27.Name = "label27";
+            label27.Size = new Size(85, 20);
+            label27.TabIndex = 45;
+            label27.Text = "Address:";
+            // 
+            // label26
+            // 
+            label26.AutoSize = true;
+            label26.Font = new Font("Rockwell", 10.2F, FontStyle.Bold);
+            label26.ForeColor = Color.Black;
+            label26.Location = new Point(24, 422);
+            label26.Name = "label26";
+            label26.Size = new Size(68, 20);
+            label26.TabIndex = 44;
+            label26.Text = "Phone:";
+            // 
+            // label25
+            // 
+            label25.AutoSize = true;
+            label25.Font = new Font("Rockwell", 10.2F, FontStyle.Bold);
+            label25.ForeColor = Color.Black;
+            label25.Location = new Point(24, 371);
+            label25.Name = "label25";
+            label25.Size = new Size(65, 20);
+            label25.TabIndex = 43;
+            label25.Text = "Email:";
+            // 
+            // label24
+            // 
+            label24.AutoSize = true;
+            label24.Font = new Font("Rockwell", 16.2F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            label24.ForeColor = Color.Black;
+            label24.Location = new Point(169, 165);
+            label24.Name = "label24";
+            label24.Size = new Size(135, 33);
+            label24.TabIndex = 42;
+            label24.Text = "ORDERS";
+            // 
+            // btnPrintBill
+            // 
+            btnPrintBill.BackColor = Color.FromArgb(238, 238, 238);
+            btnPrintBill.BackgroundImageLayout = ImageLayout.None;
+            btnPrintBill.Cursor = Cursors.Hand;
+            btnPrintBill.FlatAppearance.BorderColor = Color.DarkGreen;
+            btnPrintBill.FlatAppearance.BorderSize = 0;
+            btnPrintBill.FlatStyle = FlatStyle.Flat;
+            btnPrintBill.Font = new Font("Rockwell", 9F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            btnPrintBill.ForeColor = Color.Black;
+            btnPrintBill.Image = (Image)resources.GetObject("btnPrintBill.Image");
+            btnPrintBill.ImageAlign = ContentAlignment.MiddleLeft;
+            btnPrintBill.Location = new Point(660, 545);
+            btnPrintBill.Name = "btnPrintBill";
+            btnPrintBill.Size = new Size(98, 36);
+            btnPrintBill.TabIndex = 41;
+            btnPrintBill.Text = "Print Bill";
+            btnPrintBill.TextAlign = ContentAlignment.MiddleRight;
+            btnPrintBill.UseVisualStyleBackColor = false;
+            btnPrintBill.Click += btnPrintBill_Click;
+            // 
+            // btnGenerateBill
+            // 
+            btnGenerateBill.BackColor = Color.FromArgb(238, 238, 238);
+            btnGenerateBill.BackgroundImageLayout = ImageLayout.None;
+            btnGenerateBill.Cursor = Cursors.Hand;
+            btnGenerateBill.FlatAppearance.BorderColor = Color.DarkGreen;
+            btnGenerateBill.FlatAppearance.BorderSize = 0;
+            btnGenerateBill.FlatStyle = FlatStyle.Flat;
+            btnGenerateBill.Font = new Font("Rockwell", 9F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            btnGenerateBill.ForeColor = Color.Black;
+            btnGenerateBill.Image = (Image)resources.GetObject("btnGenerateBill.Image");
+            btnGenerateBill.ImageAlign = ContentAlignment.MiddleLeft;
+            btnGenerateBill.Location = new Point(515, 545);
+            btnGenerateBill.Name = "btnGenerateBill";
+            btnGenerateBill.Size = new Size(133, 36);
+            btnGenerateBill.TabIndex = 40;
+            btnGenerateBill.Text = "Generate Bill";
+            btnGenerateBill.TextAlign = ContentAlignment.MiddleRight;
+            btnGenerateBill.UseVisualStyleBackColor = false;
+            btnGenerateBill.Click += btnGenerateBill_Click;
+            // 
+            // label23
+            // 
+            label23.AutoSize = true;
+            label23.Font = new Font("Rockwell", 18F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            label23.ForeColor = Color.FromArgb(69, 123, 157);
+            label23.Location = new Point(266, 27);
+            label23.Name = "label23";
+            label23.Size = new Size(276, 38);
+            label23.TabIndex = 39;
+            label23.Text = "Bill Management";
+            // 
+            // orderItemsGridView
+            // 
+            orderItemsGridView.AllowUserToAddRows = false;
+            orderItemsGridView.AllowUserToDeleteRows = false;
+            orderItemsGridView.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            orderItemsGridView.Location = new Point(452, 165);
+            orderItemsGridView.Name = "orderItemsGridView";
+            orderItemsGridView.ReadOnly = true;
+            orderItemsGridView.RowHeadersWidth = 62;
+            orderItemsGridView.RowTemplate.Height = 28;
+            orderItemsGridView.Size = new Size(305, 335);
+            orderItemsGridView.TabIndex = 7;
+            // 
+            // lblSelectOrder
+            // 
+            lblSelectOrder.AutoSize = true;
+            lblSelectOrder.Font = new Font("Rockwell", 12F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            lblSelectOrder.ForeColor = Color.FromArgb(69, 123, 157);
+            lblSelectOrder.Location = new Point(21, 88);
+            lblSelectOrder.Name = "lblSelectOrder";
+            lblSelectOrder.Size = new Size(132, 24);
+            lblSelectOrder.TabIndex = 6;
+            lblSelectOrder.Text = "Select Order";
+            // 
+            // cmbOrderList
+            // 
+            cmbOrderList.FormattingEnabled = true;
+            cmbOrderList.Location = new Point(161, 86);
+            cmbOrderList.Name = "cmbOrderList";
+            cmbOrderList.Size = new Size(596, 28);
+            cmbOrderList.TabIndex = 5;
+            cmbOrderList.SelectedIndexChanged += cmbOrderList_SelectedIndexChanged;
+            // 
             // AdminForm
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = Color.FromArgb(238, 238, 238);
             ClientSize = new Size(982, 653);
+            Controls.Add(billPanel);
             Controls.Add(newOrderPanel);
             Controls.Add(orderPanel);
             Controls.Add(clientPanel);
@@ -1856,6 +2140,9 @@
             ((System.ComponentModel.ISupportInitialize)cartGridView).EndInit();
             ((System.ComponentModel.ISupportInitialize)productOrderGridView).EndInit();
             ((System.ComponentModel.ISupportInitialize)clientOrderGridView).EndInit();
+            billPanel.ResumeLayout(false);
+            billPanel.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)orderItemsGridView).EndInit();
             ResumeLayout(false);
         }
 
@@ -1985,5 +2272,27 @@
         private TextBox clientPhoneTxt;
         private Label label22;
         private Button viewOrderBtn;
+        private Panel billPanel;
+        private Label label23;
+        private DataGridView orderItemsGridView;
+        private Label lblSelectOrder;
+        private ComboBox cmbOrderList;
+        public Button btnGenerateBill;
+        public Button btnPrintBill;
+        private Label label24;
+        private Label label27;
+        private Label label26;
+        private Label label25;
+        private TextBox txtBillClientName;
+        private TextBox txtBillOrderDate;
+        private TextBox txtBillOrderID;
+        private Label label31;
+        private Label label30;
+        private Label label29;
+        private Label label28;
+        private TextBox txtBillAddress;
+        private TextBox txtBillPhone;
+        private TextBox txtBillEmail;
+        private TextBox txtBillTotal;
     }
 }
