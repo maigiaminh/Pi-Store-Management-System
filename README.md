@@ -118,7 +118,7 @@ cd Pi-Store-Management-System
 
 ## 📩 Contact
 
-📧 **Email:** [maigiaminh@gmail.com](mailto\:minh.mgia@gmail.com)\
+📧 **Email:** [minh.mgia@gmail.com](mailto\:minh.mgia@gmail.com)\
 🔗 **GitHub:** [maigiaminh](https://github.com/maigiaminh)\
 🌍 **Portfolio:** [https://maigiaminh.me](https://maigiaminh.me)
 
